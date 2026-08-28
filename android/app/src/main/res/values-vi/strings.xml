@@ -12,6 +12,7 @@
     <string name="history">Lịch sử</string>
     <string name="settings">Cài đặt</string>
     <string name="share">Chia sẻ</string>
+    <string name="more_options">Thêm tùy chọn</string>
     <string name="unlock">Giữ số tiền còn lại mỗi tuần</string>
     <string name="paywall_body">Mở lịch sử, bảng chi tiết và so sánh booth với hoa hồng. $4.99 một lần. Không gói tháng.</string>
     <string name="restore_purchase">Khôi phục mua hàng</string>

@@ -22,7 +22,16 @@ targets:
     dependencies:
       - target: SalonBoothMathWidgetExtension
     scheme:
-      testTargets: []
+      testTargets:
+        - SalonBoothMathTests
+
+  SalonBoothMathTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - SalonBoothMathTests
+    dependencies:
+      - target: SalonBoothMath
 
   SalonBoothMathWidgetExtension:
     type: app-extension

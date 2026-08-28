@@ -13,6 +13,7 @@
     <string name="services_on_card">% of services on card</string>
     <string name="you_took_home">YOU TOOK HOME</string>
     <string name="save_week">Save week</string>
+    <string name="save_week_lifetime">Save week · Lifetime</string>
     <string name="breakdown">See breakdown</string>
     <string name="compare">Compare</string>
     <string name="history">History</string>

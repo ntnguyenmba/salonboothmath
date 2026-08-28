@@ -70,31 +70,8 @@ struct OnboardingView: View {
     private var moneyStep: some View {
         VStack(alignment: .leading, spacing: 28) {
             Spacer()
-            Text(payModel == .booth ? String(localized: "rent.weekly") : String(localized: "commission.cut"))
-                .font(Brand.font(28, weight: .heavy))
-            if payModel == .booth {
-                MoneyEntryField(text: $rent, prefix: "$", suffix: nil)
-                Picker("", selection: $rentPeriod) {
-                    Text("rent.week").tag(RentPeriod.week)
-                    Text("rent.month").tag(RentPeriod.month)
-                }
-                .pickerStyle(.segmented)
-                .frame(height: 56)
-                Text("rent.orMonthly").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry)
-            } else {
-                MoneyEntryField(text: $commission, prefix: nil, suffix: "%")
-                HStack(spacing: 10) {
-                    ForEach([50, 55, 60], id: \.self) { value in
-                        Button("\(value)%") { commission = "\(value)" }
-                            .font(Brand.font(18, weight: .bold))
-                            .foregroundStyle(commission == "\(value)" ? Color.white : Brand.ink)
-                            .frame(maxWidth: .infinity, minHeight: 56)
-                            .background(commission == "\(value)" ? Brand.berry : Brand.ink.opacity(0.06))
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(RoundedRectangle(cornerRadius: 16).stroke(commission == "\(value)" ? Brand.hotPink : Brand.ink.opacity(0.35), lineWidth: 2))
-                    }
-                }
-            }
+            moneyStepTitle
+            moneyStepInput
             Spacer()
             PrimaryButton(title: String(localized: "onboarding.cta")) {
                 saveDefaults()
@@ -102,6 +79,64 @@ struct OnboardingView: View {
             }
         }
         .padding(Brand.screenPadding)
+    }
+
+    private var moneyStepTitle: some View {
+        Text(payModel == .booth ? String(localized: "rent.weekly") : String(localized: "commission.cut"))
+            .font(Brand.font(28, weight: .heavy))
+    }
+
+    @ViewBuilder
+    private var moneyStepInput: some View {
+        if payModel == .booth {
+            boothInput
+        } else {
+            commissionInput
+        }
+    }
+
+    private var boothInput: some View {
+        Group {
+            MoneyEntryField(text: $rent, prefix: "$", suffix: nil)
+            Picker("", selection: $rentPeriod) {
+                Text("rent.week").tag(RentPeriod.week)
+                Text("rent.month").tag(RentPeriod.month)
+            }
+            .pickerStyle(.segmented)
+            .frame(height: 56)
+            Text("rent.orMonthly")
+                .font(Brand.font(18, weight: .bold))
+                .foregroundStyle(Brand.berry)
+        }
+    }
+
+    private var commissionInput: some View {
+        Group {
+            MoneyEntryField(text: $commission, prefix: nil, suffix: "%")
+            HStack(spacing: 10) {
+                ForEach([50, 55, 60], id: \.self) { value in
+                    commissionPresetButton(value)
+                }
+            }
+        }
+    }
+
+    private func commissionPresetButton(_ value: Int) -> some View {
+        let valueText = "\(value)"
+        let isSelected = commission == valueText
+
+        return Button("\(value)%") {
+            commission = valueText
+        }
+        .font(Brand.font(18, weight: .bold))
+        .foregroundStyle(isSelected ? Color.white : Brand.ink)
+        .frame(maxWidth: .infinity, minHeight: 56)
+        .background(isSelected ? Brand.berry : Brand.ink.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(isSelected ? Brand.hotPink : Brand.ink.opacity(0.35), lineWidth: 2)
+        )
     }
 
     private var doneStep: some View {

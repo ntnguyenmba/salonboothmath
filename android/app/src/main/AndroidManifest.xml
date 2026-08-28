@@ -4,8 +4,8 @@
     <application
         android:theme="@style/Theme.SalonBoothMath"
         android:label="Salon Booth Math"
-        android:icon="@drawable/salon_booth_math_logo"
-        android:roundIcon="@drawable/salon_booth_math_logo"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:allowBackup="true"
         android:supportsRtl="true">
         <activity android:name=".MainActivity" android:exported="true">

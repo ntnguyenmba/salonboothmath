@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Salon Booth Math</string>
+    <string name="this_week">Esta semana</string>
+    <string name="services">Servicios</string>
+    <string name="tips">Propinas</string>
+    <string name="supplies">Insumos</string>
+    <string name="you_took_home">TE QUEDASTE</string>
+    <string name="save_week">Guardar semana</string>
+    <string name="breakdown">Ver desglose</string>
+    <string name="compare">Comparar</string>
+    <string name="history">Historial</string>
+    <string name="settings">Ajustes</string>
+    <string name="share">Compartir</string>
+    <string name="unlock">Desbloquear app completa</string>
+    <string name="paywall_body">Guarda historial, el desglose completo y la comparación de renta vs. comisión. $4.99 una vez. Sin suscripción.</string>
+</resources>

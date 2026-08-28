@@ -32,15 +32,6 @@ kotlin {
     }
 }
 
-val generatedLogoRes = layout.buildDirectory.dir("generated/logoRes")
-val prepareAppLogo by tasks.registering(Copy::class) {
-    from(rootProject.projectDir.parentFile.resolve("204DCB60-8DB2-480E-B020-6686D78673D4.png"))
-    into(generatedLogoRes.map { it.dir("drawable-nodpi") })
-    rename { "salon_booth_math_logo.png" }
-}
-android.sourceSets.getByName("main").res.srcDir(generatedLogoRes)
-tasks.named("preBuild").configure { dependsOn(prepareAppLogo) }
-
 dependencies {
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.activity:activity-compose:1.10.0")

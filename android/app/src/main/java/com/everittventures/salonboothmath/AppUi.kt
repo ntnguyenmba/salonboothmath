@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,7 +49,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val unlocked by billing.isUnlocked.collectAsState()
     val displayPrice by billing.displayPrice.collectAsState()
     val context = LocalContext.current
-    val activity = context as Activity
+    val activity = context as? Activity
     val scope = rememberCoroutineScope()
     val currentWeekStart = startOfWeek()
     val isCurrentWeek = editingWeekStart == currentWeekStart
@@ -107,7 +108,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
         Screen.History -> HistoryScreen(store, ::loadWeek) { screen = Screen.Home }
         Screen.Compare -> CompareScreen(store, serviceCents, cashTipsCents, cardTipsCents, supplyCents) { screen = Screen.Home }
         Screen.Settings -> SettingsScreen(store) { screen = Screen.Home }
-        Screen.Home -> Column(Modifier.fillMaxSize().background(Page).verticalScroll(rememberScrollState())) {
+        Screen.Home -> Column(Modifier.fillMaxSize().background(Page)) {
             Column(Modifier.fillMaxWidth().background(Berry)) {
                 Box(Modifier.fillMaxWidth().height(4.dp).background(Pink))
                 Box(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp)) {
@@ -121,16 +122,16 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                         Text(payContext(store), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
                     if (!isCurrentWeek) {
-                        TextButton(
+                        IconButton(
                             onClick = { returnToCurrentWeek() },
-                            modifier = Modifier.align(Alignment.CenterStart).height(48.dp)
+                            modifier = Modifier.align(Alignment.CenterStart).size(48.dp)
                         ) {
-                            Text("‹", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.this_week), tint = Color.White)
                         }
                     }
                     Box(Modifier.align(Alignment.CenterEnd)) {
                         IconButton(onClick = { menuOpen = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.settings), tint = Color.White)
+                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.more_options), tint = Color.White)
                         }
                         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                             DropdownMenuItem(text = { Text(stringResource(R.string.share)) }, onClick = { menuOpen = false; ShareCard.share(context, takeHomeCents, editingWeekStart) })
@@ -142,23 +143,39 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                 }
             }
 
-            Column(Modifier.padding(horizontal = 22.dp, vertical = 28.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-                MoneyField(stringResource(R.string.services), services) { services = it }
-                MoneyField(stringResource(R.string.cash_tips), cashTips) { cashTips = it }
-                MoneyField(stringResource(R.string.card_tips), cardTips) { cardTips = it }
-                MoneyField(stringResource(R.string.supplies), supplies) { supplies = it }
-                Spacer(Modifier.height(10.dp))
-                Text(stringResource(R.string.you_took_home), color = Berry, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
-                Text(formatCents(takeHomeCents), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 52.sp, modifier = Modifier.align(Alignment.CenterHorizontally))
-                if (highRent) Text(stringResource(R.string.rent_warning), color = Warning, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
-                PrimaryButton(stringResource(R.string.save_week)) {
-                    if (unlocked) {
-                        store.saveWeek(SavedWeek(editingWeekStart, serviceCents, cashTipsCents, cardTipsCents, supplyCents, store.extraFeesCents, null, store.payModel, takeHomeCents))
-                        scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) }
-                    } else showPaywall = true
+            Column(
+                Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp, vertical = 28.dp)
+            ) {
+                Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+                    MoneyField(stringResource(R.string.services), services) { services = it }
+                    MoneyField(stringResource(R.string.cash_tips), cashTips) { cashTips = it }
+                    MoneyField(stringResource(R.string.card_tips), cardTips) { cardTips = it }
+                    MoneyField(stringResource(R.string.supplies), supplies) { supplies = it }
                 }
-                TextButton(onClick = { screen = Screen.Breakdown }, modifier = Modifier.fillMaxWidth().height(54.dp)) {
-                    Text(stringResource(R.string.breakdown), color = Berry, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(stringResource(R.string.you_took_home), color = Berry, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+                    Text(formatCents(takeHomeCents), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 52.sp)
+                    if (highRent) Text(stringResource(R.string.rent_warning), color = Warning, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
+                }
+
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+                    PrimaryButton(stringResource(R.string.save_week)) {
+                        if (unlocked) {
+                            store.saveWeek(SavedWeek(editingWeekStart, serviceCents, cashTipsCents, cardTipsCents, supplyCents, store.extraFeesCents, null, store.payModel, takeHomeCents))
+                            scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) }
+                        } else showPaywall = true
+                    }
+                    TextButton(onClick = { screen = Screen.Breakdown }, modifier = Modifier.fillMaxWidth().height(58.dp)) {
+                        Text(stringResource(R.string.breakdown), color = Berry, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+                    }
                 }
             }
         }
@@ -174,11 +191,11 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
                 Text(stringResource(R.string.unlock), color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
                 Text(stringResource(R.string.paywall_body, displayPrice), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                PrimaryButton(stringResource(R.string.unlock_price, displayPrice)) { billing.launchPurchase(activity) }
-                TextButton(onClick = { billing.restore() }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+                PrimaryButton(stringResource(R.string.unlock_price, displayPrice)) { activity?.let { billing.launchPurchase(it) } }
+                TextButton(onClick = { billing.restore() }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
                     Text(stringResource(R.string.restore_purchase), color = Berry, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
-                TextButton(onClick = { showPaywall = false }, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+                TextButton(onClick = { showPaywall = false }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
                     Text(stringResource(R.string.not_now), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 }
                 Spacer(Modifier.height(12.dp))

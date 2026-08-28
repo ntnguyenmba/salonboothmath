@@ -11,11 +11,19 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
 
     private val billingClient = BillingClient.newBuilder(context)
         .setListener(this)
-        .enablePendingPurchases()
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .build()
+        )
+        .enableAutoServiceReconnection()
         .build()
 
     private val _isUnlocked = MutableStateFlow(false)
     val isUnlocked: StateFlow<Boolean> = _isUnlocked
+
+    private val _displayPrice = MutableStateFlow("$4.99")
+    val displayPrice: StateFlow<String> = _displayPrice
 
     private var productDetails: ProductDetails? = null
 
@@ -36,37 +44,70 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
             .setProductId(PRODUCT_ID)
             .setProductType(BillingClient.ProductType.INAPP)
             .build()
-        val params = QueryProductDetailsParams.newBuilder().setProductList(listOf(product)).build()
-        billingClient.queryProductDetailsAsync(params) { _, list -> productDetails = list.firstOrNull() }
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(listOf(product))
+            .build()
+
+        billingClient.queryProductDetailsAsync(params) { result, response ->
+            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                productDetails = response.productDetailsList.firstOrNull()
+                _displayPrice.value = productDetails
+                    ?.oneTimePurchaseOfferDetails
+                    ?.formattedPrice
+                    ?: _displayPrice.value
+            }
+        }
     }
 
     fun launchPurchase(activity: Activity) {
         val details = productDetails ?: return
-        val flow = BillingFlowParams.ProductDetailsParams.newBuilder().setProductDetails(details).build()
-        billingClient.launchBillingFlow(activity, BillingFlowParams.newBuilder().setProductDetailsParamsList(listOf(flow)).build())
+        val flow = BillingFlowParams.ProductDetailsParams.newBuilder()
+            .setProductDetails(details)
+            .build()
+        billingClient.launchBillingFlow(
+            activity,
+            BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(listOf(flow))
+                .build()
+        )
     }
 
     fun restore() = queryPurchases()
 
     private fun queryPurchases() {
-        billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build()) { _, purchases ->
-            handlePurchases(purchases)
+        val params = QueryPurchasesParams.newBuilder()
+            .setProductType(BillingClient.ProductType.INAPP)
+            .build()
+        billingClient.queryPurchasesAsync(params) { result, purchases ->
+            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                handlePurchases(purchases)
+            }
         }
     }
 
     override fun onPurchasesUpdated(result: BillingResult, purchases: MutableList<Purchase>?) {
-        if (result.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) handlePurchases(purchases)
+        if (result.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+            handlePurchases(purchases)
+        }
     }
 
     private fun handlePurchases(purchases: List<Purchase>) {
-        val unlocked = purchases.any { purchase ->
-            purchase.products.contains(PRODUCT_ID) && purchase.purchaseState == Purchase.PurchaseState.PURCHASED
+        _isUnlocked.value = purchases.any { purchase ->
+            purchase.products.contains(PRODUCT_ID) &&
+                purchase.purchaseState == Purchase.PurchaseState.PURCHASED
         }
-        _isUnlocked.value = unlocked
-        purchases.filter { it.products.contains(PRODUCT_ID) && it.purchaseState == Purchase.PurchaseState.PURCHASED && !it.isAcknowledged }
+
+        purchases
+            .filter {
+                it.products.contains(PRODUCT_ID) &&
+                    it.purchaseState == Purchase.PurchaseState.PURCHASED &&
+                    !it.isAcknowledged
+            }
             .forEach { purchase ->
                 billingClient.acknowledgePurchase(
-                    AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken).build()
+                    AcknowledgePurchaseParams.newBuilder()
+                        .setPurchaseToken(purchase.purchaseToken)
+                        .build()
                 ) { }
             }
     }

@@ -3,7 +3,7 @@ import StoreKit
 
 @MainActor
 final class PurchaseManager: ObservableObject {
-    static let productID = "unlock_full"
+    static let productID = "com.everittventures.salonboothmath.lifetime"
 
     @Published private(set) var product: Product?
     @Published private(set) var isUnlocked = false

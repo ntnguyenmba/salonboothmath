@@ -2,7 +2,6 @@ import SwiftUI
 
 struct BreakdownView: View {
     let grossCents: Int, rentCents: Int, houseCutCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
-    let hours: Double?
     let taxReserveCents: Int
     let payModel: PayModel
 
@@ -18,7 +17,6 @@ struct BreakdownView: View {
                     row("br.supplies", suppliesCents)
                     if extraFeesCents > 0 { row("br.extra", extraFeesCents) }
                     row("br.takeHome", takeHomeCents, strong: true)
-                    if let hours, let hourly = MoneyMath.hourlyTakeHome(takeHomeCents: takeHomeCents, hours: Decimal(hours)) { row("br.hourly", hourly) }
                     if taxReserveCents > 0 { row("br.taxReserve", taxReserveCents) }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))

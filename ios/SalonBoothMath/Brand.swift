@@ -5,7 +5,8 @@ enum Brand {
     static let page = Color(hex: 0x0B0B0F)
     static let surface = Color(hex: 0x18181F)
     static let ink = Color(hex: 0xFFFFFF)
-    static let mutedInk = Color.white.opacity(0.78)
+    static let muted = Color.white.opacity(0.78)
+    static let mutedInk = muted
     static let berry = Color(hex: 0x4B0728)
     static let hotPink = Color(hex: 0xFF3D6E)
     static let warning = Color(hex: 0xFFB86B)

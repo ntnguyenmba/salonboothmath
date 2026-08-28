@@ -29,7 +29,12 @@ class AppStore(context: Context) {
         get() = java.lang.Double.longBitsToDouble(prefs.getLong("commissionCut", java.lang.Double.doubleToLongBits(.55)))
         set(value) = prefs.edit().putLong("commissionCut", java.lang.Double.doubleToLongBits(value)).apply()
 
+    fun updateWidgetTakeHome(amount: Double) {
+        prefs.edit().putLong("widgetTakeHomeCents", kotlin.math.round(amount * 100).toLong()).apply()
+    }
+
     fun saveWeek(week: SavedWeek) {
+        updateWidgetTakeHome(week.takeHome)
         val weeks = loadWeeks().filterNot { sameWeek(it.startMillis, week.startMillis) }.toMutableList()
         weeks.add(week)
         weeks.sortByDescending { it.startMillis }

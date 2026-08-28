@@ -18,6 +18,7 @@
     <string name="history">History</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
+    <string name="more_options">More options</string>
     <string name="unlock">Keep every week’s take-home</string>
     <string name="paywall_body">Unlock saved weeks, history, and booth vs commission. %1$s once. No subscription.</string>
     <string name="unlock_price">Unlock — %1$s</string>

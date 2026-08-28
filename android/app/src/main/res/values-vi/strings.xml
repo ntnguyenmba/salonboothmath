@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Salon Booth Math</string>
+    <string name="this_week">Tuần này</string>
+    <string name="services">Dịch vụ</string>
+    <string name="tips">Tip</string>
+    <string name="supplies">Đồ nghề / sản phẩm</string>
+    <string name="you_took_home">BẠN CÒN LẠI</string>
+    <string name="save_week">Lưu tuần</string>
+    <string name="breakdown">Xem chi tiết</string>
+    <string name="compare">So sánh</string>
+    <string name="history">Lịch sử</string>
+    <string name="settings">Cài đặt</string>
+    <string name="share">Chia sẻ</string>
+    <string name="unlock">Mở khóa toàn bộ</string>
+    <string name="paywall_body">Giữ lịch sử, bảng chi tiết và so sánh booth với hoa hồng. $4.99 một lần. Không gói tháng.</string>
+</resources>

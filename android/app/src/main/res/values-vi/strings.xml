@@ -12,6 +12,18 @@
     <string name="history">Lịch sử</string>
     <string name="settings">Cài đặt</string>
     <string name="share">Chia sẻ</string>
-    <string name="unlock">Mở khóa toàn bộ</string>
-    <string name="paywall_body">Giữ lịch sử, bảng chi tiết và so sánh booth với hoa hồng. $4.99 một lần. Không gói tháng.</string>
+    <string name="unlock">Giữ số tiền còn lại mỗi tuần</string>
+    <string name="paywall_body">Mở lịch sử, bảng chi tiết và so sánh booth với hoa hồng. $4.99 một lần. Không gói tháng.</string>
+    <string name="restore_purchase">Khôi phục mua hàng</string>
+    <string name="not_now">Để sau</string>
+    <string name="continue_label">Tiếp tục</string>
+    <string name="enter_week">Nhập tuần này</string>
+    <string name="trade_question">Bạn làm nghề gì?</string>
+    <string name="pay_question">Bạn nhận lương kiểu nào?</string>
+    <string name="weekly_rent">Tiền booth mỗi tuần</string>
+    <string name="your_cut">Phần của bạn</string>
+    <string name="widget_description">Xem tiền còn lại tuần này mà không cần mở ứng dụng.</string>
+    <string name="gross">Tổng thu</string>
+    <string name="card_fees">Phí thẻ</string>
+    <string name="take_home">Còn lại</string>
 </resources>

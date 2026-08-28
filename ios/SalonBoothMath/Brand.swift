@@ -4,7 +4,7 @@ import SwiftUI
 enum Brand {
     static let page = Color(hex: 0xFFFFFF)
     static let ink = Color(hex: 0x0B1220)
-    static let berry = Color(hex: 0x4A1835)
+    static let berry = Color(hex: 0x4B0728)
     static let hotPink = Color(hex: 0xFF3D6E)
     static let warning = Color(hex: 0xC2410C)
     static let error = Color(hex: 0xB42318)

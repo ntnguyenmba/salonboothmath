@@ -18,12 +18,8 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             Brand.page.ignoresSafeArea()
-
             VStack(spacing: 0) {
-                progress
-                    .padding(.horizontal, Brand.screenPadding)
-                    .padding(.top, 18)
-
+                progress.padding(.horizontal, Brand.screenPadding).padding(.top, 18)
                 Group {
                     switch step {
                     case 0: tradeStep
@@ -41,9 +37,7 @@ struct OnboardingView: View {
     private var progress: some View {
         HStack(spacing: 8) {
             ForEach(0..<4, id: \.self) { index in
-                Capsule()
-                    .fill(index <= step ? Brand.berry : Brand.line)
-                    .frame(height: 6)
+                Capsule().fill(index <= step ? Brand.berry : Brand.line).frame(height: 6)
             }
         }
         .accessibilityHidden(true)
@@ -52,11 +46,7 @@ struct OnboardingView: View {
     private var tradeStep: some View {
         ChoiceStep(title: String(localized: "onboarding.trade.title")) {
             ForEach(Trade.allCases) { item in
-                ChoiceButton(
-                    title: String(localized: String.LocalizationValue(item.titleKey)),
-                    symbol: symbol(for: item),
-                    selected: trade == item
-                ) {
+                ChoiceButton(title: String(localized: String.LocalizationValue(item.titleKey)), symbol: symbol(for: item), selected: trade == item) {
                     trade = item
                     withAnimation(.snappy(duration: 0.2)) { step = 1 }
                 }
@@ -82,7 +72,6 @@ struct OnboardingView: View {
             Spacer()
             Text(payModel == .booth ? String(localized: "rent.weekly") : String(localized: "commission.cut"))
                 .font(Brand.font(28, weight: .heavy))
-
             if payModel == .booth {
                 MoneyEntryField(text: $rent, prefix: "$", suffix: nil)
                 Picker("", selection: $rentPeriod) {
@@ -91,24 +80,21 @@ struct OnboardingView: View {
                 }
                 .pickerStyle(.segmented)
                 .frame(height: 56)
-                Text("rent.orMonthly")
-                    .font(Brand.font(18))
-                    .foregroundStyle(Brand.berry)
+                Text("rent.orMonthly").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry)
             } else {
                 MoneyEntryField(text: $commission, prefix: nil, suffix: "%")
                 HStack(spacing: 10) {
                     ForEach([50, 55, 60], id: \.self) { value in
                         Button("\(value)%") { commission = "\(value)" }
-                            .font(Brand.font(18, weight: .heavy))
+                            .font(Brand.font(18, weight: .bold))
                             .foregroundStyle(commission == "\(value)" ? Color.white : Brand.ink)
                             .frame(maxWidth: .infinity, minHeight: 56)
-                            .background(commission == "\(value)" ? Brand.berry : Brand.page)
+                            .background(commission == "\(value)" ? Brand.berry : Brand.ink.opacity(0.06))
                             .clipShape(RoundedRectangle(cornerRadius: 16))
-                            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Brand.line, lineWidth: 2))
+                            .overlay(RoundedRectangle(cornerRadius: 16).stroke(commission == "\(value)" ? Brand.hotPink : Brand.ink.opacity(0.35), lineWidth: 2))
                     }
                 }
             }
-
             Spacer()
             PrimaryButton(title: String(localized: "onboarding.cta")) {
                 saveDefaults()
@@ -123,14 +109,9 @@ struct OnboardingView: View {
             Brand.berry.ignoresSafeArea()
             VStack(spacing: 30) {
                 Spacer()
-                Text("onboarding.done")
-                    .font(Brand.font(36, weight: .heavy))
-                    .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
+                Text("onboarding.done").font(Brand.font(36, weight: .heavy)).foregroundStyle(.white).multilineTextAlignment(.center)
                 Spacer()
-                PrimaryButton(title: String(localized: "onboarding.cta")) {
-                    didCompleteOnboarding = true
-                }
+                PrimaryButton(title: String(localized: "onboarding.cta")) { didCompleteOnboarding = true }
             }
             .padding(Brand.screenPadding)
         }
@@ -151,7 +132,7 @@ struct OnboardingView: View {
         switch trade {
         case .nail: "hand.raised.fill"
         case .hair: "scissors"
-        case .barber: "comb.fill"
+        case .barber: "scissors"
         case .esthetician: "sparkles"
         }
     }
@@ -160,12 +141,10 @@ struct OnboardingView: View {
 private struct ChoiceStep<Content: View>: View {
     let title: String
     @ViewBuilder let content: Content
-
     var body: some View {
         VStack(alignment: .leading, spacing: 28) {
             Spacer()
-            Text(title)
-                .font(Brand.font(32, weight: .heavy))
+            Text(title).font(Brand.font(32, weight: .heavy))
             VStack(spacing: 16) { content }
             Spacer()
         }
@@ -178,28 +157,20 @@ struct ChoiceButton: View {
     let symbol: String
     let selected: Bool
     let action: () -> Void
-
     var body: some View {
         Button(action: action) {
             HStack(spacing: 18) {
-                Image(systemName: symbol)
-                    .font(.system(size: 25, weight: .bold))
-                    .frame(width: 34)
-                Text(title)
-                    .font(Brand.font(20, weight: .heavy))
+                Image(systemName: symbol).font(.system(size: 25, weight: .bold)).frame(width: 34)
+                Text(title).font(Brand.font(20, weight: .bold))
                 Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 18, weight: .bold))
+                Image(systemName: "chevron.right").font(.system(size: 18, weight: .bold))
             }
             .foregroundStyle(selected ? Color.white : Brand.ink)
             .padding(.horizontal, 20)
             .frame(minHeight: 68)
-            .background(selected ? Brand.berry : Brand.page)
+            .background(selected ? Brand.berry : Brand.ink.opacity(0.06))
             .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-            .overlay {
-                RoundedRectangle(cornerRadius: Brand.controlRadius)
-                    .stroke(selected ? Brand.hotPink : Brand.line, lineWidth: selected ? 3 : 2)
-            }
+            .overlay { RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(selected ? Brand.hotPink : Brand.ink.opacity(0.35), lineWidth: selected ? 3 : 2) }
         }
         .buttonStyle(.plain)
     }
@@ -208,7 +179,6 @@ struct ChoiceButton: View {
 struct PrimaryButton: View {
     let title: String
     let action: () -> Void
-
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -226,21 +196,19 @@ struct MoneyEntryField: View {
     @Binding var text: String
     let prefix: String?
     let suffix: String?
-
+    @FocusState private var focused: Bool
     var body: some View {
         HStack(spacing: 8) {
             if let prefix { Text(prefix) }
-            TextField("0", text: $text)
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.leading)
+            TextField("0", text: $text).keyboardType(.decimalPad).multilineTextAlignment(.leading).focused($focused)
             if let suffix { Text(suffix) }
         }
         .font(Brand.font(32, weight: .heavy))
         .foregroundStyle(Brand.ink)
         .padding(.horizontal, 20)
         .frame(minHeight: 64)
-        .background(.white)
+        .background(Brand.ink.opacity(0.08))
         .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
+        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.ink.opacity(0.42), lineWidth: focused ? 3 : 2))
     }
 }

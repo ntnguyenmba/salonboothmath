@@ -17,8 +17,23 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.everittventures.salonboothmath
         INFOPLIST_FILE: SalonBoothMath/Info.plist
+        CODE_SIGN_ENTITLEMENTS: SalonBoothMath/SalonBoothMath.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         TARGETED_DEVICE_FAMILY: "1,2"
-    dependencies: []
+    dependencies:
+      - target: SalonBoothMathWidgetExtension
     scheme:
       testTargets: []
+
+  SalonBoothMathWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - SalonBoothMathWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.everittventures.salonboothmath.widget
+        INFOPLIST_FILE: SalonBoothMathWidget/Info.plist
+        CODE_SIGN_ENTITLEMENTS: SalonBoothMathWidget/SalonBoothMathWidget.entitlements
+        SKIP_INSTALL: YES
+        APPLICATION_EXTENSION_API_ONLY: YES

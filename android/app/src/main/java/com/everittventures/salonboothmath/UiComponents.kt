@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,7 +34,9 @@ internal val Page = Color.White
 @Composable
 internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
     Column(Modifier.fillMaxSize().background(Page).padding(22.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        TextButton(onClick = back) { Text("‹ ${stringResource(R.string.this_week)}", color = Berry, fontWeight = FontWeight.ExtraBold) }
+        IconButton(onClick = back, modifier = Modifier.size(48.dp)) {
+            Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.this_week), tint = Berry)
+        }
         Text(title, color = Ink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
         content()
     }
@@ -42,7 +46,7 @@ internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable 
 internal fun Metric(label: String, value: Long) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(label, color = Berry, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(formatCents(value), color = Ink, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
+        Text(formatCents(value), color = Ink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
     }
 }
 
@@ -56,7 +60,7 @@ internal fun CostRow(label: String, value: Long) {
 
 @Composable
 internal fun MoneyField(label: String, value: String, showCurrency: Boolean = true, onValue: (String) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(11.dp)) {
         Text(label, color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
         OutlinedTextField(
             value = value,
@@ -64,7 +68,7 @@ internal fun MoneyField(label: String, value: String, showCurrency: Boolean = tr
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             textStyle = LocalTextStyle.current.copy(fontSize = 29.sp, fontWeight = FontWeight.ExtraBold, color = Ink),
-            modifier = Modifier.fillMaxWidth().height(68.dp),
+            modifier = Modifier.fillMaxWidth().height(64.dp),
             shape = RoundedCornerShape(18.dp),
             prefix = if (showCurrency) ({ Text(NumberFormat.getCurrencyInstance().currency?.symbol ?: "$") }) else null,
             colors = OutlinedTextFieldDefaults.colors(
@@ -113,8 +117,7 @@ internal fun SettingToggle(label: String, checked: Boolean, onChecked: (Boolean)
 
 @Composable
 internal fun payContext(store: AppStore): String = if (store.payModel == "booth") {
-    val suffix = if (store.rentPeriod == "month") stringResource(R.string.month) else stringResource(R.string.week)
-    "${stringResource(R.string.booth_rent)} · ${formatCents(store.rentCents)}/$suffix"
+    "${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/${stringResource(R.string.week)}"
 } else {
     val tips = when (store.tipOwner) {
         TipOwner.YOU -> stringResource(R.string.tips_you)

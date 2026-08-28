@@ -6,13 +6,20 @@ options:
 settings:
   base:
     SWIFT_VERSION: 5.10
-    DEVELOPMENT_TEAM: ""
 targets:
   SalonBoothMath:
     type: application
     platform: iOS
     sources:
       - SalonBoothMath
+    preBuildScripts:
+      - name: Build 1024 App Icon
+        script: |
+          set -e
+          SOURCE="$SRCROOT/../brand/app-icon.png"
+          OUTPUT="$SRCROOT/SalonBoothMath/Assets.xcassets/AppIcon.appiconset/AppIcon.png"
+          mkdir -p "$(dirname "$OUTPUT")"
+          /usr/bin/sips -z 1024 1024 "$SOURCE" --out "$OUTPUT" >/dev/null
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.everittventures.salonboothmath

@@ -12,8 +12,7 @@ enum TipOwner: String, CaseIterable, Identifiable, Codable { case you, house, sp
 
 struct MoneyMath {
     static func cents(from text: String) -> Int {
-        let normalized = text.replacingOccurrences(of: ",", with: "").trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let decimal = Decimal(string: normalized), decimal >= 0 else { return 0 }
+        guard let decimal = parseMoney(text), decimal >= 0 else { return 0 }
         return roundedCents(decimal * 100)
     }
 
@@ -38,6 +37,36 @@ struct MoneyMath {
     }
 
     static func weeklyRent(cents: Int, period: RentPeriod) -> Int { period == .week ? cents : roundedCents(Decimal(cents) / Decimal(string: "4.3333")!) }
+
+    private static func parseMoney(_ raw: String) -> Decimal? {
+        var value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !value.isEmpty else { return 0 }
+        let allowed = CharacterSet(charactersIn: "0123456789.,")
+        value = String(value.unicodeScalars.filter { allowed.contains($0) })
+        guard !value.isEmpty else { return nil }
+
+        let dot = value.lastIndex(of: ".")
+        let comma = value.lastIndex(of: ",")
+        let decimalSeparator: Character? = {
+            if let dot, let comma { return dot > comma ? "." : "," }
+            if let dot {
+                let digitsAfter = value.distance(from: value.index(after: dot), to: value.endIndex)
+                return digitsAfter == 1 || digitsAfter == 2 ? "." : nil
+            }
+            if let comma {
+                let digitsAfter = value.distance(from: value.index(after: comma), to: value.endIndex)
+                return digitsAfter == 1 || digitsAfter == 2 ? "," : nil
+            }
+            return nil
+        }()
+
+        var normalized = ""
+        for character in value {
+            if character.isNumber { normalized.append(character) }
+            else if let decimalSeparator, character == decimalSeparator { normalized.append(".") }
+        }
+        return Decimal(string: normalized, locale: Locale(identifier: "en_US_POSIX"))
+    }
 
     private static func roundedCents(_ value: Decimal) -> Int {
         var value = value; var rounded = Decimal(); NSDecimalRound(&rounded, &value, 0, .plain); return NSDecimalNumber(decimal: rounded).intValue

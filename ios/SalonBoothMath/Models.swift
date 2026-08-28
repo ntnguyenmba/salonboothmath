@@ -12,8 +12,21 @@ enum TipOwner: String, CaseIterable, Identifiable, Codable { case you, house, sp
 
 struct MoneyMath {
     static func cents(from text: String) -> Int {
-        guard let decimal = parseMoney(text), decimal >= 0 else { return 0 }
+        guard let decimal = parseNumber(text), decimal >= 0 else { return 0 }
         return roundedCents(decimal * 100)
+    }
+
+    static func basisPoints(fromPercentText text: String, fallback: Int) -> Int {
+        guard let percent = parseNumber(text), percent >= 0 else { return fallback }
+        return roundedCents(percent * 100)
+    }
+
+    static func rate(fromBasisPoints basisPoints: Int) -> Decimal {
+        Decimal(basisPoints) / Decimal(10_000)
+    }
+
+    static func percentText(fromBasisPoints basisPoints: Int) -> String {
+        NSDecimalNumber(decimal: Decimal(basisPoints) / 100).stringValue
     }
 
     static func cardFees(services: Int, cardTips: Int, cardFeeRate: Decimal, percentServicesOnCard: Decimal) -> Int {
@@ -38,7 +51,7 @@ struct MoneyMath {
 
     static func weeklyRent(cents: Int, period: RentPeriod) -> Int { period == .week ? cents : roundedCents(Decimal(cents) / Decimal(string: "4.3333")!) }
 
-    private static func parseMoney(_ raw: String) -> Decimal? {
+    private static func parseNumber(_ raw: String) -> Decimal? {
         var value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !value.isEmpty else { return 0 }
         let allowed = CharacterSet(charactersIn: "0123456789.,")
@@ -69,6 +82,9 @@ struct MoneyMath {
     }
 
     private static func roundedCents(_ value: Decimal) -> Int {
-        var value = value; var rounded = Decimal(); NSDecimalRound(&rounded, &value, 0, .plain); return NSDecimalNumber(decimal: rounded).intValue
+        var value = value
+        var rounded = Decimal()
+        NSDecimalRound(&rounded, &value, 0, .plain)
+        return NSDecimalNumber(decimal: rounded).intValue
     }
 }

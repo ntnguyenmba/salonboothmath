@@ -10,7 +10,9 @@ object MoneyMath {
     private val MONTH_WEEKS = BigDecimal("4.3333")
 
     fun cents(text: String): Long = runCatching {
-        parseMoney(text)
+        val trimmed = text.trim()
+        if (trimmed.startsWith("-")) return 0L
+        parseMoney(trimmed)
             .max(BigDecimal.ZERO)
             .multiply(HUNDRED)
             .setScale(0, RoundingMode.HALF_UP)
@@ -18,7 +20,7 @@ object MoneyMath {
     }.getOrDefault(0L)
 
     private fun parseMoney(raw: String): BigDecimal {
-        val value = raw.trim().filter { it.isDigit() || it == '.' || it == ',' }
+        val value = raw.filter { it.isDigit() || it == '.' || it == ',' }
         if (value.isBlank()) return BigDecimal.ZERO
         val dot = value.lastIndexOf('.')
         val comma = value.lastIndexOf(',')

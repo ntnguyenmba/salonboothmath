@@ -9,12 +9,12 @@ iOS + Android · English + Vietnamese + Spanish · $4.99 once · No subscription
 ## v1
 
 - No account
-- Free first week: Services + Tips + Supplies + live take-home
+- Free current-week calculator: Services + Cash tips + Card tips + Supplies + live take-home
+- Breakdown is free
 - One-time $4.99 lifetime unlock
 - Saved weeks and History
-- Full Breakdown
 - Booth vs Commission comparison
-- Rent, commission, card fee, hours, tax set-aside, and extra-fee settings
+- Rent, commission, card fee, tax set-aside, and extra-fee settings
 - Native Share take-home card
 - Small iOS Home Screen widget
 - Offline, on-device data
@@ -22,16 +22,19 @@ iOS + Android · English + Vietnamese + Spanish · $4.99 once · No subscription
 
 ## Locked visual system
 
-- Nunito Sans only, weights 700-800
+- Native system rounded typography; no bundled custom font
 - White `#FFFFFF`
 - Ink `#0B1220`
 - Berry `#4A1835`
 - Hot pink `#FF3D6E`
 - Warning `#C2410C`
 - Error `#B42318`
+- Berry Home header with 4px hot-pink crown
+- Full white text on berry/dark surfaces
 - Minimum text size 16px
 - Controls 56-64px high
 - Radius 16-20px
+- Home: four vertical money fields → take-home → Save → Breakdown
 - One action and one dominant number per screen
 - No beige, navy, blush fills, tiny text, dashboard grids, gradients, or faded copy
 

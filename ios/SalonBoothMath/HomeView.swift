@@ -104,7 +104,11 @@ struct HomeView: View {
                 } label: { Image(systemName: "ellipsis.circle.fill").font(.system(size: 23, weight: .bold)).frame(width: 48, height: 48) }.accessibilityLabel(Text("settings.title"))
             }
         }
-        .foregroundStyle(Color.white).padding(.horizontal, 10).padding(.vertical, 12).background(Brand.berry)
+        .foregroundStyle(Color.white)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 12)
+        .background(Brand.berry)
+        .overlay(alignment: .top) { Rectangle().fill(Brand.hotPink).frame(height: 4) }
     }
 
     private var fields: some View {

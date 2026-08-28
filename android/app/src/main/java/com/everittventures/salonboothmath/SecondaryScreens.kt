@@ -17,12 +17,10 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, cardTips: Long, supplies: Long, cardFees: Long, takeHome: Long, hours: String, onHoursChange: (String) -> Unit, back: () -> Unit) {
+internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, cardTips: Long, supplies: Long, cardFees: Long, takeHome: Long, back: () -> Unit) {
     val gross = services + cashTips + cardTips
     val workerCut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4)
     val ownerCut = if (store.payModel == "commission") services - BigDecimal.valueOf(services).multiply(workerCut).setScale(0, RoundingMode.HALF_UP).longValueExact() else store.weeklyRentCents
-    val hoursValue = hours.toBigDecimalOrNull()?.takeIf { it > BigDecimal.ZERO }
-    val hourly = hoursValue?.let { BigDecimal.valueOf(takeHome).divide(it, 0, RoundingMode.HALF_UP).longValueExact() }
     val tax = if (takeHome > 0) BigDecimal.valueOf(takeHome).multiply(BigDecimal(store.taxBasisPoints).movePointLeft(4)).setScale(0, RoundingMode.HALF_UP).longValueExact() else 0L
     SimpleScreen(stringResource(R.string.breakdown), back) {
         Metric(stringResource(R.string.gross), gross)
@@ -32,8 +30,6 @@ internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, ca
         if (store.extraFeesCents > 0) CostRow(stringResource(R.string.extra_shop_fees), store.extraFeesCents)
         HorizontalDivider()
         Metric(stringResource(R.string.take_home), takeHome)
-        MoneyField(stringResource(R.string.hours_this_week), hours, false, onHoursChange)
-        if (hourly != null) Metric(stringResource(R.string.per_hour), hourly)
         if (tax > 0) Metric(stringResource(R.string.tax_reserve), tax)
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct HomeView: View {
     @AppStorage("payModel") private var savedPayModel = PayModel.booth.rawValue
@@ -8,13 +9,15 @@ struct HomeView: View {
     @AppStorage("cardFeeRate") private var cardFeeRate = 0.029
     @AppStorage("percentServicesOnCard") private var percentServicesOnCard = 0.70
     @AppStorage("extraFeesCents") private var extraFeesCents = 0
+    @AppStorage("workerPaysCardFees") private var workerPaysCardFees = false
 
     @StateObject private var purchases = PurchaseManager()
     @StateObject private var weekStore = WeekStore()
 
-    @State private var services = "1240"
-    @State private var tips = "160"
-    @State private var supplies = "45"
+    @State private var services = ""
+    @State private var cashTips = ""
+    @State private var cardTips = ""
+    @State private var supplies = ""
     @State private var showPaywall = false
     @State private var showBreakdown = false
     @State private var showCompare = false
@@ -24,21 +27,27 @@ struct HomeView: View {
     @State private var shareImage: UIImage?
     @State private var pendingAction: LockedAction?
 
-    private enum LockedAction { case save, breakdown, compare, history }
+    private enum LockedAction { case save, compare, history }
     private var payModel: PayModel { PayModel(rawValue: savedPayModel) ?? .booth }
     private var rentPeriod: RentPeriod { RentPeriod(rawValue: savedRentPeriod) ?? .week }
     private var serviceCents: Int { MoneyMath.cents(from: services) }
-    private var tipCents: Int { MoneyMath.cents(from: tips) }
+    private var cashTipCents: Int { MoneyMath.cents(from: cashTips) }
+    private var cardTipCents: Int { MoneyMath.cents(from: cardTips) }
     private var supplyCents: Int { MoneyMath.cents(from: supplies) }
     private var weeklyRentCents: Int { MoneyMath.weeklyRent(cents: rentCents, period: rentPeriod) }
-    private var grossCents: Int { serviceCents + tipCents }
+    private var grossCents: Int { serviceCents + cashTipCents + cardTipCents }
     private var estimatedCardFees: Int {
-        NSDecimalNumber(decimal: (Decimal(tipCents) + Decimal(serviceCents) * Decimal(percentServicesOnCard)) * Decimal(cardFeeRate)).intValue
+        MoneyMath.cardFees(
+            services: serviceCents,
+            cardTips: cardTipCents,
+            cardFeeRate: Decimal(cardFeeRate),
+            percentServicesOnCard: Decimal(percentServicesOnCard)
+        )
     }
 
     private var boothTakeHome: Int {
         MoneyMath.boothTakeHome(
-            services: serviceCents, cashTips: 0, cardTips: tipCents, supplies: supplyCents,
+            services: serviceCents, cashTips: cashTipCents, cardTips: cardTipCents, supplies: supplyCents,
             weeklyRent: weeklyRentCents, extraFees: extraFeesCents,
             cardFeeRate: Decimal(cardFeeRate), percentServicesOnCard: Decimal(percentServicesOnCard)
         )
@@ -46,13 +55,16 @@ struct HomeView: View {
 
     private var commissionTakeHome: Int {
         MoneyMath.commissionTakeHome(
-            services: serviceCents, cashTips: 0, cardTips: tipCents, supplies: supplyCents,
-            cut: Decimal(savedCommissionCut), tipOwner: .you
+            services: serviceCents, cashTips: cashTipCents, cardTips: cardTipCents, supplies: supplyCents,
+            cut: Decimal(savedCommissionCut), tipOwner: .you,
+            workerPaysCardFees: workerPaysCardFees, extraFees: extraFeesCents,
+            cardFeeRate: Decimal(cardFeeRate), percentServicesOnCard: Decimal(percentServicesOnCard)
         )
     }
 
     private var takeHomeCents: Int { payModel == .booth ? boothTakeHome : commissionTakeHome }
     private var currentWeekStart: Date { Calendar.current.startOfWeek(for: Date()) }
+    private var highRent: Bool { payModel == .booth && grossCents > 0 && Double(weeklyRentCents) / Double(grossCents) >= 0.40 }
 
     var body: some View {
         NavigationStack {
@@ -62,8 +74,8 @@ struct HomeView: View {
                     VStack(spacing: 0) {
                         header
                         fields.padding(.top, 30)
-                        result.padding(.top, 36)
-                        actions.padding(.top, 30).padding(.bottom, 30)
+                        result.padding(.top, 34)
+                        actions.padding(.top, 26).padding(.bottom, 30)
                     }
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -74,7 +86,7 @@ struct HomeView: View {
                     grossCents: grossCents,
                     rentCents: weeklyRentCents,
                     houseCutCents: max(0, serviceCents - Int(Double(serviceCents) * savedCommissionCut)),
-                    cardFeesCents: payModel == .booth ? estimatedCardFees : 0,
+                    cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0,
                     suppliesCents: supplyCents,
                     extraFeesCents: extraFeesCents,
                     takeHomeCents: takeHomeCents,
@@ -106,35 +118,30 @@ struct HomeView: View {
     }
 
     private var header: some View {
-        HStack(spacing: 4) {
-            Button { requireUnlock(.history) } label: {
-                Image(systemName: "chevron.left").font(.system(size: 22, weight: .heavy)).frame(width: 48, height: 48)
-            }
-            .accessibilityLabel(Text("a11y.prevWeek"))
-
-            Spacer()
+        ZStack {
             Text("home.thisWeek").font(Brand.font(20, weight: .heavy))
-            Spacer()
-
-            Button { showSettings = true } label: {
-                Image(systemName: "gearshape.fill").font(.system(size: 20, weight: .bold)).frame(width: 48, height: 48)
+            HStack {
+                Spacer()
+                Button { showSettings = true } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.system(size: 20, weight: .bold))
+                        .frame(width: 48, height: 48)
+                }
+                .accessibilityLabel(Text("settings.title"))
             }
-            .accessibilityLabel(Text("settings.title"))
-
-            Button { requireUnlock(.history) } label: {
-                Image(systemName: "chevron.right").font(.system(size: 22, weight: .heavy)).frame(width: 48, height: 48)
-            }
-            .accessibilityLabel(Text("a11y.nextWeek"))
         }
         .foregroundStyle(.white)
-        .padding(.horizontal, 6).padding(.vertical, 12)
+        .padding(.horizontal, 10).padding(.vertical, 12)
         .background(Brand.berry)
     }
 
     private var fields: some View {
         VStack(spacing: 22) {
             HomeMoneyField(title: String(localized: "field.services"), text: $services)
-            HomeMoneyField(title: String(localized: "field.tips"), text: $tips)
+            HStack(alignment: .top, spacing: 12) {
+                HomeMoneyField(title: "Cash tips", text: $cashTips)
+                HomeMoneyField(title: "Card tips", text: $cardTips)
+            }
             HomeMoneyField(title: String(localized: "field.supplies"), text: $supplies)
         }
         .padding(.horizontal, Brand.screenPadding)
@@ -146,16 +153,21 @@ struct HomeView: View {
             Text(formatCurrency(takeHomeCents))
                 .font(Brand.font(60, weight: .heavy)).monospacedDigit().minimumScaleFactor(0.62).lineLimit(1)
                 .contentTransition(.numericText(value: Double(takeHomeCents))).animation(.spring(duration: 0.2), value: takeHomeCents)
+            if highRent {
+                Text("Booth rent is 40% or more of this week’s gross.")
+                    .font(Brand.font(16, weight: .heavy))
+                    .foregroundStyle(Brand.warning)
+                    .multilineTextAlignment(.center)
+            }
         }
         .frame(maxWidth: .infinity).padding(.horizontal, Brand.screenPadding)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text(String(localized: "a11y.takeHome \(formatCurrency(takeHomeCents))")))
+        .accessibilityLabel(Text(String(format: String(localized: "a11y.takeHome %@"), formatCurrency(takeHomeCents))))
     }
 
     private var actions: some View {
         VStack(spacing: 12) {
-            PrimaryButton(title: String(localized: "home.save")) { requireUnlock(.save) }
-            Button { requireUnlock(.breakdown) } label: {
+            Button { showBreakdown = true } label: {
                 Text("home.breakdown").font(Brand.font(18, weight: .heavy)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 52)
             }
             HStack(spacing: 12) {
@@ -163,6 +175,7 @@ struct HomeView: View {
                 SecondaryAction(title: String(localized: "compare.short"), symbol: "arrow.left.arrow.right") { requireUnlock(.compare) }
                 SecondaryAction(title: String(localized: "history.short"), symbol: "clock") { requireUnlock(.history) }
             }
+            PrimaryButton(title: String(localized: "home.save")) { requireUnlock(.save) }
         }
         .padding(.horizontal, Brand.screenPadding)
     }
@@ -183,11 +196,10 @@ struct HomeView: View {
         case .save:
             weekStore.save(WeekRecord(
                 weekStart: currentWeekStart, servicesCents: serviceCents,
-                cashTipsCents: 0, cardTipsCents: tipCents, suppliesCents: supplyCents,
+                cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents,
                 extraFeesCents: extraFeesCents, payModel: payModel, takeHomeCents: takeHomeCents
             ))
             WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents)
-        case .breakdown: showBreakdown = true
         case .compare: showCompare = true
         case .history: showHistory = true
         }
@@ -202,16 +214,16 @@ private struct HomeMoneyField: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(title).font(Brand.font(20, weight: .heavy))
+            Text(title).font(Brand.font(18, weight: .heavy)).lineLimit(1).minimumScaleFactor(0.8)
             HStack(spacing: 8) {
                 Text(Locale.current.currencySymbol ?? "$")
                 TextField("0", text: $text).keyboardType(.decimalPad).focused($focused)
             }
-            .font(Brand.font(31, weight: .heavy)).padding(.horizontal, 20).frame(minHeight: 64).background(.white)
+            .font(Brand.font(29, weight: .heavy)).padding(.horizontal, 16).frame(minHeight: 64).background(.white)
             .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
             .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.line, lineWidth: focused ? 3 : 2))
-            .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius - 3).stroke(focused ? Brand.ink.opacity(0.55) : .clear, lineWidth: 1).padding(3))
         }
+        .frame(maxWidth: .infinity)
     }
 }
 

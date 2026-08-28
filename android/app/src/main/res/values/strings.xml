@@ -3,8 +3,10 @@
     <string name="app_name">Salon Booth Math</string>
     <string name="this_week">This week</string>
     <string name="services">Services</string>
-    <string name="tips">Tips</string>
+    <string name="cash_tips">Cash tips</string>
+    <string name="card_tips">Card tips</string>
     <string name="supplies">Supplies</string>
+    <string name="extra_shop_fees">Extra shop fees / tip-out</string>
     <string name="you_took_home">YOU TOOK HOME</string>
     <string name="save_week">Save week</string>
     <string name="breakdown">See breakdown</string>
@@ -13,7 +15,8 @@
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="unlock">Keep every week’s take-home</string>
-    <string name="paywall_body">Unlock history, the full breakdown, and booth vs commission. $4.99 once. No subscription.</string>
+    <string name="paywall_body">Unlock saved weeks, history, and booth vs commission. %1$s once. No subscription.</string>
+    <string name="unlock_price">Unlock — %1$s</string>
     <string name="restore_purchase">Restore Purchase</string>
     <string name="not_now">Not now</string>
     <string name="continue_label">Continue</string>
@@ -21,9 +24,12 @@
     <string name="trade_question">What do you do?</string>
     <string name="pay_question">How do you get paid?</string>
     <string name="weekly_rent">Weekly booth rent</string>
-    <string name="your_cut">Your cut</string>
+    <string name="your_cut">Your cut %</string>
+    <string name="worker_card_fees">I pay the card processing fees</string>
     <string name="widget_description">See this week’s take-home without opening the app.</string>
     <string name="gross">Gross</string>
+    <string name="house_cut">Owner cut</string>
     <string name="card_fees">Card fees</string>
     <string name="take_home">Take-home</string>
+    <string name="rent_warning">Booth rent is taking 40% or more of this week’s gross.</string>
 </resources>

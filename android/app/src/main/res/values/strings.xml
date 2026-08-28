@@ -12,6 +12,18 @@
     <string name="history">History</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
-    <string name="unlock">Unlock full app</string>
-    <string name="paywall_body">Keep history, the full breakdown, and booth vs commission. $4.99 once. No subscription.</string>
+    <string name="unlock">Keep every week’s take-home</string>
+    <string name="paywall_body">Unlock history, the full breakdown, and booth vs commission. $4.99 once. No subscription.</string>
+    <string name="restore_purchase">Restore Purchase</string>
+    <string name="not_now">Not now</string>
+    <string name="continue_label">Continue</string>
+    <string name="enter_week">Enter this week</string>
+    <string name="trade_question">What do you do?</string>
+    <string name="pay_question">How do you get paid?</string>
+    <string name="weekly_rent">Weekly booth rent</string>
+    <string name="your_cut">Your cut</string>
+    <string name="widget_description">See this week’s take-home without opening the app.</string>
+    <string name="gross">Gross</string>
+    <string name="card_fees">Card fees</string>
+    <string name="take_home">Take-home</string>
 </resources>

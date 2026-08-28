@@ -43,8 +43,34 @@ struct CompareView: View {
 
 struct HistoryView: View {
     @ObservedObject var store: WeekStore
-    var body: some View { ScrollView { VStack(alignment: .leading, spacing: 22) { Text("history.title").font(Brand.font(28, weight: .heavy)); ForEach(store.weeks.prefix(12)) { week in HStack { Text(weekRange(week.weekStart)).font(Brand.font(18, weight: .bold)); Spacer(); Text(formatCurrency(week.takeHomeCents)).font(Brand.font(22, weight: .heavy)).monospacedDigit() }.padding(.horizontal, 18).frame(minHeight: 68).background(.white).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2)) } }.padding(Brand.screenPadding) }.background(Brand.page) }
+    let onSelect: (WeekRecord) -> Void
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                Text("history.title").font(Brand.font(28, weight: .heavy))
+                ForEach(store.weeks.prefix(12)) { week in
+                    Button { onSelect(week) } label: {
+                        HStack {
+                            Text(weekRange(week.weekStart)).font(Brand.font(18, weight: .bold))
+                            Spacer()
+                            Text(formatCurrency(week.takeHomeCents)).font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                        }
+                        .foregroundStyle(Brand.ink)
+                        .padding(.horizontal, 18)
+                        .frame(minHeight: 68)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.ink.opacity(0.18), lineWidth: 2))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }.padding(Brand.screenPadding)
+        }.background(Brand.page)
+    }
+
     private func weekRange(_ start: Date) -> String { let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start; return "\(start.formatted(.dateTime.month(.abbreviated).day()))–\(end.formatted(.dateTime.month(.abbreviated).day()))" }
 }
 
 func formatCurrency(_ cents: Int) -> String { let amount = Decimal(cents) / 100; return amount.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD").precision(.fractionLength(cents % 100 == 0 ? 0 : 2))) }
+func inputCurrencyCents(_ cents: Int) -> String { NSDecimalNumber(decimal: Decimal(cents) / 100).stringValue }

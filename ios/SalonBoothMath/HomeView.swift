@@ -86,6 +86,14 @@ struct HomeView: View {
         guard payModel == .booth, grossCents > 0 else { return nil }
         return Decimal(weeklyRentCents) / Decimal(grossCents)
     }
+    private var payContext: String {
+        if payModel == .booth {
+            let amount = formatCurrency(weeklyRentCents)
+            return rentPeriod == .month ? "\(String(localized: "pay.booth")) · \(amount)/\(String(localized: "rent.week"))" : "\(String(localized: "pay.booth")) · \(amount)/\(String(localized: "rent.week"))"
+        }
+        let percent = Int((savedCommissionCut * 100).rounded())
+        return "\(percent)% · \(tipOwner == .you ? String(localized: "tips.you") : tipOwner == .house ? String(localized: "tips.house") : String(localized: "tips.split"))"
+    }
 
     var body: some View {
         NavigationStack {
@@ -94,9 +102,9 @@ struct HomeView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         header
-                        fields.padding(.top, 28)
-                        result.padding(.top, 32)
-                        actions.padding(.top, 24).padding(.bottom, 30)
+                        fields.padding(.top, 26)
+                        result.padding(.top, 30)
+                        actions.padding(.top, 22).padding(.bottom, 32)
                     }
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -117,11 +125,7 @@ struct HomeView: View {
                 )
             }
             .navigationDestination(isPresented: $showCompare) {
-                CompareView(
-                    boothCents: boothTakeHome,
-                    commissionCents: commissionTakeHome,
-                    commissionPercent: Int(savedCommissionCut * 100)
-                )
+                CompareView(boothCents: boothTakeHome, commissionCents: commissionTakeHome, commissionPercent: Int(savedCommissionCut * 100))
             }
             .navigationDestination(isPresented: $showHistory) {
                 HistoryView(store: weekStore) { week in
@@ -154,8 +158,13 @@ struct HomeView: View {
 
     private var header: some View {
         ZStack {
-            Text(isCurrentWeek ? String(localized: "home.thisWeek") : weekRange(activeWeekStart))
-                .font(Brand.font(20, weight: .heavy))
+            VStack(spacing: 3) {
+                Text(isCurrentWeek ? String(localized: "home.thisWeek") : weekRange(activeWeekStart))
+                    .font(Brand.font(19, weight: .bold))
+                Text(payContext)
+                    .font(Brand.font(16, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.9))
+            }
             HStack {
                 if !isCurrentWeek {
                     Button { returnToCurrentWeek() } label: {
@@ -164,9 +173,14 @@ struct HomeView: View {
                     .accessibilityLabel(Text("home.thisWeek"))
                 }
                 Spacer()
-                Button { showSettings = true } label: {
-                    Image(systemName: "gearshape.fill")
-                        .font(.system(size: 20, weight: .bold))
+                Menu {
+                    Button("home.share") { shareCurrentWeek() }
+                    Button("history.title") { requireUnlock(.history) }
+                    Button("compare.title") { requireUnlock(.compare) }
+                    Button("settings.title") { showSettings = true }
+                } label: {
+                    Image(systemName: "ellipsis.circle.fill")
+                        .font(.system(size: 23, weight: .bold))
                         .frame(width: 48, height: 48)
                 }
                 .accessibilityLabel(Text("settings.title"))
@@ -179,7 +193,7 @@ struct HomeView: View {
     }
 
     private var fields: some View {
-        VStack(spacing: 22) {
+        VStack(spacing: 20) {
             HomeMoneyField(title: String(localized: "field.services"), text: $services)
             HomeMoneyField(title: String(localized: "field.tipsCash"), text: $cashTips)
             HomeMoneyField(title: String(localized: "field.tipsCard"), text: $cardTips)
@@ -189,18 +203,19 @@ struct HomeView: View {
     }
 
     private var result: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             Text("home.youTookHome")
-                .font(Brand.font(18, weight: .heavy))
+                .font(Brand.font(17, weight: .bold))
                 .foregroundStyle(Brand.berry)
             Text(formatCurrency(takeHomeCents))
                 .font(Brand.font(52, weight: .heavy))
                 .monospacedDigit()
-                .minimumScaleFactor(0.75)
+                .minimumScaleFactor(0.82)
                 .lineLimit(1)
+                .accessibilityLabel(Text(String(format: String(localized: "a11y.takeHome %@"), formatCurrency(takeHomeCents))))
             if let ratio = highRentRatio, ratio >= Decimal(string: "0.40")! {
                 Text(String(format: String(localized: "br.rentHigh"), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0)))))
-                    .font(Brand.font(16, weight: .heavy))
+                    .font(Brand.font(16, weight: .bold))
                     .foregroundStyle(Brand.warning)
                     .multilineTextAlignment(.center)
             }
@@ -210,31 +225,13 @@ struct HomeView: View {
     }
 
     private var actions: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             PrimaryButton(title: String(localized: "home.save")) { requireUnlock(.save) }
             Button { showBreakdown = true } label: {
                 Text("home.breakdown")
-                    .font(Brand.font(18, weight: .heavy))
+                    .font(Brand.font(18, weight: .bold))
                     .foregroundStyle(Brand.berry)
                     .frame(maxWidth: .infinity, minHeight: 52)
-            }
-            Button { shareCurrentWeek() } label: {
-                Text("home.share")
-                    .font(Brand.font(17, weight: .heavy))
-                    .foregroundStyle(Brand.berry)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-            }
-            Button { requireUnlock(.history) } label: {
-                Text("history.title")
-                    .font(Brand.font(17, weight: .bold))
-                    .foregroundStyle(Brand.berry)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-            }
-            Button { requireUnlock(.compare) } label: {
-                Text("compare.title")
-                    .font(Brand.font(17, weight: .bold))
-                    .foregroundStyle(Brand.berry)
-                    .frame(maxWidth: .infinity, minHeight: 48)
             }
         }
         .padding(.horizontal, Brand.screenPadding)
@@ -310,8 +307,10 @@ private struct HomeMoneyField: View {
     @FocusState private var focused: Bool
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(title).font(Brand.font(18, weight: .heavy))
+        VStack(alignment: .leading, spacing: 9) {
+            Text(title)
+                .font(Brand.font(18, weight: .bold))
+                .foregroundStyle(Brand.ink)
             HStack(spacing: 8) {
                 Text(Locale.current.currencySymbol ?? "$")
                 TextField("0", text: $text)
@@ -321,9 +320,12 @@ private struct HomeMoneyField: View {
             .font(Brand.font(29, weight: .heavy))
             .padding(.horizontal, 16)
             .frame(minHeight: 64)
-            .background(Brand.ink.opacity(0.035))
+            .background(Brand.ink.opacity(0.08))
             .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-            .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.ink.opacity(0.22), lineWidth: focused ? 3 : 2))
+            .overlay(
+                RoundedRectangle(cornerRadius: Brand.controlRadius)
+                    .stroke(focused ? Brand.hotPink : Brand.ink.opacity(0.42), lineWidth: focused ? 3 : 2)
+            )
         }
         .frame(maxWidth: .infinity)
     }
@@ -343,10 +345,10 @@ struct PaywallView: View {
                 Task { completion(await purchases.purchase()) }
             }
             Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: {
-                Text("paywall.restore").font(Brand.font(18, weight: .heavy)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 50)
+                Text("paywall.restore").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 50)
             }
             Button { completion(false) } label: {
-                Text("paywall.later").font(Brand.font(18, weight: .heavy)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 50)
+                Text("paywall.later").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 50)
             }
         }
         .padding(Brand.screenPadding)

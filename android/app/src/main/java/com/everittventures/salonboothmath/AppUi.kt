@@ -21,9 +21,6 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.appwidget.updateAll
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 enum class Screen { Home, Breakdown, History, Compare, Settings }
 
@@ -43,7 +40,6 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     var cashTips by remember { mutableStateOf("") }
     var cardTips by remember { mutableStateOf("") }
     var supplies by remember { mutableStateOf("") }
-    var hours by remember { mutableStateOf("") }
     var editingWeekStart by remember { mutableLongStateOf(startOfWeek()) }
     var screen by remember { mutableStateOf(Screen.Home) }
     var showPaywall by remember { mutableStateOf(false) }
@@ -54,6 +50,8 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val context = LocalContext.current
     val activity = context as Activity
     val scope = rememberCoroutineScope()
+    val currentWeekStart = startOfWeek()
+    val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services)
     val cashTipsCents = MoneyMath.cents(cashTips)
     val cardTipsCents = MoneyMath.cents(cardTips)
@@ -77,12 +75,27 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
         cashTips = inputMoney(week.cashTipsCents)
         cardTips = inputMoney(week.cardTipsCents)
         supplies = inputMoney(week.suppliesCents)
-        hours = week.hours?.let { cleanDecimal(it) } ?: ""
         store.payModel = week.payModel
         screen = Screen.Home
     }
+    fun returnToCurrentWeek() {
+        editingWeekStart = currentWeekStart
+        val saved = store.loadWeeks().firstOrNull { it.startMillis == currentWeekStart }
+        if (saved != null) {
+            services = inputMoney(saved.servicesCents)
+            cashTips = inputMoney(saved.cashTipsCents)
+            cardTips = inputMoney(saved.cardTipsCents)
+            supplies = inputMoney(saved.suppliesCents)
+            store.payModel = saved.payModel
+        } else {
+            services = ""
+            cashTips = ""
+            cardTips = ""
+            supplies = ""
+        }
+    }
 
-    if (editingWeekStart == startOfWeek()) {
+    if (isCurrentWeek) {
         LaunchedEffect(takeHomeCents) {
             store.updateWidgetTakeHomeCents(takeHomeCents)
             TakeHomeWidget().updateAll(context)
@@ -90,7 +103,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     }
 
     when (screen) {
-        Screen.Breakdown -> BreakdownScreen(store, serviceCents, cashTipsCents, cardTipsCents, supplyCents, cardFeesCents, takeHomeCents, hours, { hours = it }) { screen = Screen.Home }
+        Screen.Breakdown -> BreakdownScreen(store, serviceCents, cashTipsCents, cardTipsCents, supplyCents, cardFeesCents, takeHomeCents) { screen = Screen.Home }
         Screen.History -> HistoryScreen(store, ::loadWeek) { screen = Screen.Home }
         Screen.Compare -> CompareScreen(store, serviceCents, cashTipsCents, cardTipsCents, supplyCents) { screen = Screen.Home }
         Screen.Settings -> SettingsScreen(store) { screen = Screen.Home }
@@ -100,13 +113,20 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                 Box(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp)) {
                     Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            if (editingWeekStart == startOfWeek()) stringResource(R.string.this_week)
-                            else SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(editingWeekStart)),
+                            if (isCurrentWeek) stringResource(R.string.this_week) else weekRange(editingWeekStart),
                             color = Color.White,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.ExtraBold
                         )
-                        Text(payContext(store), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(payContext(store), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    }
+                    if (!isCurrentWeek) {
+                        TextButton(
+                            onClick = { returnToCurrentWeek() },
+                            modifier = Modifier.align(Alignment.CenterStart).height(48.dp)
+                        ) {
+                            Text("‹", color = Color.White, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                        }
                     }
                     Box(Modifier.align(Alignment.CenterEnd)) {
                         IconButton(onClick = { menuOpen = true }) {
@@ -133,8 +153,8 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                 if (highRent) Text(stringResource(R.string.rent_warning), color = Warning, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold)
                 PrimaryButton(stringResource(R.string.save_week)) {
                     if (unlocked) {
-                        store.saveWeek(SavedWeek(editingWeekStart, serviceCents, cashTipsCents, cardTipsCents, supplyCents, store.extraFeesCents, hours.toDoubleOrNull()?.takeIf { it > 0 }, store.payModel, takeHomeCents))
-                        scope.launch { if (editingWeekStart == startOfWeek()) TakeHomeWidget().updateAll(context) }
+                        store.saveWeek(SavedWeek(editingWeekStart, serviceCents, cashTipsCents, cardTipsCents, supplyCents, store.extraFeesCents, null, store.payModel, takeHomeCents))
+                        scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) }
                     } else showPaywall = true
                 }
                 TextButton(onClick = { screen = Screen.Breakdown }, modifier = Modifier.fillMaxWidth().height(54.dp)) {

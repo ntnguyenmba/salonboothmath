@@ -11,6 +11,8 @@ data class SavedWeek(
     val cardTipsCents: Long,
     val suppliesCents: Long,
     val extraFeesCents: Long,
+    val hours: Double?,
+    val payModel: String,
     val takeHomeCents: Long
 )
 
@@ -29,13 +31,24 @@ class AppStore(context: Context) {
         get() = prefs.getString("payModel", "booth") ?: "booth"
         set(value) = prefs.edit().putString("payModel", value).apply()
 
-    var weeklyRentCents: Long
-        get() = prefs.getLong("weeklyRentCents", 25000L)
-        set(value) = prefs.edit().putLong("weeklyRentCents", value).apply()
+    var rentPeriod: String
+        get() = prefs.getString("rentPeriod", "week") ?: "week"
+        set(value) = prefs.edit().putString("rentPeriod", value).apply()
+
+    var rentCents: Long
+        get() = prefs.getLong("rentCents", 25000L)
+        set(value) = prefs.edit().putLong("rentCents", value).apply()
+
+    val weeklyRentCents: Long
+        get() = MoneyMath.weeklyRent(rentCents, rentPeriod == "month")
 
     var commissionCutBasisPoints: Int
         get() = prefs.getInt("commissionCutBasisPoints", 5500)
         set(value) = prefs.edit().putInt("commissionCutBasisPoints", value).apply()
+
+    var tipOwner: TipOwner
+        get() = runCatching { TipOwner.valueOf(prefs.getString("tipOwner", TipOwner.YOU.name) ?: TipOwner.YOU.name) }.getOrDefault(TipOwner.YOU)
+        set(value) = prefs.edit().putString("tipOwner", value.name).apply()
 
     var workerPaysCardFees: Boolean
         get() = prefs.getBoolean("workerPaysCardFees", false)
@@ -49,6 +62,10 @@ class AppStore(context: Context) {
         get() = prefs.getInt("servicesOnCardBasisPoints", 7000)
         set(value) = prefs.edit().putInt("servicesOnCardBasisPoints", value).apply()
 
+    var taxBasisPoints: Int
+        get() = prefs.getInt("taxBasisPoints", 2500)
+        set(value) = prefs.edit().putInt("taxBasisPoints", value).apply()
+
     var extraFeesCents: Long
         get() = prefs.getLong("extraFeesCents", 0L)
         set(value) = prefs.edit().putLong("extraFeesCents", value).apply()
@@ -58,7 +75,7 @@ class AppStore(context: Context) {
     }
 
     fun saveWeek(week: SavedWeek) {
-        updateWidgetTakeHomeCents(week.takeHomeCents)
+        if (sameWeek(week.startMillis, System.currentTimeMillis())) updateWidgetTakeHomeCents(week.takeHomeCents)
         val weeks = loadWeeks().filterNot { sameWeek(it.startMillis, week.startMillis) }.toMutableList()
         weeks.add(week)
         weeks.sortByDescending { it.startMillis }
@@ -72,14 +89,16 @@ class AppStore(context: Context) {
                     .put("cardTipsCents", w.cardTipsCents)
                     .put("suppliesCents", w.suppliesCents)
                     .put("extraFeesCents", w.extraFeesCents)
+                    .put("hours", w.hours)
+                    .put("payModel", w.payModel)
                     .put("takeHomeCents", w.takeHomeCents)
             )
         }
-        prefs.edit().putString("weeks.v2", array.toString()).apply()
+        prefs.edit().putString("weeks.v3", array.toString()).apply()
     }
 
     fun loadWeeks(): List<SavedWeek> {
-        val raw = prefs.getString("weeks.v2", "[]") ?: "[]"
+        val raw = prefs.getString("weeks.v3", "[]") ?: "[]"
         return runCatching {
             val a = JSONArray(raw)
             (0 until a.length()).map { i ->
@@ -91,6 +110,8 @@ class AppStore(context: Context) {
                         cardTipsCents = it.getLong("cardTipsCents"),
                         suppliesCents = it.getLong("suppliesCents"),
                         extraFeesCents = it.optLong("extraFeesCents", 0L),
+                        hours = if (it.has("hours") && !it.isNull("hours")) it.getDouble("hours") else null,
+                        payModel = it.optString("payModel", "booth"),
                         takeHomeCents = it.getLong("takeHomeCents")
                     )
                 }

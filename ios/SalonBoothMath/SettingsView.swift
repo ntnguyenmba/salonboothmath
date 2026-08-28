@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
     @AppStorage("trade") private var savedTrade = Trade.nail.rawValue
     @AppStorage("payModel") private var savedPayModel = PayModel.booth.rawValue
     @AppStorage("rentCents") private var rentCents = 25000
@@ -23,40 +24,37 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
-                sectionTitle("settings.trade")
+                sectionTitle(AppLanguage.current(appLanguage).languageTitle)
+                LanguagePicker(selection: $appLanguage)
+
+                sectionTitle(String(localized: "settings.trade"))
                 Picker("settings.trade", selection: $savedTrade) {
                     ForEach(Trade.allCases) { trade in
                         Text(String(localized: String.LocalizationValue(trade.titleKey))).tag(trade.rawValue)
                     }
-                }
-                .pickerStyle(.segmented)
+                }.pickerStyle(.segmented)
 
-                sectionTitle("settings.payModel")
+                sectionTitle(String(localized: "settings.payModel"))
                 Picker("settings.payModel", selection: $savedPayModel) {
                     Text("pay.booth").tag(PayModel.booth.rawValue)
                     Text("pay.commission").tag(PayModel.commission.rawValue)
-                }
-                .pickerStyle(.segmented)
+                }.pickerStyle(.segmented)
 
                 if savedPayModel == PayModel.booth.rawValue {
                     settingField("rent.weekly", text: $rentText, prefix: "$", suffix: nil)
                     Picker("", selection: $savedRentPeriod) {
                         Text("rent.week").tag(RentPeriod.week.rawValue)
                         Text("rent.month").tag(RentPeriod.month.rawValue)
-                    }
-                    .pickerStyle(.segmented)
+                    }.pickerStyle(.segmented)
                 } else {
                     settingField("commission.cut", text: $commissionText, prefix: nil, suffix: "%")
-                    sectionTitle("commission.tipsWho")
+                    sectionTitle(String(localized: "commission.tipsWho"))
                     Picker("commission.tipsWho", selection: $tipOwner) {
                         Text("tips.you").tag(TipOwner.you.rawValue)
                         Text("tips.house").tag(TipOwner.house.rawValue)
                         Text("tips.split").tag(TipOwner.split.rawValue)
-                    }
-                    .pickerStyle(.segmented)
-                    Toggle("settings.workerCardFees", isOn: $workerPaysCardFees)
-                        .font(Brand.font(18, weight: .bold))
-                        .tint(Brand.hotPink)
+                    }.pickerStyle(.segmented)
+                    Toggle("settings.workerCardFees", isOn: $workerPaysCardFees).font(Brand.font(18)).tint(Brand.hotPink)
                 }
 
                 settingField("settings.cardFee", text: $cardFeeText, prefix: nil, suffix: "%")
@@ -64,45 +62,26 @@ struct SettingsView: View {
                 settingField("settings.tax", text: $taxText, prefix: nil, suffix: "%")
                 settingField("settings.extraFees", text: $extraFeesText, prefix: "$", suffix: nil)
 
-                Text("settings.disclaimer")
-                    .font(Brand.font(16, weight: .bold))
-                    .foregroundStyle(Brand.berry)
+                Text("settings.disclaimer").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                 PrimaryButton(title: String(localized: "settings.save")) { save() }
-            }
-            .padding(Brand.screenPadding)
+            }.padding(Brand.screenPadding)
         }
-        .background(Brand.page)
+        .background(Brand.page.ignoresSafeArea())
+        .foregroundStyle(Brand.ink)
         .navigationTitle(Text("settings.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .standardNavigationControls()
         .onAppear(perform: load)
     }
 
-    private func sectionTitle(_ key: LocalizedStringKey) -> some View {
-        Text(key).font(Brand.font(22, weight: .bold))
-    }
-
+    private func sectionTitle(_ title: String) -> some View { Text(title).font(Brand.font(22)) }
     private func settingField(_ key: LocalizedStringKey, text: Binding<String>, prefix: String?, suffix: String?) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(key).font(Brand.font(18, weight: .bold))
-            MoneyEntryField(text: text, prefix: prefix, suffix: suffix)
-        }
+        VStack(alignment: .leading, spacing: 10) { Text(key).font(Brand.font(18)); MoneyEntryField(text: text, prefix: prefix, suffix: suffix) }
     }
-
     private func load() {
-        rentText = inputCurrencyCents(rentCents)
-        commissionText = MoneyMath.percentText(fromBasisPoints: commissionCutBasisPoints)
-        cardFeeText = MoneyMath.percentText(fromBasisPoints: cardFeeBasisPoints)
-        cardShareText = MoneyMath.percentText(fromBasisPoints: servicesOnCardBasisPoints)
-        taxText = MoneyMath.percentText(fromBasisPoints: taxBasisPoints)
-        extraFeesText = inputCurrencyCents(extraFeesCents)
+        rentText = inputCurrencyCents(rentCents); commissionText = MoneyMath.percentText(fromBasisPoints: commissionCutBasisPoints); cardFeeText = MoneyMath.percentText(fromBasisPoints: cardFeeBasisPoints); cardShareText = MoneyMath.percentText(fromBasisPoints: servicesOnCardBasisPoints); taxText = MoneyMath.percentText(fromBasisPoints: taxBasisPoints); extraFeesText = inputCurrencyCents(extraFeesCents)
     }
-
     private func save() {
-        rentCents = MoneyMath.cents(from: rentText)
-        commissionCutBasisPoints = MoneyMath.basisPoints(fromPercentText: commissionText, fallback: 5500)
-        cardFeeBasisPoints = MoneyMath.basisPoints(fromPercentText: cardFeeText, fallback: 290)
-        servicesOnCardBasisPoints = MoneyMath.basisPoints(fromPercentText: cardShareText, fallback: 7000)
-        taxBasisPoints = MoneyMath.basisPoints(fromPercentText: taxText, fallback: 2500)
-        extraFeesCents = MoneyMath.cents(from: extraFeesText)
+        rentCents = MoneyMath.cents(from: rentText); commissionCutBasisPoints = MoneyMath.basisPoints(fromPercentText: commissionText, fallback: 5500); cardFeeBasisPoints = MoneyMath.basisPoints(fromPercentText: cardFeeText, fallback: 290); servicesOnCardBasisPoints = MoneyMath.basisPoints(fromPercentText: cardShareText, fallback: 7000); taxBasisPoints = MoneyMath.basisPoints(fromPercentText: taxText, fallback: 2500); extraFeesCents = MoneyMath.cents(from: extraFeesText)
     }
 }

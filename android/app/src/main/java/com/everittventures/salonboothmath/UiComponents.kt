@@ -2,15 +2,16 @@ package com.everittventures.salonboothmath
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -24,16 +25,29 @@ import java.util.Date
 import java.util.Locale
 
 internal val Berry = Color(0xFF4B0728)
-internal val Ink = Color(0xFF0B1220)
+internal val BerryDeep = Color(0xFF2D0418)
+internal val Surface = Color(0xFF65103B)
+internal val Ink = Color.White
+internal val MutedInk = Color.White.copy(alpha = 0.78f)
 internal val Pink = Color(0xFFFF3D6E)
-internal val Warning = Color(0xFFC2410C)
-internal val Page = Color.White
+internal val Warning = Color(0xFFFFB86B)
+internal val Page = Berry
+internal val AppFontFamily = FontFamily.SansSerif
 
 @Composable
 internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
-    Column(Modifier.fillMaxSize().background(Page).padding(22.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        TextButton(onClick = back) { Text("‹ ${stringResource(R.string.this_week)}", color = Berry, fontWeight = FontWeight.ExtraBold) }
-        Text(title, color = Ink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold)
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(Page)
+            .padding(22.dp)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(20.dp)
+    ) {
+        TextButton(onClick = back) {
+            Text("‹ ${stringResource(R.string.this_week)}", color = Color.White, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        }
+        Text(title, color = Ink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         content()
     }
 }
@@ -41,38 +55,40 @@ internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable 
 @Composable
 internal fun Metric(label: String, value: Long) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(label, color = Berry, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text(formatCents(value), color = Ink, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold)
+        Text(label, color = Pink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+        Text(formatCents(value), color = Ink, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
     }
 }
 
 @Composable
 internal fun CostRow(label: String, value: Long) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        Text("−${formatCents(value)}", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+        Text("−${formatCents(value)}", color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
     }
 }
 
 @Composable
 internal fun MoneyField(label: String, value: String, showCurrency: Boolean = true, onValue: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-        Text(label, color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+        Text(label, color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         OutlinedTextField(
             value = value,
             onValueChange = onValue,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            textStyle = LocalTextStyle.current.copy(fontSize = 29.sp, fontWeight = FontWeight.ExtraBold, color = Ink),
+            textStyle = LocalTextStyle.current.copy(fontSize = 29.sp, fontWeight = FontWeight.ExtraBold, color = Ink, fontFamily = AppFontFamily),
             modifier = Modifier.fillMaxWidth().height(68.dp),
             shape = RoundedCornerShape(18.dp),
-            prefix = if (showCurrency) ({ Text(NumberFormat.getCurrencyInstance().currency?.symbol ?: "$") }) else null,
+            prefix = if (showCurrency) ({ Text(NumberFormat.getCurrencyInstance().currency?.symbol ?: "$", color = Ink, fontFamily = AppFontFamily) }) else null,
             colors = OutlinedTextFieldDefaults.colors(
-                unfocusedContainerColor = Color.White,
-                focusedContainerColor = Color.White,
-                unfocusedBorderColor = Ink.copy(alpha = .42f),
+                unfocusedContainerColor = Surface,
+                focusedContainerColor = Surface,
+                unfocusedBorderColor = Color.White.copy(alpha = .26f),
                 focusedBorderColor = Pink,
-                cursorColor = Berry
+                cursorColor = Pink,
+                focusedTextColor = Ink,
+                unfocusedTextColor = Ink
             )
         )
     }
@@ -85,7 +101,9 @@ internal fun PrimaryButton(label: String, action: () -> Unit) {
         colors = ButtonDefaults.buttonColors(containerColor = Pink, contentColor = Color.White),
         modifier = Modifier.fillMaxWidth().height(62.dp),
         shape = RoundedCornerShape(18.dp)
-    ) { Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold) }
+    ) {
+        Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+    }
 }
 
 @Composable
@@ -95,19 +113,31 @@ internal fun SingleChoiceSegment(options: List<Pair<String, String>>, selected: 
             Button(
                 onClick = { onSelect(id) },
                 modifier = Modifier.weight(1f).height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = if (selected == id) Berry else Color.White, contentColor = if (selected == id) Color.White else Ink),
-                border = if (selected == id) null else ButtonDefaults.outlinedButtonBorder,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (selected == id) Pink else Surface,
+                    contentColor = Color.White
+                ),
                 shape = RoundedCornerShape(16.dp)
-            ) { Text(label, fontWeight = FontWeight.ExtraBold) }
+            ) {
+                Text(label, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+            }
         }
     }
 }
 
 @Composable
 internal fun SettingToggle(label: String, checked: Boolean, onChecked: (Boolean) -> Unit) {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-        Switch(checked = checked, onCheckedChange = onChecked, colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Berry))
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily, modifier = Modifier.weight(1f))
+        Switch(
+            checked = checked,
+            onCheckedChange = onChecked,
+            colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Pink)
+        )
     }
 }
 

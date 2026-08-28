@@ -20,7 +20,6 @@ struct HomeView: View {
     @State private var cashTips = ""
     @State private var cardTips = ""
     @State private var supplies = ""
-    @State private var hoursThisWeek: Double = 0
     @State private var editingWeekStart: Date?
     @State private var showPaywall = false
     @State private var showBreakdown = false
@@ -75,7 +74,7 @@ struct HomeView: View {
             }
             .foregroundStyle(Brand.ink)
             .navigationDestination(isPresented: $showBreakdown) {
-                BreakdownView(grossCents: grossCents, rentCents: weeklyRentCents, houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut), cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, takeHomeCents: takeHomeCents, hours: hoursThisWeek > 0 ? hoursThisWeek : nil, taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate), payModel: payModel)
+                BreakdownView(grossCents: grossCents, rentCents: weeklyRentCents, houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut), cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, takeHomeCents: takeHomeCents, taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate), payModel: payModel)
             }
             .navigationDestination(isPresented: $showCompare) { CompareView(boothCents: boothTakeHome, commissionCents: commissionTakeHome, commissionPercent: commissionCutBasisPoints / 100) }
             .navigationDestination(isPresented: $showHistory) { HistoryView(store: weekStore) { week in load(week); showHistory = false } }
@@ -145,13 +144,13 @@ struct HomeView: View {
     private func load(_ week: WeekRecord) {
         editingWeekStart = week.weekStart
         services = inputCurrencyCents(week.servicesCents); cashTips = inputCurrencyCents(week.cashTipsCents); cardTips = inputCurrencyCents(week.cardTipsCents); supplies = inputCurrencyCents(week.suppliesCents)
-        savedPayModel = week.payModel.rawValue; hoursThisWeek = week.hours ?? 0
+        savedPayModel = week.payModel.rawValue
     }
 
     private func returnToCurrentWeek() {
         editingWeekStart = nil
         if let week = weekStore.week(for: currentWeekStart) { load(week); editingWeekStart = nil }
-        else { services = ""; cashTips = ""; cardTips = ""; supplies = ""; hoursThisWeek = 0 }
+        else { services = ""; cashTips = ""; cardTips = ""; supplies = "" }
     }
 
     private func weekRange(_ start: Date) -> String { let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start; return "\(start.formatted(.dateTime.month(.abbreviated).day()))–\(end.formatted(.dateTime.month(.abbreviated).day()))" }
@@ -161,7 +160,7 @@ struct HomeView: View {
         guard let action = pendingAction else { return }
         switch action {
         case .save:
-            weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: hoursThisWeek > 0 ? hoursThisWeek : nil, payModel: payModel, takeHomeCents: takeHomeCents))
+            weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: nil, payModel: payModel, takeHomeCents: takeHomeCents))
             if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents) }
         case .compare: showCompare = true
         case .history: showHistory = true

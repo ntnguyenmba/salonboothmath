@@ -1,11 +1,15 @@
 package com.everittventures.salonboothmath
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,7 +32,7 @@ internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, ca
         if (cardFees > 0) CostRow(stringResource(R.string.card_fees), cardFees)
         CostRow(stringResource(R.string.supplies), supplies)
         if (store.extraFeesCents > 0) CostRow(stringResource(R.string.extra_shop_fees), store.extraFeesCents)
-        HorizontalDivider()
+        HorizontalDivider(color = MutedInk)
         Metric(stringResource(R.string.take_home), takeHome)
         if (tax > 0) Metric(stringResource(R.string.tax_reserve), tax)
     }
@@ -42,8 +46,8 @@ internal fun HistoryScreen(store: AppStore, onWeek: (SavedWeek) -> Unit, back: (
                 Modifier.fillMaxWidth().clickable { onWeek(week) }.padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(week.startMillis)), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink)
-                Text(formatCents(week.takeHomeCents), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Berry)
+                Text(SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(week.startMillis)), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink, fontFamily = AppFontFamily)
+                Text(formatCents(week.takeHomeCents), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Pink, fontFamily = AppFontFamily)
             }
         }
     }
@@ -62,7 +66,7 @@ internal fun CompareScreen(store: AppStore, services: Long, cashTips: Long, card
 }
 
 @Composable
-internal fun SettingsScreen(store: AppStore, back: () -> Unit) {
+internal fun SettingsScreen(store: AppStore, billing: BillingManager, back: () -> Unit) {
     var rent by remember { mutableStateOf(inputMoney(store.rentCents)) }
     var rentPeriod by remember { mutableStateOf(store.rentPeriod) }
     var cut by remember { mutableStateOf(percentText(store.commissionCutBasisPoints)) }
@@ -72,6 +76,11 @@ internal fun SettingsScreen(store: AppStore, back: () -> Unit) {
     var cardFee by remember { mutableStateOf(percentText(store.cardFeeBasisPoints)) }
     var cardShare by remember { mutableStateOf(percentText(store.servicesOnCardBasisPoints)) }
     var tax by remember { mutableStateOf(percentText(store.taxBasisPoints)) }
+    val context = LocalContext.current
+
+    fun open(url: String) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
 
     SimpleScreen(stringResource(R.string.settings), back) {
         if (store.payModel == "booth") {
@@ -79,7 +88,7 @@ internal fun SettingsScreen(store: AppStore, back: () -> Unit) {
             SingleChoiceSegment(listOf("week" to stringResource(R.string.week), "month" to stringResource(R.string.month)), rentPeriod) { rentPeriod = it }
         } else {
             MoneyField(stringResource(R.string.your_cut), cut, false) { cut = it }
-            Text(stringResource(R.string.who_keeps_tips), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.who_keeps_tips), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
             SingleChoiceSegment(listOf(TipOwner.YOU.name to stringResource(R.string.tips_you), TipOwner.HOUSE.name to stringResource(R.string.tips_house), TipOwner.SPLIT.name to stringResource(R.string.tips_split)), tipOwner.name) { tipOwner = TipOwner.valueOf(it) }
             SettingToggle(stringResource(R.string.worker_card_fees), paysFees) { paysFees = it }
         }
@@ -87,7 +96,17 @@ internal fun SettingsScreen(store: AppStore, back: () -> Unit) {
         MoneyField(stringResource(R.string.services_on_card), cardShare, false) { cardShare = it }
         MoneyField(stringResource(R.string.extra_shop_fees), extra) { extra = it }
         MoneyField(stringResource(R.string.tax_set_aside), tax, false) { tax = it }
-        Text(stringResource(R.string.estimate_disclaimer), color = Berry, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.estimate_disclaimer), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+
+        Text(stringResource(R.string.legal_support), color = Pink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        LegalButton(stringResource(R.string.privacy_policy)) { open("https://everittventures.com/privacy") }
+        LegalButton(stringResource(R.string.terms_use)) { open("https://everittventures.com/terms") }
+        LegalButton(stringResource(R.string.contact_support)) { open("mailto:support@everittventures.com?subject=Salon%20Booth%20Math%20Support") }
+        LegalButton(stringResource(R.string.restore_purchase)) { billing.restore() }
+        Text(stringResource(R.string.about), color = Pink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        Text(stringResource(R.string.about_text), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+        Text("© 2026 Everitt Ventures LLC", color = MutedInk, fontSize = 14.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+
         PrimaryButton(stringResource(R.string.save_settings)) {
             store.rentCents = MoneyMath.cents(rent)
             store.rentPeriod = rentPeriod
@@ -100,5 +119,12 @@ internal fun SettingsScreen(store: AppStore, back: () -> Unit) {
             store.taxBasisPoints = percentBasisPoints(tax, "25")
             back()
         }
+    }
+}
+
+@Composable
+private fun LegalButton(label: String, action: () -> Unit) {
+    TextButton(onClick = action, modifier = Modifier.fillMaxWidth()) {
+        Text(label, color = Ink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily, modifier = Modifier.fillMaxWidth())
     }
 }

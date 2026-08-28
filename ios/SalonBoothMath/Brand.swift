@@ -15,8 +15,7 @@ enum Brand {
     static let controlHeight: CGFloat = 60
 
     static func font(_ size: CGFloat, weight: Font.Weight = .bold) -> Font {
-        // Nunito Sans must be included in the Xcode target before release.
-        .custom("Nunito Sans", size: size, relativeTo: .body).weight(weight)
+        .system(size: size, weight: weight, design: .rounded)
     }
 }
 

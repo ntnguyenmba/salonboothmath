@@ -27,7 +27,7 @@ Never go below 16px. Do not use 300 or 400 weights for visible app copy.
 
 - Page/cards: `#FFFFFF`
 - Ink: `#0B1220`
-- Berry: `#4A1835`
+- Berry: `#4B0728`
 - Text on berry: `#FFFFFF`
 - Hot pink: `#FF3D6E`
 - Warning: `#C2410C`

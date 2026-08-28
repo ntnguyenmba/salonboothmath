@@ -63,14 +63,17 @@ struct HomeView: View {
         NavigationStack {
             ZStack {
                 Brand.page.ignoresSafeArea()
-                ScrollView {
-                    VStack(spacing: 0) {
-                        header
-                        fields.padding(.top, 26)
-                        result.padding(.top, 30)
-                        actions.padding(.top, 22).padding(.bottom, 32)
+                VStack(spacing: 0) {
+                    header
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            fields.padding(.top, 26)
+                            result.padding(.top, 30)
+                            actions.padding(.top, 24).padding(.bottom, 32)
+                        }
                     }
-                }.scrollDismissesKeyboard(.interactively)
+                    .scrollDismissesKeyboard(.interactively)
+                }
             }
             .foregroundStyle(Brand.ink)
             .navigationDestination(isPresented: $showBreakdown) {
@@ -135,9 +138,14 @@ struct HomeView: View {
     }
 
     private var actions: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 14) {
             PrimaryButton(title: String(localized: "home.save")) { requireUnlock(.save) }
-            Button { showBreakdown = true } label: { Text("home.breakdown").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 52) }
+            Button { showBreakdown = true } label: {
+                Text("home.breakdown")
+                    .font(Brand.font(18, weight: .bold))
+                    .foregroundStyle(Brand.berry)
+                    .frame(maxWidth: .infinity, minHeight: 58)
+            }
         }.padding(.horizontal, Brand.screenPadding)
     }
 
@@ -174,7 +182,7 @@ private struct HomeMoneyField: View {
     @Binding var text: String
     @FocusState private var focused: Bool
     var body: some View {
-        VStack(alignment: .leading, spacing: 9) {
+        VStack(alignment: .leading, spacing: 11) {
             Text(title).font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.ink)
             HStack(spacing: 8) { Text(Locale.current.currencySymbol ?? "$"); TextField("0", text: $text).keyboardType(.decimalPad).focused($focused) }
                 .font(Brand.font(29, weight: .heavy)).padding(.horizontal, 16).frame(minHeight: 64).background(Color.white).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.ink.opacity(0.42), lineWidth: focused ? 3 : 2))
@@ -193,8 +201,8 @@ struct PaywallView: View {
             Text("paywall.body").font(Brand.font(18, weight: .bold)).fixedSize(horizontal: false, vertical: true)
             Spacer(minLength: 8)
             PrimaryButton(title: unlockTitle) { Task { completion(await purchases.purchase()) } }
-            Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 50) }
-            Button { completion(false) } label: { Text("paywall.later").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 50) }
+            Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.berry).frame(maxWidth: .infinity, minHeight: 56) }
+            Button { completion(false) } label: { Text("paywall.later").font(Brand.font(18, weight: .bold)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 56) }
         }.padding(Brand.screenPadding).background(Color.white)
     }
 }

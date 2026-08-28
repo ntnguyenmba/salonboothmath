@@ -28,5 +28,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.glance:glance-appwidget:1.2.0")
     implementation("com.android.billingclient:billing-ktx:9.1.0")
+    testImplementation("junit:junit:4.13.2")
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

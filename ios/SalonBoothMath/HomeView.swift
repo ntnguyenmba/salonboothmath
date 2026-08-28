@@ -123,7 +123,12 @@ struct HomeView: View {
     private var result: some View {
         VStack(spacing: 8) {
             Text("home.youTookHome").font(Brand.font(17, weight: .bold)).foregroundStyle(Brand.berry)
-            Text(formatCurrency(takeHomeCents)).font(Brand.font(52, weight: .heavy)).monospacedDigit().minimumScaleFactor(0.82).lineLimit(1).accessibilityLabel(Text(formatCurrency(takeHomeCents)))
+            Text(formatCurrency(takeHomeCents))
+                .font(Brand.font(52, weight: .heavy))
+                .monospacedDigit()
+                .minimumScaleFactor(0.82)
+                .lineLimit(1)
+                .accessibilityLabel(Text(String(format: String(localized: "a11y.takeHome %@"), formatCurrency(takeHomeCents))))
             if let ratio = highRentRatio, ratio >= Decimal(string: "0.40")! {
                 Text(String(format: String(localized: "br.rentHigh"), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0))))).font(Brand.font(16, weight: .bold)).foregroundStyle(Brand.warning).multilineTextAlignment(.center)
             }

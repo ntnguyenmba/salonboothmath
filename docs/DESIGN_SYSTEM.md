@@ -4,11 +4,11 @@
 
 Bold, grown-up, easy to read, beauty-industry friendly, and deliberately simple for a tired or overloaded user.
 
-Pacing can feel as immediate as Duolingo, but there are no mascots, streaks, confetti, childish rewards, or game chrome.
+Pacing can feel immediate, but there are no mascots, streaks, confetti, childish rewards, or game chrome.
 
 ## Type
 
-Brand face: **Nunito Sans only**. System fallback is acceptable only when the font cannot load.
+Brand face: **native system rounded** on both platforms. iOS uses SwiftUI's rounded system design; Android uses the platform system sans with bold/extrabold weights. Do not claim or require a bundled custom font unless the font asset is actually shipped.
 
 Do not use Inter or serif faces.
 
@@ -36,15 +36,15 @@ Never go below 16px. Do not use 300 or 400 weights for visible app copy.
 
 Rule: **Berry is the salon dark. Pink is the tap. Ink does the reading.**
 
-Hot pink is for primary buttons, focus rings, and tiny decorative accents only. Do not use it for paragraphs, money, headings, or small labels.
+Hot pink is for primary buttons, focus rings, the 4px header crown, and tiny decorative accents only. Do not use it for paragraphs, money, headings, or small labels.
 
 ## Controls
 
 - Height: 56-64px
 - Radius: 16-20px
 - Large internal padding
-- Fields: white with a clearly visible low-opacity ink border
-- Focus: hot-pink outer ring plus ink inner edge so focus is not communicated by low-contrast pink alone
+- Fields: true white with a clearly visible ink border; active fields use a stronger hot-pink focus edge
+- Focus must not depend on low-contrast color alone
 - Selected trade/pay tile: berry fill, white icon and label, optional pink ring
 - Unselected tile: white, ink icon and label
 
@@ -65,9 +65,9 @@ Do not push cards or text against screen edges.
 
 One screen = one obvious action + one dominant number or choice.
 
-Home has three vertically stacked inputs, not columns.
+Home is a single vertical flow: berry header with 4px hot-pink crown, four money fields (Services, Cash tips, Card tips, Supplies), the take-home result, Save, then Breakdown. Secondary destinations live behind the overflow menu.
 
-Secondary math is collapsed behind `See breakdown`.
+Secondary math is behind `Breakdown`.
 
 ## Ban list
 
@@ -91,8 +91,10 @@ Secondary math is collapsed behind `See breakdown`.
 
 ## Accessibility
 
-Ink and berry are the reading colors. White is the primary surface.
+Ink and berry are the reading colors. White is the primary surface. Text on berry/dark surfaces is full `#FFFFFF`, not muted white.
 
 Warnings and errors use text/icon/shape in addition to color.
 
 Dynamic Type should expand layouts vertically. Never truncate the take-home amount merely to preserve a fixed card height.
+
+The hero result announces the take-home context plus the localized currency amount to screen readers.

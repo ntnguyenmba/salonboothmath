@@ -1,0 +1,9 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "home.thisWeek" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "This week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tuần này" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta semana" } } } },
+    "home.youTookHome" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "YOU TOOK HOME" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "BẠN CÒN LẠI" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "TE QUEDASTE" } } } },
+    "widget.description" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "See this week’s take-home without opening the app." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem tiền còn lại tuần này mà không cần mở ứng dụng." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Mira el neto de esta semana sin abrir la app." } } } }
+  },
+  "version" : "1.0"
+}

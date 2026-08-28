@@ -18,7 +18,10 @@ import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 internal val Berry = Color(0xFF4A1835)
 internal val Ink = Color(0xFF0B1220)
@@ -138,4 +141,11 @@ internal fun startOfWeek(): Long {
     c.set(Calendar.SECOND, 0)
     c.set(Calendar.MILLISECOND, 0)
     return c.timeInMillis
+}
+internal fun weekRange(startMillis: Long): String {
+    val start = Calendar.getInstance().apply { timeInMillis = startMillis }
+    val end = (start.clone() as Calendar).apply { add(Calendar.DAY_OF_MONTH, 6) }
+    val startFormat = SimpleDateFormat("MMM d", Locale.getDefault())
+    val endFormat = if (start.get(Calendar.MONTH) == end.get(Calendar.MONTH)) SimpleDateFormat("d", Locale.getDefault()) else SimpleDateFormat("MMM d", Locale.getDefault())
+    return "${startFormat.format(Date(startMillis))}–${endFormat.format(end.timeInMillis)}"
 }

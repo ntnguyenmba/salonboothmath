@@ -78,6 +78,7 @@ private fun Choice(label: String, selected: Boolean, onClick: () -> Unit) {
     Button(onClick = onClick, colors = ButtonDefaults.buttonColors(containerColor = if (selected) Berry else Color.White, contentColor = if (selected) Color.White else Ink), border = if (selected) null else ButtonDefaults.outlinedButtonBorder, modifier = Modifier.fillMaxWidth().height(68.dp).padding(bottom = 10.dp), shape = RoundedCornerShape(18.dp)) { Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold) }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     var services by remember { mutableStateOf("") }; var cashTips by remember { mutableStateOf("") }; var cardTips by remember { mutableStateOf("") }; var supplies by remember { mutableStateOf("") }; var hours by remember { mutableStateOf("") }
@@ -97,18 +98,21 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
         Screen.Compare -> CompareScreen(store, serviceCents, cashTipsCents, cardTipsCents, supplyCents) { screen = Screen.Home }
         Screen.Settings -> SettingsScreen(store) { screen = Screen.Home }
         Screen.Home -> Column(Modifier.fillMaxSize().background(Page).verticalScroll(rememberScrollState())) {
-            Box(Modifier.fillMaxWidth().background(Berry).padding(horizontal = 14.dp, vertical = 12.dp)) {
-                Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(if (editingWeekStart == startOfWeek()) stringResource(R.string.this_week) else SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(editingWeekStart)), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
-                    Text(payContext(store), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                }
-                Box(Modifier.align(Alignment.CenterEnd)) {
-                    IconButton(onClick = { menuOpen = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.settings), tint = Color.White) }
-                    DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                        DropdownMenuItem(text = { Text(stringResource(R.string.share)) }, onClick = { menuOpen = false; ShareCard.share(context, takeHomeCents, editingWeekStart) })
-                        DropdownMenuItem(text = { Text(stringResource(R.string.history)) }, onClick = { menuOpen = false; gated(Screen.History) })
-                        DropdownMenuItem(text = { Text(stringResource(R.string.compare)) }, onClick = { menuOpen = false; gated(Screen.Compare) })
-                        DropdownMenuItem(text = { Text(stringResource(R.string.settings)) }, onClick = { menuOpen = false; screen = Screen.Settings })
+            Column(Modifier.fillMaxWidth().background(Berry)) {
+                Box(Modifier.fillMaxWidth().height(4.dp).background(Pink))
+                Box(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp)) {
+                    Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(if (editingWeekStart == startOfWeek()) stringResource(R.string.this_week) else SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(editingWeekStart)), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold)
+                        Text(payContext(store), color = Color.White, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                    }
+                    Box(Modifier.align(Alignment.CenterEnd)) {
+                        IconButton(onClick = { menuOpen = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.settings), tint = Color.White) }
+                        DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                            DropdownMenuItem(text = { Text(stringResource(R.string.share)) }, onClick = { menuOpen = false; ShareCard.share(context, takeHomeCents, editingWeekStart) })
+                            DropdownMenuItem(text = { Text(stringResource(R.string.history)) }, onClick = { menuOpen = false; gated(Screen.History) })
+                            DropdownMenuItem(text = { Text(stringResource(R.string.compare)) }, onClick = { menuOpen = false; gated(Screen.Compare) })
+                            DropdownMenuItem(text = { Text(stringResource(R.string.settings)) }, onClick = { menuOpen = false; screen = Screen.Settings })
+                        }
                     }
                 }
             }
@@ -121,7 +125,23 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
             }
         }
     }
-    if (showPaywall) AlertDialog(onDismissRequest = { showPaywall = false }, title = { Text(stringResource(R.string.unlock), fontWeight = FontWeight.ExtraBold) }, text = { Text(stringResource(R.string.paywall_body, displayPrice)) }, confirmButton = { Button(onClick = { billing.launchPurchase(activity) }, colors = ButtonDefaults.buttonColors(containerColor = Pink, contentColor = Color.White)) { Text(stringResource(R.string.unlock_price, displayPrice), fontWeight = FontWeight.ExtraBold) } }, dismissButton = { Column { TextButton(onClick = { billing.restore() }) { Text(stringResource(R.string.restore_purchase)) }; TextButton(onClick = { showPaywall = false }) { Text(stringResource(R.string.not_now)) } } })
+    if (showPaywall) {
+        ModalBottomSheet(
+            onDismissRequest = { showPaywall = false },
+            containerColor = Color.White,
+            contentColor = Ink,
+            dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).width(54.dp).height(6.dp).background(Pink, RoundedCornerShape(99.dp))) }
+        ) {
+            Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                Text(stringResource(R.string.unlock), color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold)
+                Text(stringResource(R.string.paywall_body, displayPrice), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                PrimaryButton(stringResource(R.string.unlock_price, displayPrice)) { billing.launchPurchase(activity) }
+                TextButton(onClick = { billing.restore() }, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text(stringResource(R.string.restore_purchase), color = Berry, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                TextButton(onClick = { showPaywall = false }, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text(stringResource(R.string.not_now), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold) }
+                Spacer(Modifier.height(12.dp))
+            }
+        }
+    }
 }
 
 @Composable

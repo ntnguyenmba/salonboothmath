@@ -67,4 +67,32 @@ class MoneyMathTest {
     @Test fun monthlyRentConversion() {
         assertEquals(23_077L, MoneyMath.weeklyRent(100_000, monthly = true))
     }
+
+    @Test fun halfCentRoundsUp() {
+        assertEquals(
+            1L,
+            MoneyMath.cardFees(
+                servicesCents = 100,
+                cardTipsCents = 0,
+                cardFeeRate = BigDecimal("0.01"),
+                percentServicesOnCard = BigDecimal("0.5")
+            )
+        )
+    }
+
+    @Test fun splitOneCentTipRoundsToWorker() {
+        assertEquals(
+            1L,
+            MoneyMath.commissionTakeHome(
+                servicesCents = 0,
+                cashTipsCents = 1,
+                cardTipsCents = 0,
+                suppliesCents = 0,
+                cut = BigDecimal.ZERO,
+                tipOwner = TipOwner.SPLIT,
+                workerPaysCardFees = false,
+                extraFeesCents = 0
+            )
+        )
+    }
 }

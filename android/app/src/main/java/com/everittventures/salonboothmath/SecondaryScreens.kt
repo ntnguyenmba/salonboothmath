@@ -1,7 +1,9 @@
 package com.everittventures.salonboothmath
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
@@ -14,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.SimpleDateFormat
@@ -42,10 +45,7 @@ internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, ca
 internal fun HistoryScreen(store: AppStore, onWeek: (SavedWeek) -> Unit, back: () -> Unit) {
     SimpleScreen(stringResource(R.string.history), back) {
         store.loadWeeks().take(12).forEach { week ->
-            Row(
-                Modifier.fillMaxWidth().clickable { onWeek(week) }.padding(vertical = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+            Row(Modifier.fillMaxWidth().clickable { onWeek(week) }.padding(vertical = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(week.startMillis)), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink, fontFamily = AppFontFamily)
                 Text(formatCents(week.takeHomeCents), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Pink, fontFamily = AppFontFamily)
             }
@@ -77,12 +77,20 @@ internal fun SettingsScreen(store: AppStore, billing: BillingManager, back: () -
     var cardShare by remember { mutableStateOf(percentText(store.servicesOnCardBasisPoints)) }
     var tax by remember { mutableStateOf(percentText(store.taxBasisPoints)) }
     val context = LocalContext.current
+    val prefs = remember { context.getSharedPreferences("salon_booth_math", Context.MODE_PRIVATE) }
+    var language by remember { mutableStateOf(prefs.getString("app_language", "en") ?: "en") }
 
-    fun open(url: String) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    fun open(url: String) { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
+    fun setLanguage(tag: String) {
+        language = tag
+        prefs.edit().putString("app_language", tag).apply()
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
     }
 
     SimpleScreen(stringResource(R.string.settings), back) {
+        Text(stringResource(R.string.language), color = Pink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        SingleChoiceSegment(listOf("en" to "English", "es" to "Español", "vi" to "Tiếng Việt"), language, ::setLanguage)
+
         if (store.payModel == "booth") {
             MoneyField(stringResource(R.string.weekly_rent), rent) { rent = it }
             SingleChoiceSegment(listOf("week" to stringResource(R.string.week), "month" to stringResource(R.string.month)), rentPeriod) { rentPeriod = it }

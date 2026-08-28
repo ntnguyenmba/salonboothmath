@@ -12,6 +12,18 @@
     <string name="history">Historial</string>
     <string name="settings">Ajustes</string>
     <string name="share">Compartir</string>
-    <string name="unlock">Desbloquear app completa</string>
-    <string name="paywall_body">Guarda historial, el desglose completo y la comparación de renta vs. comisión. $4.99 una vez. Sin suscripción.</string>
+    <string name="unlock">Guarda el neto de cada semana</string>
+    <string name="paywall_body">Desbloquea historial, el desglose completo y renta de puesto vs. comisión. $4.99 una vez. Sin suscripción.</string>
+    <string name="restore_purchase">Restaurar compra</string>
+    <string name="not_now">Ahora no</string>
+    <string name="continue_label">Continuar</string>
+    <string name="enter_week">Capturar esta semana</string>
+    <string name="trade_question">¿A qué te dedicas?</string>
+    <string name="pay_question">¿Cómo te pagan?</string>
+    <string name="weekly_rent">Renta semanal del puesto</string>
+    <string name="your_cut">Tu porcentaje</string>
+    <string name="widget_description">Mira el neto de esta semana sin abrir la app.</string>
+    <string name="gross">Bruto</string>
+    <string name="card_fees">Comisión de tarjeta</string>
+    <string name="take_home">Neto</string>
 </resources>

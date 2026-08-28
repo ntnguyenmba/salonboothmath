@@ -1,6 +1,7 @@
 package com.everittventures.salonboothmath
 
 import android.app.Activity
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -114,13 +116,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                 Box(Modifier.fillMaxWidth().height(4.dp).background(Pink))
                 Box(Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 12.dp)) {
                     Column(Modifier.align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            if (isCurrentWeek) stringResource(R.string.this_week) else weekRange(editingWeekStart),
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            fontFamily = AppFontFamily
-                        )
+                        Text(if (isCurrentWeek) stringResource(R.string.this_week) else weekRange(editingWeekStart), color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
                         Text(payContext(store), color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
                     }
                     if (!isCurrentWeek) {
@@ -129,9 +125,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                         }
                     }
                     Box(Modifier.align(Alignment.CenterEnd)) {
-                        IconButton(onClick = { menuOpen = true }) {
-                            Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.more_options), tint = Color.White)
-                        }
+                        IconButton(onClick = { menuOpen = true }) { Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.more_options), tint = Color.White) }
                         DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                             if (!unlocked) DropdownMenuItem(text = { Text(stringResource(R.string.unlock_price, displayPrice)) }, onClick = { menuOpen = false; showPaywall = true })
                             DropdownMenuItem(text = { Text(stringResource(R.string.share)) }, onClick = { menuOpen = false; ShareCard.share(context, takeHomeCents, editingWeekStart) })
@@ -148,29 +142,19 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
                 Spacer(Modifier.height(16.dp))
                 MembershipCard(unlocked, displayPrice) { showPaywall = true }
                 Spacer(Modifier.height(24.dp))
-
                 Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
                     MoneyField(stringResource(R.string.services), services) { services = it }
                     MoneyField(stringResource(R.string.cash_tips), cashTips) { cashTips = it }
                     MoneyField(stringResource(R.string.card_tips), cardTips) { cardTips = it }
                     MoneyField(stringResource(R.string.supplies), supplies) { supplies = it }
                 }
-
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = 30.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                Column(Modifier.fillMaxWidth().padding(top = 30.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text(stringResource(R.string.you_took_home), color = Pink, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp, fontFamily = AppFontFamily)
                     Text(formatCents(takeHomeCents), color = Ink, fontWeight = FontWeight.ExtraBold, fontSize = 52.sp, fontFamily = AppFontFamily)
                     if (highRent) Text(stringResource(R.string.rent_warning), color = Warning, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
                 }
-
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 32.dp),
-                    verticalArrangement = Arrangement.spacedBy(14.dp)
-                ) {
-                    PrimaryButton(if (unlocked) stringResource(R.string.save_week) else "${stringResource(R.string.save_week)} · Lifetime") {
+                Column(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 32.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                    PrimaryButton(if (unlocked) stringResource(R.string.save_week) else stringResource(R.string.save_week_lifetime)) {
                         if (unlocked) {
                             store.saveWeek(SavedWeek(editingWeekStart, serviceCents, cashTipsCents, cardTipsCents, supplyCents, store.extraFeesCents, null, store.payModel, takeHomeCents))
                             scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) }
@@ -185,22 +169,13 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     }
 
     if (showPaywall) {
-        ModalBottomSheet(
-            onDismissRequest = { showPaywall = false },
-            containerColor = BerryDeep,
-            contentColor = Ink,
-            dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).width(54.dp).height(6.dp).background(Pink, RoundedCornerShape(99.dp))) }
-        ) {
+        ModalBottomSheet(onDismissRequest = { showPaywall = false }, containerColor = BerryDeep, contentColor = Ink, dragHandle = { Box(Modifier.padding(top = 10.dp, bottom = 8.dp).width(54.dp).height(6.dp).background(Pink, RoundedCornerShape(99.dp))) }) {
             Column(Modifier.fillMaxWidth().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
                 Text(stringResource(R.string.unlock), color = Ink, fontSize = 28.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
                 Text(stringResource(R.string.paywall_body, displayPrice), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
                 PrimaryButton(stringResource(R.string.unlock_price, displayPrice)) { activity?.let { billing.launchPurchase(it) } }
-                TextButton(onClick = { billing.restore() }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
-                    Text(stringResource(R.string.restore_purchase), color = Pink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
-                }
-                TextButton(onClick = { showPaywall = false }, modifier = Modifier.fillMaxWidth().height(56.dp)) {
-                    Text(stringResource(R.string.not_now), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
-                }
+                TextButton(onClick = { billing.restore() }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.restore_purchase), color = Pink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily) }
+                TextButton(onClick = { showPaywall = false }, modifier = Modifier.fillMaxWidth().height(56.dp)) { Text(stringResource(R.string.not_now), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily) }
                 Spacer(Modifier.height(12.dp))
             }
         }
@@ -210,12 +185,7 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
 @Composable
 private fun BrandMark() {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-        Box(
-            Modifier.size(58.dp).background(BerryDeep, RoundedCornerShape(18.dp)),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("$", color = Pink, fontSize = 38.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
-        }
+        Image(painter = painterResource(R.drawable.salon_booth_logo), contentDescription = stringResource(R.string.app_name), modifier = Modifier.size(70.dp))
         Spacer(Modifier.width(12.dp))
         Column {
             Text("SALON BOOTH", color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
@@ -226,32 +196,12 @@ private fun BrandMark() {
 
 @Composable
 private fun MembershipCard(unlocked: Boolean, displayPrice: String, unlock: () -> Unit) {
-    Row(
-        Modifier.fillMaxWidth().background(Surface, RoundedCornerShape(18.dp)).padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(Modifier.fillMaxWidth().background(Surface, RoundedCornerShape(18.dp)).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                if (unlocked) stringResource(R.string.lifetime_unlocked) else stringResource(R.string.free_label),
-                color = Pink,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.ExtraBold,
-                fontFamily = AppFontFamily
-            )
-            Text(
-                if (unlocked) stringResource(R.string.premium_features) else stringResource(R.string.free_features),
-                color = Ink,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                fontFamily = AppFontFamily
-            )
+            Text(if (unlocked) stringResource(R.string.lifetime_unlocked) else stringResource(R.string.free_label), color = Pink, fontSize = 13.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+            Text(if (unlocked) stringResource(R.string.premium_features) else stringResource(R.string.free_features), color = Ink, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
         }
-        if (unlocked) {
-            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Pink, modifier = Modifier.size(28.dp))
-        } else {
-            Button(onClick = unlock, colors = ButtonDefaults.buttonColors(containerColor = Pink), shape = RoundedCornerShape(99.dp)) {
-                Text(displayPrice, color = Color.White, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
-            }
-        }
+        if (unlocked) Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Pink, modifier = Modifier.size(28.dp))
+        else Button(onClick = unlock, colors = ButtonDefaults.buttonColors(containerColor = Pink), shape = RoundedCornerShape(99.dp)) { Text(displayPrice, color = Color.White, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily) }
     }
 }

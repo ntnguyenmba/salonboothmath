@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class BillingManager(private val context: Context) : PurchasesUpdatedListener {
-    companion object { const val PRODUCT_ID = "unlock_full" }
+    companion object {
+        // Keep this aligned with the one-time product configured in Google Play Console.
+        const val PRODUCT_ID = "com.everittventures.salonboothmath.lifetime"
+    }
 
     private val billingClient = BillingClient.newBuilder(context)
         .setListener(this)

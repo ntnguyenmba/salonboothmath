@@ -25,7 +25,7 @@ iOS + Android · English + Vietnamese + Spanish · $4.99 once · No subscription
 - Native system rounded typography; no bundled custom font
 - White `#FFFFFF`
 - Ink `#0B1220`
-- Berry `#4A1835`
+- Berry `#4B0728`
 - Hot pink `#FF3D6E`
 - Warning `#C2410C`
 - Error `#B42318`

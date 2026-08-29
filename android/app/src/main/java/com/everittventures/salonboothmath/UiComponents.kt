@@ -30,7 +30,7 @@ internal val Surface = Color(0xFF65103B)
 internal val Ink = Color.White
 internal val MutedInk = Color.White.copy(alpha = 0.78f)
 internal val Pink = Color(0xFFFF3D6E)
-internal val Warning = Color(0xFFFFB86B)
+internal val Warning = Pink
 internal val Page = Berry
 internal val AppFontFamily = FontFamily.SansSerif
 

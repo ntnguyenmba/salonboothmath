@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
@@ -11,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,13 +45,56 @@ internal fun BreakdownScreen(store: AppStore, services: Long, cashTips: Long, ca
 
 @Composable
 internal fun HistoryScreen(store: AppStore, onWeek: (SavedWeek) -> Unit, back: () -> Unit) {
+    val weeks = store.loadWeeks()
+    val recent = weeks.take(4)
+    val total = recent.sumOf { it.takeHomeCents }
+    val average = if (recent.isEmpty()) 0L else total / recent.size
+    val hourlyWeeks = recent.filter { (it.hours ?: 0.0) > 0.0 }
+    val totalHours = hourlyWeeks.sumOf { it.hours ?: 0.0 }
+    val hourly = if (totalHours > 0) (hourlyWeeks.sumOf { it.takeHomeCents } / totalHours).toLong() else null
+
     SimpleScreen(stringResource(R.string.history), back) {
-        store.loadWeeks().take(12).forEach { week ->
+        if (weeks.isNotEmpty()) {
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Box(Modifier.weight(1f)) { HistoryMetric(stringResource(R.string.last_four_weeks), total) }
+                Box(Modifier.weight(1f)) { HistoryMetric(stringResource(R.string.average_week), average) }
+            }
+            if (hourly != null) HistoryMetric(stringResource(R.string.average_hourly), hourly, "/hr")
+            Text(stringResource(R.string.take_home_trend), fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Ink, fontFamily = AppFontFamily)
+            HistoryTrend(recent.reversed().map { it.takeHomeCents })
+        }
+
+        weeks.take(12).forEach { week ->
             Row(Modifier.fillMaxWidth().clickable { onWeek(week) }.padding(vertical = 16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(SimpleDateFormat("MMM d", Locale.getDefault()).format(Date(week.startMillis)), fontSize = 19.sp, fontWeight = FontWeight.Bold, color = Ink, fontFamily = AppFontFamily)
-                Text(formatCents(week.takeHomeCents), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Pink, fontFamily = AppFontFamily)
+                Text(formatCents(week.takeHomeCents), fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = Ink, fontFamily = AppFontFamily)
             }
         }
+    }
+}
+
+@Composable
+private fun HistoryMetric(label: String, cents: Long, suffix: String = "") {
+    Column(Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+        Text(label, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MutedInk, fontFamily = AppFontFamily)
+        Text(formatCents(cents) + suffix, fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Ink, fontFamily = AppFontFamily)
+    }
+}
+
+@Composable
+private fun HistoryTrend(values: List<Long>) {
+    Canvas(Modifier.fillMaxWidth().height(72.dp)) {
+        if (values.isEmpty()) return@Canvas
+        val min = values.minOrNull() ?: 0L
+        val max = values.maxOrNull() ?: min
+        val span = (max - min).coerceAtLeast(1L)
+        val points = values.mapIndexed { index, value ->
+            val x = if (values.size == 1) size.width / 2f else size.width * index / (values.size - 1).toFloat()
+            val normalized = (value - min).toFloat() / span.toFloat()
+            Offset(x, size.height - (normalized * (size.height - 12f)) - 6f)
+        }
+        for (i in 0 until points.lastIndex) drawLine(Pink, points[i], points[i + 1], strokeWidth = 8f)
+        points.forEach { drawCircle(Pink, radius = 5f, center = it) }
     }
 }
 
@@ -88,7 +133,7 @@ internal fun SettingsScreen(store: AppStore, billing: BillingManager, back: () -
     }
 
     SimpleScreen(stringResource(R.string.settings), back) {
-        Text(stringResource(R.string.language), color = Pink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        Text(stringResource(R.string.language), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         SingleChoiceSegment(listOf("en" to "English", "es" to "Español", "vi" to "Tiếng Việt"), language, ::setLanguage)
 
         if (store.payModel == "booth") {
@@ -106,12 +151,12 @@ internal fun SettingsScreen(store: AppStore, billing: BillingManager, back: () -
         MoneyField(stringResource(R.string.tax_set_aside), tax, false) { tax = it }
         Text(stringResource(R.string.estimate_disclaimer), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
 
-        Text(stringResource(R.string.legal_support), color = Pink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        Text(stringResource(R.string.legal_support), color = Ink, fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         LegalButton(stringResource(R.string.privacy_policy)) { open("https://everittventures.com/privacy") }
         LegalButton(stringResource(R.string.terms_use)) { open("https://everittventures.com/terms") }
         LegalButton(stringResource(R.string.contact_support)) { open("mailto:support@everittventures.com?subject=Salon%20Booth%20Math%20Support") }
         LegalButton(stringResource(R.string.restore_purchase)) { billing.restore() }
-        Text(stringResource(R.string.about), color = Pink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        Text(stringResource(R.string.about), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         Text(stringResource(R.string.about_text), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
         Text("© 2026 Everitt Ventures LLC", color = MutedInk, fontSize = 14.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
 

@@ -18,6 +18,7 @@ struct HomeView: View {
     @AppStorage("currentWeekCashTips") private var currentWeekCashTips = ""
     @AppStorage("currentWeekCardTips") private var currentWeekCardTips = ""
     @AppStorage("currentWeekSupplies") private var currentWeekSupplies = ""
+    @AppStorage("currentWeekHours") private var currentWeekHours = ""
 
     @StateObject private var purchases = PurchaseManager()
     @StateObject private var weekStore = WeekStore()
@@ -26,6 +27,7 @@ struct HomeView: View {
     @State private var cashTips = ""
     @State private var cardTips = ""
     @State private var supplies = ""
+    @State private var hours = ""
     @State private var editingWeekStart: Date?
     @State private var showPaywall = false
     @State private var showBreakdown = false
@@ -59,12 +61,19 @@ struct HomeView: View {
     private var activeWeekStart: Date { editingWeekStart ?? currentWeekStart }
     private var isCurrentWeek: Bool { Calendar.current.isDate(activeWeekStart, equalTo: currentWeekStart, toGranularity: .weekOfYear) }
     private var highRentRatio: Decimal? { guard payModel == .booth, grossCents > 0 else { return nil }; return Decimal(weeklyRentCents) / Decimal(grossCents) }
+    private var hoursValue: Double? {
+        let normalized = hours.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
+        guard let value = Double(normalized), value > 0 else { return nil }
+        return value
+    }
 
     private var payContext: String {
         if payModel == .booth { return "\(String(localized: "pay.booth")) · \(formatCurrency(weeklyRentCents))/\(String(localized: "rent.week"))" }
-        let tipsText: String
-        switch tipOwner { case .you: tipsText = String(localized: "tips.you"); case .house: tipsText = String(localized: "tips.house"); case .split: tipsText = String(localized: "tips.split") }
-        return "\(commissionCutBasisPoints / 100)% · \(tipsText)"
+        switch AppLanguage.current(appLanguage) {
+        case .english: return "You keep \(commissionCutBasisPoints / 100)% + tips"
+        case .spanish: return "Te quedas con \(commissionCutBasisPoints / 100)% + propinas"
+        case .vietnamese: return "Bạn giữ \(commissionCutBasisPoints / 100)% + tiền tip"
+        }
     }
 
     private var lifetimePrice: String { purchases.product?.displayPrice ?? "$4.99" }
@@ -85,7 +94,20 @@ struct HomeView: View {
                 }
             }
             .foregroundStyle(Brand.ink)
-            .navigationDestination(isPresented: $showBreakdown) { BreakdownView(grossCents: grossCents, rentCents: weeklyRentCents, houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut), cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, takeHomeCents: takeHomeCents, taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate), payModel: payModel) }
+            .navigationDestination(isPresented: $showBreakdown) {
+                BreakdownView(
+                    grossCents: grossCents,
+                    rentCents: weeklyRentCents,
+                    houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut),
+                    cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0,
+                    suppliesCents: supplyCents,
+                    extraFeesCents: extraFeesCents,
+                    takeHomeCents: takeHomeCents,
+                    taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate),
+                    payModel: payModel,
+                    hoursText: $hours
+                )
+            }
             .navigationDestination(isPresented: $showCompare) { CompareView(boothCents: boothTakeHome, commissionCents: commissionTakeHome, commissionPercent: commissionCutBasisPoints / 100) }
             .navigationDestination(isPresented: $showHistory) { HistoryView(store: weekStore) { week in load(week); showHistory = false } }
             .navigationDestination(isPresented: $showSettings) { SettingsView() }
@@ -97,6 +119,7 @@ struct HomeView: View {
         .onChange(of: cashTips) { _, _ in persistCurrentWeekDraft() }
         .onChange(of: cardTips) { _, _ in persistCurrentWeekDraft() }
         .onChange(of: supplies) { _, _ in persistCurrentWeekDraft() }
+        .onChange(of: hours) { _, _ in persistCurrentWeekDraft() }
         .onChange(of: takeHomeCents) { _, value in if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: value) } }
     }
 
@@ -152,21 +175,38 @@ struct HomeView: View {
         let start = currentWeekStart.timeIntervalSince1970
         if abs(currentWeekDraftStart - start) > 1 {
             currentWeekDraftStart = start
-            currentWeekServices = ""; currentWeekCashTips = ""; currentWeekCardTips = ""; currentWeekSupplies = ""
+            currentWeekServices = ""
+            currentWeekCashTips = ""
+            currentWeekCardTips = ""
+            currentWeekSupplies = ""
+            currentWeekHours = ""
         }
         guard isCurrentWeek else { return }
-        services = currentWeekServices; cashTips = currentWeekCashTips; cardTips = currentWeekCardTips; supplies = currentWeekSupplies
+        services = currentWeekServices
+        cashTips = currentWeekCashTips
+        cardTips = currentWeekCardTips
+        supplies = currentWeekSupplies
+        hours = currentWeekHours
     }
 
     private func persistCurrentWeekDraft() {
         guard isCurrentWeek else { return }
         currentWeekDraftStart = currentWeekStart.timeIntervalSince1970
-        currentWeekServices = services; currentWeekCashTips = cashTips; currentWeekCardTips = cardTips; currentWeekSupplies = supplies
+        currentWeekServices = services
+        currentWeekCashTips = cashTips
+        currentWeekCardTips = cardTips
+        currentWeekSupplies = supplies
+        currentWeekHours = hours
     }
 
     private func load(_ week: WeekRecord) {
         editingWeekStart = week.weekStart
-        services = inputCurrencyCents(week.servicesCents); cashTips = inputCurrencyCents(week.cashTipsCents); cardTips = inputCurrencyCents(week.cardTipsCents); supplies = inputCurrencyCents(week.suppliesCents); savedPayModel = week.payModel.rawValue
+        services = inputCurrencyCents(week.servicesCents)
+        cashTips = inputCurrencyCents(week.cashTipsCents)
+        cardTips = inputCurrencyCents(week.cardTipsCents)
+        supplies = inputCurrencyCents(week.suppliesCents)
+        hours = week.hours.map { $0.formatted(.number.precision(.fractionLength(0...1))) } ?? ""
+        savedPayModel = week.payModel.rawValue
     }
 
     private func returnToCurrentWeek() { editingWeekStart = nil; restoreCurrentWeekDraft() }
@@ -178,7 +218,7 @@ struct HomeView: View {
         guard let action = pendingAction else { return }
         switch action {
         case .save:
-            weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: nil, payModel: payModel, takeHomeCents: takeHomeCents))
+            weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: hoursValue, payModel: payModel, takeHomeCents: takeHomeCents))
             if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents) }
         case .compare: showCompare = true
         case .history: showHistory = true
@@ -210,7 +250,7 @@ struct PaywallView: View {
         VStack(alignment: .leading, spacing: 20) {
             HStack { Capsule().fill(Brand.hotPink).frame(width: 54, height: 6); Spacer(); Button(AppLanguage.current(appLanguage).cancelTitle) { completion(false) }.font(Brand.font(16)).foregroundStyle(Brand.ink) }
             Text("Salon Booth Math Lifetime").font(Brand.font(28, weight: .heavy))
-            Text("Keep the weekly calculator and Breakdown free. Unlock Save Week, History, and Booth vs Commission comparison forever with one purchase.").font(Brand.font(18)).fixedSize(horizontal: false, vertical: true)
+            Text("Keep this week. Look back later. Compare booth vs commission. Once. No subscription.").font(Brand.font(18)).fixedSize(horizontal: false, vertical: true)
             VStack(alignment: .leading, spacing: 12) { Label("Save every week", systemImage: "checkmark.circle.fill"); Label("View earnings history", systemImage: "checkmark.circle.fill"); Label("Compare booth vs commission", systemImage: "checkmark.circle.fill"); Label("One-time purchase. No subscription.", systemImage: "checkmark.circle.fill") }.font(Brand.font(16)).foregroundStyle(Brand.ink)
             Spacer(minLength: 8)
             PrimaryButton(title: unlockTitle) { Task { completion(await purchases.purchase()) } }

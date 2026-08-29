@@ -58,8 +58,11 @@ Do not add:
 - A fourth brand color
 - A Free badge on Home
 - “Lifetime” on the Save button
+- Charts or sparklines
 
 The website is a storefront, not a second product.
+
+Trade (Nail / Hair / Barber / Esthetician) may stay in onboarding only as a greeting. It must not change math in v1. Do not build trade-specific themes.
 
 ## Home — iOS and Android
 
@@ -119,6 +122,7 @@ Show only applicable rows:
 - Extra fees / tip-out if applicable
 - Take-home
 - Tax reserve estimate if enabled
+- Optional hours field
 
 The user should be able to understand why the take-home number is the number before being asked to pay.
 
@@ -134,9 +138,16 @@ If the user is not unlocked, tapping it opens the lifetime purchase sheet.
 
 History is lifetime-only.
 
-Show saved week/date and take-home. Tapping a saved week reopens it.
+History is a weekly notebook, not analytics software.
 
-History should feel like a simple weekly notebook, not analytics software.
+Allowed compact summary at the top:
+- Last 4 weeks total
+- Average week
+- Average hourly only when hours exist
+
+Then a simple list: week/date and take-home. Tapping a saved week reopens it.
+
+Do not add charts, sparklines, month dashboards, or comparison graphs on History.
 
 ### Compare
 
@@ -186,9 +197,9 @@ No new English-only strings may ship.
 ## Visual system
 
 Locked palette:
-- Wine: `#4B0728`
-- Hot pink: `#FF3D6E`
-- White: `#FFFFFF`
+- Wine: `#4B0728` — app page / salon dark
+- Hot pink: `#FF3D6E` — tap only
+- White: `#FFFFFF` — reading text on wine
 
 Do not introduce blush, gold, orange, blue, beige, or another neon.
 
@@ -199,19 +210,21 @@ Use pink primarily for:
 - Take-home label
 - Selected states
 - Small high-value highlights
+- 4px header crown
 
-Use white for most reading text and important headings on wine.
+Use white for reading text and important headings on wine.
+
+The calculator Home stays wine. Do not revert to a white spreadsheet Home.
 
 ### Typography
 
-Target typography:
-- Nunito
-- Nunito Bold
-- Nunito ExtraBold
+Use native system rounded typography on both platforms.
 
-Do not merely reference Nunito by PostScript name and assume it ships. The actual font assets must be bundled and registered on iOS and Android before release if Nunito is the final font.
+Do not claim Nunito or any other custom face unless the font files are bundled and registered on iOS and Android.
 
 Do not make every line ExtraBold. Reserve the strongest weight for the take-home amount, key headings, and primary actions.
+
+Minimum visible text size is 16px.
 
 ## Branding inside the apps
 
@@ -344,13 +357,14 @@ The number itself and Breakdown remain free forever.
 3. Confirm Cash tips / Card tips everywhere.
 4. Reduce unnecessary pink headings and keep the take-home hierarchy dominant.
 5. Remove large Home branding that competes with the calculator.
-6. Bundle and verify the final font if Nunito is retained.
+6. Use system rounded type, or bundle and verify a custom font before claiming it.
 7. Complete EN / ES / VI audit on both platforms.
 8. Test purchase and restore on Apple and Google.
 9. Publish working Privacy, Terms, and Support URLs.
 10. Finish the storefront website with crisp logo, white/pink hero, live badges only, and one real product screenshot.
 11. Capture realistic App Store and Play Store screenshots.
-12. Submit store builds.
+12. Confirm iOS and Android money fixtures in `docs/MATH_PARITY.md` match.
+13. Submit store builds.
 
 ## Product test
 

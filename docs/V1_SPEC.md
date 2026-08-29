@@ -9,14 +9,16 @@ Do not add features outside this spec before first store submission.
 ## Free
 
 - Onboarding
-- Pick Nail / Hair / Barber / Esthetician
+- Optional trade greeting: Nail / Hair / Barber / Esthetician (no math change)
 - Pick Booth rent / Commission
 - Set weekly or monthly booth rent, or commission cut
 - One current week
 - Services
-- Tips
+- Cash tips
+- Card tips
 - Supplies
 - Live `YOU TOOK HOME` hero
+- Free Breakdown
 - Native Share take-home card
 
 ## $4.99 lifetime unlock
@@ -24,44 +26,46 @@ Do not add features outside this spec before first store submission.
 One non-consumable purchase. No subscription.
 
 - Save weeks
-- Other weeks
-- History
-- See breakdown
+- History notebook with compact last-4-weeks total and average
 - Booth vs commission
 - Both pay models saved
-- Cash/card tips
 - Extra booth fees
 - Hours and per-hour result
 - Tax set-aside line
-- Month total
-- High-rent flag
 
-Paywall triggers on Save week, See breakdown, week navigation, Compare, or History.
+Paywall triggers on Save week, week navigation into saved weeks, Compare, or History.
+
+Breakdown is free.
 
 ## Onboarding
 
 1. `What do you do?`
 2. `How do you get paid?`
-3. Weekly booth rent OR commission cut
+3. Weekly booth rent OR commission cut written into the same settings keys Home uses
 4. `Let’s see this week.`
 
 One question per screen. No setup dump.
 
+Commission onboarding must write `commissionCutBasisPoints`, not a leftover Double key.
+
 ## Home
 
-Berry top bar with `This week` and large previous/next controls.
+Wine page. White reading text. Hot-pink 4pt crown.
 
-Stack three large fields vertically:
+Berry/wine top bar with `This week` and pay context.
+
+Stack four large fields vertically:
 
 1. Services
-2. Tips
-3. Supplies
+2. Cash tips
+3. Card tips
+4. Supplies
 
 Always-visible result:
 
 `YOU TOOK HOME`
 
-Large locale-formatted amount in ink.
+Large locale-formatted amount in white.
 
 Primary: `Save week`
 
@@ -71,7 +75,7 @@ No grid. No dashboard. No chart.
 
 ## Calculations
 
-Use integer cents internally.
+Use integer cents internally. Platforms must match `docs/MATH_PARITY.md`.
 
 Gross = services + cash tips + card tips
 
@@ -85,7 +89,7 @@ Monthly booth rent converted to weekly = monthly rent / 4.3333
 
 Booth take-home = gross - weekly rent - card fees - supplies - extra fees
 
-Commission take-home = services × user cut + user tips - user card fees - supplies
+Commission take-home = services × user cut + user tips - user card fees - supplies - extra fees
 
 Tips rules: user keeps all, house keeps all, or split; default split is 50/50.
 
@@ -103,7 +107,7 @@ Ship a preloaded sample week so Store Review never lands on an empty product.
 
 ## Accessibility
 
-- WCAG 2.2 AA contrast target
+- WCAG 2.2 AA contrast target on wine
 - Never rely on color alone
 - Dynamic Type must not clip the money hero
 - VoiceOver reads the amount as currency
@@ -114,11 +118,11 @@ Ship a preloaded sample week so Store Review never lands on an empty product.
 
 Ship English, Vietnamese, and Spanish together in v1. Device language selects localization. Currency uses locale formatting.
 
-## iOS widget
+## Widget
 
-One small Home Screen widget only.
+One small Home Screen widget.
 
-- Berry background
+- Wine background
 - 4pt hot-pink top edge
 - White label and amount
 - Current calendar week only

@@ -19,56 +19,36 @@ internal fun OnboardingScreen(store: AppStore, done: () -> Unit) {
     var step by remember { mutableIntStateOf(0) }
     var trade by remember { mutableStateOf(store.trade) }
     var pay by remember { mutableStateOf(store.payModel) }
-    var value by remember { mutableStateOf(if (pay == "booth") "250" else "55") }
-    val title = when (step) {
-        0 -> stringResource(R.string.trade_question)
-        1 -> stringResource(R.string.pay_question)
-        2 -> if (pay == "booth") stringResource(R.string.weekly_rent) else stringResource(R.string.your_cut)
-        else -> stringResource(R.string.enter_week)
-    }
-    val trades = listOf(
-        "nail" to stringResource(R.string.trade_nail),
-        "hair" to stringResource(R.string.trade_hair),
-        "barber" to stringResource(R.string.trade_barber),
-        "esthetician" to stringResource(R.string.trade_esthetician)
-    )
-    val payModels = listOf(
-        "booth" to stringResource(R.string.booth_rent),
-        "commission" to stringResource(R.string.commission)
-    )
+    var rent by remember { mutableStateOf("250") }
+    var cut by remember { mutableStateOf("55") }
+    val title = when (step) { 0 -> stringResource(R.string.trade_question); 1 -> stringResource(R.string.pay_question); 2 -> if (pay == "commission") stringResource(R.string.your_cut) else stringResource(R.string.weekly_rent); else -> stringResource(R.string.enter_week) }
+    val trades = listOf("nail" to stringResource(R.string.trade_nail), "hair" to stringResource(R.string.trade_hair), "barber" to stringResource(R.string.trade_barber), "esthetician" to stringResource(R.string.trade_esthetician))
+    val payModels = listOf("booth" to stringResource(R.string.booth_rent), "commission" to stringResource(R.string.commission), "hybrid" to stringResource(R.string.hybrid))
 
     Column(Modifier.fillMaxSize().background(Page).padding(24.dp), verticalArrangement = Arrangement.Center) {
         Text(title, color = Ink, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
         Spacer(Modifier.height(30.dp))
         when (step) {
             0 -> trades.forEach { (id, label) -> OnboardingChoice(label, trade == id) { trade = id } }
-            1 -> payModels.forEach { (id, label) -> OnboardingChoice(label, pay == id) { pay = id; value = if (id == "booth") "250" else "55" } }
-            2 -> MoneyField(if (pay == "booth") stringResource(R.string.weekly_rent) else stringResource(R.string.your_cut), value) { value = it }
+            1 -> payModels.forEach { (id, label) -> OnboardingChoice(label, pay == id) { pay = id } }
+            2 -> when (pay) {
+                "booth" -> MoneyField(stringResource(R.string.weekly_rent), rent) { rent = it }
+                "commission" -> MoneyField(stringResource(R.string.your_cut), cut, false) { cut = it }
+                else -> { MoneyField(stringResource(R.string.weekly_rent), rent) { rent = it }; Spacer(Modifier.height(14.dp)); MoneyField(stringResource(R.string.your_cut), cut, false) { cut = it } }
+            }
         }
         Spacer(Modifier.height(28.dp))
         PrimaryButton(if (step == 3) stringResource(R.string.enter_week) else stringResource(R.string.continue_label)) {
             if (step < 3) step++ else {
-                store.trade = trade
-                store.payModel = pay
-                if (pay == "booth") store.rentCents = MoneyMath.cents(value)
-                else store.commissionCutBasisPoints = percentBasisPoints(value, "55")
-                store.onboardingDone = true
-                done()
+                store.trade = trade; store.payModel = pay
+                if (pay != "commission") store.rentCents = MoneyMath.cents(rent)
+                if (pay != "booth") store.commissionCutBasisPoints = percentBasisPoints(cut, "55")
+                store.onboardingDone = true; done()
             }
         }
     }
 }
 
-@Composable
-private fun OnboardingChoice(label: String, selected: Boolean, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (selected) Berry else Color.White,
-            contentColor = if (selected) Color.White else Ink
-        ),
-        border = if (selected) null else ButtonDefaults.outlinedButtonBorder,
-        modifier = Modifier.fillMaxWidth().height(68.dp).padding(bottom = 10.dp),
-        shape = RoundedCornerShape(18.dp)
-    ) { Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold) }
+@Composable private fun OnboardingChoice(label: String, selected: Boolean, onClick: () -> Unit) {
+    Button(onClick = onClick, colors = ButtonDefaults.buttonColors(containerColor = if (selected) Berry else Color.White, contentColor = if (selected) Color.White else Ink), border = if (selected) null else ButtonDefaults.outlinedButtonBorder, modifier = Modifier.fillMaxWidth().height(68.dp).padding(bottom = 10.dp), shape = RoundedCornerShape(18.dp)) { Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold) }
 }

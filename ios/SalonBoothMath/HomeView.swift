@@ -69,7 +69,7 @@ struct HomeView: View {
 
     private var payContext: String {
         if payModel == .booth { return "\(String(localized: "pay.booth")) · \(formatCurrency(weeklyRentCents))/\(String(localized: "rent.week"))" }
-        String(format: String(localized: "home.keepCut"), commissionCutBasisPoints / 100)
+        return String(format: String(localized: "home.keepCut"), commissionCutBasisPoints / 100)
     }
 
     private var lifetimePrice: String { purchases.product?.displayPrice ?? "$4.99" }
@@ -247,18 +247,20 @@ struct PaywallView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack { Capsule().fill(Brand.hotPink).frame(width: 54, height: 6); Spacer(); Button(AppLanguage.current(appLanguage).cancelTitle) { completion(false) }.font(Brand.font(16)).foregroundStyle(Brand.ink) }
-            Text("paywall.lifetimeTitle").font(Brand.font(28, weight: .heavy))
-            Text("paywall.lifetimeBody").font(Brand.font(18)).fixedSize(horizontal: false, vertical: true)
-            VStack(alignment: .leading, spacing: 12) {
-                Label("paywall.saveWeeks", systemImage: "checkmark.circle.fill")
-                Label("paywall.viewHistory", systemImage: "checkmark.circle.fill")
-                Label("paywall.compareModels", systemImage: "checkmark.circle.fill")
-                Label("paywall.once", systemImage: "checkmark.circle.fill")
-            }.font(Brand.font(16)).foregroundStyle(Brand.ink)
-            Spacer(minLength: 8)
-            PrimaryButton(title: unlockTitle) { Task { completion(await purchases.purchase()) } }
-            Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(18)).foregroundStyle(Brand.hotPink).frame(maxWidth: .infinity, minHeight: 56) }
-            Button { completion(false) } label: { Text("paywall.continueFree").font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 56) }
-        }.padding(Brand.screenPadding).background(Brand.page).foregroundStyle(Brand.ink)
+            Text("paywall.lifetimeTitle").font(Brand.font(30, weight: .heavy))
+            Text("paywall.body").font(Brand.font(18)).foregroundStyle(Brand.mutedInk).fixedSize(horizontal: false, vertical: true)
+            PrimaryButton(title: unlockTitle) { Task { let ok = await purchases.purchase(); if ok { completion(true) } } }
+            Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(17)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 54) }
+            Button { completion(false) } label: { Text("paywall.notNow").font(Brand.font(17)).foregroundStyle(Brand.muted).frame(maxWidth: .infinity, minHeight: 54) }
+        }
+        .padding(24)
+        .background(Brand.page)
+        .foregroundStyle(Brand.ink)
     }
+}
+
+struct ActivityShareView: UIViewControllerRepresentable {
+    let items: [Any]
+    func makeUIViewController(context: Context) -> UIActivityViewController { UIActivityViewController(activityItems: items, applicationActivities: nil) }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

@@ -182,10 +182,8 @@ struct HomeView: View {
 
                     ScrollView {
                         VStack(spacing: 0) {
-                            membership
-                                .padding(.top, 18)
                             fields
-                                .padding(.top, 22)
+                                .padding(.top, 26)
                             result
                                 .padding(.top, 30)
                             actions
@@ -256,50 +254,6 @@ struct HomeView: View {
                 WidgetBridge.updateCurrentWeek(takeHomeCents: value)
             }
         }
-    }
-
-    private var membership: some View {
-        HStack(spacing: 14) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(purchases.isUnlocked ? "LIFETIME UNLOCKED" : "FREE")
-                    .font(Brand.font(13))
-                    .foregroundStyle(purchases.isUnlocked ? Brand.hotPink : Brand.muted)
-
-                Text(purchases.isUnlocked ? "History + Compare + Save" : "Calculator + Breakdown")
-                    .font(Brand.font(16))
-                    .foregroundStyle(Brand.ink)
-            }
-
-            Spacer()
-
-            if purchases.isUnlocked {
-                Image(systemName: "checkmark.seal.fill")
-                    .font(.system(size: 25, weight: .bold))
-                    .foregroundStyle(Brand.hotPink)
-            } else {
-                Button {
-                    pendingAction = nil
-                    showPaywall = true
-                } label: {
-                    Text("Unlock \(lifetimePrice)")
-                        .font(Brand.font(15))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 15)
-                        .frame(minHeight: 44)
-                        .background(Brand.hotPink)
-                        .clipShape(Capsule())
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(16)
-        .background(Brand.surface)
-        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-        .overlay(
-            RoundedRectangle(cornerRadius: Brand.controlRadius)
-                .stroke(Brand.line, lineWidth: 1.5)
-        )
-        .padding(.horizontal, Brand.screenPadding)
     }
 
     private var header: some View {
@@ -419,7 +373,7 @@ struct HomeView: View {
     private var actions: some View {
         VStack(spacing: 14) {
             PrimaryButton(
-                title: purchases.isUnlocked ? String(localized: "home.save") : "Save week · Lifetime"
+                title: String(localized: "home.save")
             ) {
                 requireUnlock(.save)
             }

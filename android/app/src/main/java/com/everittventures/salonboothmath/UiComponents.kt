@@ -144,14 +144,9 @@ internal fun SettingToggle(label: String, checked: Boolean, onChecked: (Boolean)
 @Composable
 internal fun payContext(store: AppStore): String = if (store.payModel == "booth") {
     val suffix = if (store.rentPeriod == "month") stringResource(R.string.month) else stringResource(R.string.week)
-    "${stringResource(R.string.booth_rent)} · ${formatCents(store.rentCents)}/$suffix"
+    "${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/$suffix"
 } else {
-    val tips = when (store.tipOwner) {
-        TipOwner.YOU -> stringResource(R.string.tips_you)
-        TipOwner.HOUSE -> stringResource(R.string.tips_house)
-        TipOwner.SPLIT -> stringResource(R.string.tips_split)
-    }
-    "${store.commissionCutBasisPoints / 100}% · $tips"
+    stringResource(R.string.keep_cut, store.commissionCutBasisPoints / 100)
 }
 
 internal fun formatCents(cents: Long): String = NumberFormat.getCurrencyInstance().format(BigDecimal.valueOf(cents, 2))

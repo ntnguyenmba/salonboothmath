@@ -87,11 +87,6 @@ private struct StandardNavigationControls: ViewModifier {
                         .font(Brand.font(16))
                         .foregroundStyle(Brand.hotPink)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(AppLanguage.current(appLanguage).cancelTitle) { dismiss() }
-                        .font(Brand.font(16))
-                        .foregroundStyle(Brand.ink)
-                }
             }
     }
 }

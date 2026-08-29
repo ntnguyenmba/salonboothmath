@@ -12,11 +12,7 @@ object MoneyMath {
     fun cents(text: String): Long = runCatching {
         val trimmed = text.trim()
         if (trimmed.startsWith("-")) return 0L
-        parseMoney(trimmed)
-            .max(BigDecimal.ZERO)
-            .multiply(HUNDRED)
-            .setScale(0, RoundingMode.HALF_UP)
-            .longValueExact()
+        parseMoney(trimmed).max(BigDecimal.ZERO).multiply(HUNDRED).setScale(0, RoundingMode.HALF_UP).longValueExact()
     }.getOrDefault(0L)
 
     private fun parseMoney(raw: String): BigDecimal {
@@ -30,20 +26,11 @@ object MoneyMath {
             comma >= 0 && value.length - comma - 1 in 1..2 -> ','
             else -> null
         }
-        val normalized = buildString {
-            value.forEach { char ->
-                when {
-                    char.isDigit() -> append(char)
-                    separator != null && char == separator -> append('.')
-                }
-            }
-        }
+        val normalized = buildString { value.forEach { char -> when { char.isDigit() -> append(char); separator != null && char == separator -> append('.') } } }
         return normalized.toBigDecimal()
     }
 
-    fun cardFees(servicesCents: Long, cardTipsCents: Long, cardFeeRate: BigDecimal, percentServicesOnCard: BigDecimal): Long = BigDecimal.valueOf(cardTipsCents)
-        .add(BigDecimal.valueOf(servicesCents).multiply(percentServicesOnCard))
-        .multiply(cardFeeRate).setScale(0, RoundingMode.HALF_UP).longValueExact()
+    fun cardFees(servicesCents: Long, cardTipsCents: Long, cardFeeRate: BigDecimal, percentServicesOnCard: BigDecimal): Long = BigDecimal.valueOf(cardTipsCents).add(BigDecimal.valueOf(servicesCents).multiply(percentServicesOnCard)).multiply(cardFeeRate).setScale(0, RoundingMode.HALF_UP).longValueExact()
 
     fun boothTakeHome(servicesCents: Long, cashTipsCents: Long, cardTipsCents: Long, suppliesCents: Long, weeklyRentCents: Long, extraFeesCents: Long = 0, cardFeeRate: BigDecimal = BigDecimal("0.029"), percentServicesOnCard: BigDecimal = BigDecimal("0.70")): Long = servicesCents + cashTipsCents + cardTipsCents - weeklyRentCents - cardFees(servicesCents, cardTipsCents, cardFeeRate, percentServicesOnCard) - suppliesCents - extraFeesCents
 
@@ -54,6 +41,8 @@ object MoneyMath {
         val fees = if (workerPaysCardFees) cardFees(servicesCents, cardTipsCents, cardFeeRate, percentServicesOnCard) else 0L
         return servicePay + tips - fees - suppliesCents - extraFeesCents
     }
+
+    fun hybridTakeHome(servicesCents: Long, cashTipsCents: Long, cardTipsCents: Long, suppliesCents: Long, weeklyRentCents: Long, cut: BigDecimal, tipOwner: TipOwner = TipOwner.YOU, workerPaysCardFees: Boolean = true, extraFeesCents: Long = 0, cardFeeRate: BigDecimal = BigDecimal("0.029"), percentServicesOnCard: BigDecimal = BigDecimal("0.70")): Long = commissionTakeHome(servicesCents, cashTipsCents, cardTipsCents, suppliesCents, cut, tipOwner, workerPaysCardFees, extraFeesCents, cardFeeRate, percentServicesOnCard) - weeklyRentCents
 
     fun weeklyRent(cents: Long, monthly: Boolean): Long = if (!monthly) cents else BigDecimal.valueOf(cents).divide(MONTH_WEEKS, 0, RoundingMode.HALF_UP).longValueExact()
 }

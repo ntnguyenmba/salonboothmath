@@ -1,7 +1,6 @@
 package com.everittventures.salonboothmath
 
 import android.app.Activity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,11 +37,13 @@ fun SalonBoothApp(billing: BillingManager) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SalonBoothHome(store: AppStore, billing: BillingManager) {
-    var services by remember { mutableStateOf("") }
-    var cashTips by remember { mutableStateOf("") }
-    var cardTips by remember { mutableStateOf("") }
-    var supplies by remember { mutableStateOf("") }
-    var editingWeekStart by remember { mutableLongStateOf(startOfWeek()) }
+    val currentWeekStart = startOfWeek()
+    val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
+    var services by remember { mutableStateOf(initialDraft.services) }
+    var cashTips by remember { mutableStateOf(initialDraft.cashTips) }
+    var cardTips by remember { mutableStateOf(initialDraft.cardTips) }
+    var supplies by remember { mutableStateOf(initialDraft.supplies) }
+    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }
     var screen by remember { mutableStateOf(Screen.Home) }
     var showPaywall by remember { mutableStateOf(false) }
     var menuOpen by remember { mutableStateOf(false) }
@@ -53,7 +53,6 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val context = LocalContext.current
     val activity = context as? Activity
     val scope = rememberCoroutineScope()
-    val currentWeekStart = startOfWeek()
     val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services)
     val cashTipsCents = MoneyMath.cents(cashTips)
@@ -83,22 +82,17 @@ fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     }
     fun returnToCurrentWeek() {
         editingWeekStart = currentWeekStart
-        val saved = store.loadWeeks().firstOrNull { it.startMillis == currentWeekStart }
-        if (saved != null) {
-            services = inputMoney(saved.servicesCents)
-            cashTips = inputMoney(saved.cashTipsCents)
-            cardTips = inputMoney(saved.cardTipsCents)
-            supplies = inputMoney(saved.suppliesCents)
-            store.payModel = saved.payModel
-        } else {
-            services = ""
-            cashTips = ""
-            cardTips = ""
-            supplies = ""
-        }
+        val draft = store.loadCurrentWeekDraft(currentWeekStart)
+        services = draft.services
+        cashTips = draft.cashTips
+        cardTips = draft.cardTips
+        supplies = draft.supplies
     }
 
     if (isCurrentWeek) {
+        LaunchedEffect(services, cashTips, cardTips, supplies) {
+            store.saveCurrentWeekDraft(CurrentWeekDraft(currentWeekStart, services, cashTips, cardTips, supplies))
+        }
         LaunchedEffect(takeHomeCents) {
             store.updateWidgetTakeHomeCents(takeHomeCents)
             TakeHomeWidget().updateAll(context)

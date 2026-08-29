@@ -16,6 +16,14 @@ data class SavedWeek(
     val takeHomeCents: Long
 )
 
+data class CurrentWeekDraft(
+    val weekStartMillis: Long,
+    val services: String,
+    val cashTips: String,
+    val cardTips: String,
+    val supplies: String
+)
+
 class AppStore(context: Context) {
     private val prefs = context.getSharedPreferences("salon_booth_math", Context.MODE_PRIVATE)
 
@@ -72,6 +80,41 @@ class AppStore(context: Context) {
 
     fun updateWidgetTakeHomeCents(amount: Long) {
         prefs.edit().putLong("widgetTakeHomeCents", amount).apply()
+    }
+
+    fun loadCurrentWeekDraft(currentWeekStart: Long): CurrentWeekDraft {
+        val storedWeek = prefs.getLong("draft.weekStart", 0L)
+        if (storedWeek != currentWeekStart) {
+            clearCurrentWeekDraft(currentWeekStart)
+            return CurrentWeekDraft(currentWeekStart, "", "", "", "")
+        }
+        return CurrentWeekDraft(
+            weekStartMillis = currentWeekStart,
+            services = prefs.getString("draft.services", "") ?: "",
+            cashTips = prefs.getString("draft.cashTips", "") ?: "",
+            cardTips = prefs.getString("draft.cardTips", "") ?: "",
+            supplies = prefs.getString("draft.supplies", "") ?: ""
+        )
+    }
+
+    fun saveCurrentWeekDraft(draft: CurrentWeekDraft) {
+        prefs.edit()
+            .putLong("draft.weekStart", draft.weekStartMillis)
+            .putString("draft.services", draft.services)
+            .putString("draft.cashTips", draft.cashTips)
+            .putString("draft.cardTips", draft.cardTips)
+            .putString("draft.supplies", draft.supplies)
+            .apply()
+    }
+
+    private fun clearCurrentWeekDraft(currentWeekStart: Long) {
+        prefs.edit()
+            .putLong("draft.weekStart", currentWeekStart)
+            .putString("draft.services", "")
+            .putString("draft.cashTips", "")
+            .putString("draft.cardTips", "")
+            .putString("draft.supplies", "")
+            .apply()
     }
 
     fun saveWeek(week: SavedWeek) {

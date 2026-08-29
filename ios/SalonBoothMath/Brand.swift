@@ -10,8 +10,8 @@ enum Brand {
     static let mutedInk = muted
     static let berry = Color(hex: 0x4B0728)
     static let hotPink = Color(hex: 0xFF3D6E)
-    static let warning = Color(hex: 0xFFD08A)
-    static let error = Color(hex: 0xFF8A83)
+    static let warning = hotPink
+    static let error = hotPink
     static let line = Color.white.opacity(0.22)
 
     static let screenPadding: CGFloat = 22

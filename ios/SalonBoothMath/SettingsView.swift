@@ -23,21 +23,27 @@ struct SettingsView: View {
     @State private var taxText = ""
     @State private var extraFeesText = ""
 
+    private var language: AppLanguage { AppLanguage.current(appLanguage) }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
                 HStack(spacing: 14) {
                     BrandMark(size: 58)
-                    VStack(alignment: .leading, spacing: 3) {
+                    VStack(alignment: .leading, spacing: 4) {
                         Text("Salon Booth Math")
                             .font(Brand.font(22, weight: .heavy))
-                        Text("Simple money math for salon professionals")
-                            .font(Brand.font(14))
-                            .foregroundStyle(Brand.muted)
+                        Text(copy(
+                            en: "Simple money math for salon professionals",
+                            es: "Cálculos simples de dinero para profesionales de salón",
+                            vi: "Tính tiền đơn giản cho người làm salon"
+                        ))
+                        .font(Brand.font(16))
+                        .foregroundStyle(Brand.muted)
                     }
                 }
 
-                sectionTitle(AppLanguage.current(appLanguage).languageTitle)
+                sectionTitle(language.languageTitle)
                 LanguagePicker(selection: $appLanguage)
 
                 sectionTitle(String(localized: "settings.trade"))
@@ -82,12 +88,10 @@ struct SettingsView: View {
                 settingField("settings.extraFees", text: $extraFeesText, prefix: "$", suffix: nil)
 
                 Text("settings.disclaimer")
-                    .font(Brand.font(15))
+                    .font(Brand.font(16))
                     .foregroundStyle(Brand.mutedInk)
 
-                PrimaryButton(title: String(localized: "settings.save")) {
-                    save()
-                }
+                PrimaryButton(title: String(localized: "settings.save")) { save() }
 
                 legalSupportSection
             }
@@ -103,43 +107,39 @@ struct SettingsView: View {
 
     private var legalSupportSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            sectionTitle("Legal & Support")
+            sectionTitle(copy(en: "Legal & Support", es: "Legal y soporte", vi: "Pháp lý & hỗ trợ"))
 
-            NavigationLink {
-                PrivacyPolicyView()
-            } label: {
-                settingsRow("Privacy Policy", icon: "hand.raised.fill")
+            NavigationLink { PrivacyPolicyView() } label: {
+                settingsRow(copy(en: "Privacy Policy", es: "Política de privacidad", vi: "Chính sách quyền riêng tư"), icon: "hand.raised.fill")
             }
 
-            NavigationLink {
-                TermsOfUseView()
-            } label: {
-                settingsRow("Terms of Use", icon: "doc.text.fill")
+            NavigationLink { TermsOfUseView() } label: {
+                settingsRow(copy(en: "Terms of Use", es: "Términos de uso", vi: "Điều khoản sử dụng"), icon: "doc.text.fill")
             }
 
             Link(destination: URL(string: "mailto:support@everittventures.com?subject=Salon%20Booth%20Math%20Support")!) {
-                settingsRow("Contact Support", icon: "envelope.fill")
+                settingsRow(copy(en: "Contact Support", es: "Contactar soporte", vi: "Liên hệ hỗ trợ"), icon: "envelope.fill")
             }
 
-            Button {
-                Task { await purchases.restore() }
-            } label: {
-                settingsRow("Restore Purchases", icon: "arrow.clockwise")
+            Button { Task { await purchases.restore() } } label: {
+                settingsRow(copy(en: "Restore Purchases", es: "Restaurar compras", vi: "Khôi phục giao dịch mua"), icon: "arrow.clockwise")
             }
 
-            NavigationLink {
-                AboutSalonBoothMathView()
-            } label: {
-                settingsRow("About", icon: "info.circle.fill")
+            NavigationLink { AboutSalonBoothMathView() } label: {
+                settingsRow(copy(en: "About", es: "Acerca de", vi: "Giới thiệu"), icon: "info.circle.fill")
             }
 
-            Text("Calculations and tax reserve estimates are provided for informational purposes only and are not tax, accounting, financial, or legal advice.")
-                .font(Brand.font(14))
-                .foregroundStyle(Brand.muted)
-                .fixedSize(horizontal: false, vertical: true)
+            Text(copy(
+                en: "Calculations and tax reserve estimates are for informational purposes only and are not tax, accounting, financial, or legal advice.",
+                es: "Los cálculos y las estimaciones de reserva para impuestos son solo informativos y no constituyen asesoría fiscal, contable, financiera ni legal.",
+                vi: "Các phép tính và ước tính khoản để dành cho thuế chỉ mang tính thông tin, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý."
+            ))
+            .font(Brand.font(16))
+            .foregroundStyle(Brand.muted)
+            .fixedSize(horizontal: false, vertical: true)
 
             Text("© 2026 Everitt Ventures LLC")
-                .font(Brand.font(13))
+                .font(Brand.font(16))
                 .foregroundStyle(Brand.muted)
         }
         .padding(.top, 8)
@@ -156,7 +156,7 @@ struct SettingsView: View {
                 .foregroundStyle(Brand.ink)
             Spacer()
             Image(systemName: "chevron.right")
-                .font(.system(size: 13, weight: .bold))
+                .font(.system(size: 16, weight: .bold))
                 .foregroundStyle(Brand.muted)
         }
         .padding(.horizontal, 16)
@@ -194,71 +194,69 @@ struct SettingsView: View {
         taxBasisPoints = MoneyMath.basisPoints(fromPercentText: taxText, fallback: 2500)
         extraFeesCents = MoneyMath.cents(from: extraFeesText)
     }
+
+    private func copy(en: String, es: String, vi: String) -> String {
+        switch language {
+        case .english: en
+        case .spanish: es
+        case .vietnamese: vi
+        }
+    }
 }
 
 private struct PrivacyPolicyView: View {
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
+    private var language: AppLanguage { AppLanguage.current(appLanguage) }
+
     var body: some View {
-        LegalTextView(
-            title: "Privacy Policy",
-            sections: [
-                ("Privacy first", "Salon Booth Math is designed to work without an account. Your calculator entries, settings, and saved week history are stored on your device."),
-                ("Data collection", "Salon Booth Math does not require you to provide a name, email address, salon name, client information, or other personal profile information to use the calculator."),
-                ("Purchases", "Lifetime Access purchases are processed by Apple through the App Store. Apple handles payment information. Salon Booth Math uses StoreKit only to determine whether Lifetime Access is unlocked."),
-                ("Support", "If you contact support, we receive the information you choose to include in your message so we can respond to your request."),
-                ("Your control", "You can remove locally stored app data by deleting the app from your device."),
-                ("Contact", "Privacy questions may be sent to support@everittventures.com. Salon Booth Math is provided by Everitt Ventures LLC.")
-            ]
-        )
+        let content = privacyContent(language)
+        LegalTextView(title: content.title, sections: content.sections)
     }
 }
 
 private struct TermsOfUseView: View {
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
+    private var language: AppLanguage { AppLanguage.current(appLanguage) }
+
     var body: some View {
-        LegalTextView(
-            title: "Terms of Use",
-            sections: [
-                ("Purpose", "Salon Booth Math is a calculation and record-keeping tool for salon professionals. It provides estimates based on the information and settings you enter."),
-                ("No professional advice", "Results, including take-home amounts and tax reserve estimates, are informational only. They are not tax, accounting, financial, employment, or legal advice."),
-                ("Your inputs", "You are responsible for checking your booth rent, commission terms, card fees, tips, expenses, taxes, and other inputs. Actual earnings and obligations may differ from app estimates."),
-                ("Lifetime Access", "Lifetime Access is a one-time, non-consumable in-app purchase tied to the Apple account used to purchase it. Eligible purchases can be restored through the app."),
-                ("Availability", "We may update the app to improve reliability, compatibility, calculations, or presentation. We do not guarantee that every estimate will match payroll, tax filings, salon statements, or payment processor records."),
-                ("Provider", "Salon Booth Math is provided by Everitt Ventures LLC. Questions may be sent to support@everittventures.com.")
-            ]
-        )
+        let content = termsContent(language)
+        LegalTextView(title: content.title, sections: content.sections)
     }
 }
 
 private struct AboutSalonBoothMathView: View {
-    private var version: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-    }
-
-    private var build: String {
-        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
-    }
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
+    private var language: AppLanguage { AppLanguage.current(appLanguage) }
+    private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
+    private var build: String { Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1" }
 
     var body: some View {
         VStack(spacing: 18) {
             BrandMark(size: 92)
             Text("Salon Booth Math")
                 .font(Brand.font(30, weight: .heavy))
-            Text("Booth rent and commission take-home math without the salon-management clutter.")
-                .font(Brand.font(17))
-                .foregroundStyle(Brand.muted)
-                .multilineTextAlignment(.center)
-            Text("Version \(version) (\(build))")
-                .font(Brand.font(15))
+            Text(localized(
+                language,
+                en: "Booth rent and commission take-home math without the salon-management clutter.",
+                es: "Cálculo de ingresos netos para renta de puesto y comisión, sin el exceso de un sistema de gestión de salón.",
+                vi: "Tính tiền còn lại cho thuê booth và hoa hồng, không kèm sự rườm rà của phần mềm quản lý salon."
+            ))
+            .font(Brand.font(17))
+            .foregroundStyle(Brand.muted)
+            .multilineTextAlignment(.center)
+            Text(localized(language, en: "Version", es: "Versión", vi: "Phiên bản") + " \(version) (\(build))")
+                .font(Brand.font(16))
                 .foregroundStyle(Brand.muted)
             Spacer()
             Text("© 2026 Everitt Ventures LLC")
-                .font(Brand.font(14))
+                .font(Brand.font(16))
                 .foregroundStyle(Brand.muted)
         }
         .padding(Brand.screenPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Brand.page.ignoresSafeArea())
         .foregroundStyle(Brand.ink)
-        .navigationTitle("About")
+        .navigationTitle(localized(language, en: "About", es: "Acerca de", vi: "Giới thiệu"))
         .navigationBarTitleDisplayMode(.inline)
         .standardNavigationControls()
     }
@@ -272,13 +270,10 @@ private struct LegalTextView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 BrandMark(size: 62)
-                Text(title)
-                    .font(Brand.font(30, weight: .heavy))
-
+                Text(title).font(Brand.font(30, weight: .heavy))
                 ForEach(Array(sections.enumerated()), id: \.offset) { _, section in
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(section.0)
-                            .font(Brand.font(19, weight: .heavy))
+                        Text(section.0).font(Brand.font(19, weight: .heavy))
                         Text(section.1)
                             .font(Brand.font(16))
                             .foregroundStyle(Brand.muted)
@@ -293,5 +288,77 @@ private struct LegalTextView: View {
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
         .standardNavigationControls()
+    }
+}
+
+private func privacyContent(_ language: AppLanguage) -> (title: String, sections: [(String, String)]) {
+    switch language {
+    case .english:
+        return ("Privacy Policy", [
+            ("Privacy first", "Salon Booth Math works without an account. Your calculator entries, settings, and saved week history are stored on your device."),
+            ("Data collection", "You do not need to provide a name, email address, salon name, client information, or personal profile to use the calculator."),
+            ("Purchases", "Lifetime purchases are processed by Apple through the App Store. Apple handles payment information. Salon Booth Math uses StoreKit only to determine whether Lifetime access is unlocked."),
+            ("Support", "If you contact support, we receive only the information you choose to include so we can respond."),
+            ("Your control", "You can remove locally stored app data by deleting the app from your device."),
+            ("Contact", "Privacy questions may be sent to support@everittventures.com. Salon Booth Math is provided by Everitt Ventures LLC.")
+        ])
+    case .spanish:
+        return ("Política de privacidad", [
+            ("Privacidad primero", "Salon Booth Math funciona sin una cuenta. Tus datos del cálculo, configuración e historial de semanas guardadas se almacenan en tu dispositivo."),
+            ("Recopilación de datos", "No necesitas proporcionar nombre, correo electrónico, nombre del salón, información de clientes ni un perfil personal para usar la calculadora."),
+            ("Compras", "Las compras Lifetime se procesan por Apple mediante App Store. Apple gestiona la información de pago. Salon Booth Math usa StoreKit solo para saber si Lifetime está desbloqueado."),
+            ("Soporte", "Si contactas soporte, recibimos únicamente la información que decidas incluir para poder responder."),
+            ("Tu control", "Puedes eliminar los datos guardados localmente borrando la app de tu dispositivo."),
+            ("Contacto", "Puedes enviar preguntas de privacidad a support@everittventures.com. Salon Booth Math es ofrecida por Everitt Ventures LLC.")
+        ])
+    case .vietnamese:
+        return ("Chính sách quyền riêng tư", [
+            ("Ưu tiên quyền riêng tư", "Salon Booth Math hoạt động không cần tài khoản. Dữ liệu tính toán, cài đặt và lịch sử tuần đã lưu được lưu trên thiết bị của bạn."),
+            ("Thu thập dữ liệu", "Bạn không cần cung cấp tên, email, tên salon, thông tin khách hàng hoặc hồ sơ cá nhân để dùng máy tính."),
+            ("Giao dịch mua", "Gói Lifetime được Apple xử lý qua App Store. Apple quản lý thông tin thanh toán. Salon Booth Math chỉ dùng StoreKit để xác định Lifetime đã được mở khóa hay chưa."),
+            ("Hỗ trợ", "Nếu bạn liên hệ hỗ trợ, chúng tôi chỉ nhận thông tin bạn chủ động gửi để có thể phản hồi."),
+            ("Quyền kiểm soát", "Bạn có thể xóa dữ liệu lưu cục bộ bằng cách xóa ứng dụng khỏi thiết bị."),
+            ("Liên hệ", "Câu hỏi về quyền riêng tư có thể gửi đến support@everittventures.com. Salon Booth Math do Everitt Ventures LLC cung cấp.")
+        ])
+    }
+}
+
+private func termsContent(_ language: AppLanguage) -> (title: String, sections: [(String, String)]) {
+    switch language {
+    case .english:
+        return ("Terms of Use", [
+            ("Purpose", "Salon Booth Math is a calculation and record-keeping tool for salon professionals. It provides estimates based on the information and settings you enter."),
+            ("No professional advice", "Results, including take-home amounts and tax reserve estimates, are informational only and are not tax, accounting, financial, employment, or legal advice."),
+            ("Your inputs", "You are responsible for checking your booth rent, commission terms, card fees, tips, expenses, taxes, and other inputs. Actual earnings and obligations may differ from app estimates."),
+            ("Lifetime Access", "Lifetime Access is a one-time, non-consumable in-app purchase tied to the Apple account used to purchase it. Eligible purchases can be restored through the app."),
+            ("Availability", "We may update the app to improve reliability, compatibility, calculations, or presentation. We do not guarantee that every estimate will match payroll, tax filings, salon statements, or payment processor records."),
+            ("Provider", "Salon Booth Math is provided by Everitt Ventures LLC. Questions may be sent to support@everittventures.com.")
+        ])
+    case .spanish:
+        return ("Términos de uso", [
+            ("Propósito", "Salon Booth Math es una herramienta de cálculo y registro para profesionales de salón. Ofrece estimaciones basadas en la información y configuración que ingresas."),
+            ("Sin asesoría profesional", "Los resultados, incluidos los ingresos netos y las reservas estimadas para impuestos, son solo informativos y no constituyen asesoría fiscal, contable, financiera, laboral ni legal."),
+            ("Tus datos", "Eres responsable de verificar renta de puesto, comisión, cargos de tarjeta, propinas, gastos, impuestos y otros valores. Los ingresos y obligaciones reales pueden ser diferentes."),
+            ("Acceso Lifetime", "Lifetime es una compra única no consumible vinculada a la cuenta Apple utilizada. Las compras elegibles pueden restaurarse desde la app."),
+            ("Disponibilidad", "Podemos actualizar la app para mejorar fiabilidad, compatibilidad, cálculos o presentación. No garantizamos que cada estimación coincida con nómina, impuestos, estados del salón o procesadores de pago."),
+            ("Proveedor", "Salon Booth Math es ofrecida por Everitt Ventures LLC. Puedes enviar preguntas a support@everittventures.com.")
+        ])
+    case .vietnamese:
+        return ("Điều khoản sử dụng", [
+            ("Mục đích", "Salon Booth Math là công cụ tính toán và lưu theo dõi dành cho người làm salon. Ứng dụng đưa ra ước tính dựa trên thông tin và cài đặt bạn nhập."),
+            ("Không phải tư vấn chuyên môn", "Kết quả, gồm tiền còn lại và khoản để dành thuế ước tính, chỉ mang tính thông tin và không phải tư vấn thuế, kế toán, tài chính, lao động hoặc pháp lý."),
+            ("Dữ liệu bạn nhập", "Bạn có trách nhiệm kiểm tra tiền booth, điều khoản hoa hồng, phí thẻ, tiền tip, chi phí, thuế và các dữ liệu khác. Thu nhập và nghĩa vụ thực tế có thể khác với ước tính trong ứng dụng."),
+            ("Quyền truy cập Lifetime", "Lifetime là giao dịch mua một lần, không tiêu hao, gắn với tài khoản Apple đã dùng để mua. Giao dịch đủ điều kiện có thể được khôi phục trong ứng dụng."),
+            ("Khả dụng", "Chúng tôi có thể cập nhật ứng dụng để cải thiện độ ổn định, tương thích, phép tính hoặc cách hiển thị. Không bảo đảm mọi ước tính sẽ khớp với bảng lương, hồ sơ thuế, sao kê salon hoặc dữ liệu bộ xử lý thanh toán."),
+            ("Nhà cung cấp", "Salon Booth Math do Everitt Ventures LLC cung cấp. Câu hỏi có thể gửi đến support@everittventures.com.")
+        ])
+    }
+}
+
+private func localized(_ language: AppLanguage, en: String, es: String, vi: String) -> String {
+    switch language {
+    case .english: en
+    case .spanish: es
+    case .vietnamese: vi
     }
 }

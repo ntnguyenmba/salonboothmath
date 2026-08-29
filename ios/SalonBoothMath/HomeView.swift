@@ -69,11 +69,7 @@ struct HomeView: View {
 
     private var payContext: String {
         if payModel == .booth { return "\(String(localized: "pay.booth")) · \(formatCurrency(weeklyRentCents))/\(String(localized: "rent.week"))" }
-        switch AppLanguage.current(appLanguage) {
-        case .english: return "You keep \(commissionCutBasisPoints / 100)% + tips"
-        case .spanish: return "Te quedas con \(commissionCutBasisPoints / 100)% + propinas"
-        case .vietnamese: return "Bạn giữ \(commissionCutBasisPoints / 100)% + tiền tip"
-        }
+        String(format: String(localized: "home.keepCut"), commissionCutBasisPoints / 100)
     }
 
     private var lifetimePrice: String { purchases.product?.displayPrice ?? "$4.99" }
@@ -135,7 +131,7 @@ struct HomeView: View {
                 Menu {
                     Picker(AppLanguage.current(appLanguage).languageTitle, selection: $appLanguage) { ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language.rawValue) } }
                     Divider()
-                    if !purchases.isUnlocked { Button("Unlock Lifetime \(lifetimePrice)") { pendingAction = nil; showPaywall = true } }
+                    if !purchases.isUnlocked { Button(String(format: String(localized: "paywall.unlockLifetime"), lifetimePrice)) { pendingAction = nil; showPaywall = true } }
                     Button("home.share") { shareCurrentWeek() }
                     Button("history.title") { requireUnlock(.history) }
                     Button("compare.title") { requireUnlock(.compare) }
@@ -245,17 +241,24 @@ struct PaywallView: View {
     @ObservedObject var purchases: PurchaseManager
     let completion: (Bool) -> Void
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
-    private var unlockTitle: String { guard let price = purchases.product?.displayPrice else { return "Unlock Lifetime · $4.99" }; return "Unlock Lifetime · \(price)" }
+    private var unlockTitle: String {
+        String(format: String(localized: "paywall.unlockLifetime"), purchases.product?.displayPrice ?? "$4.99")
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             HStack { Capsule().fill(Brand.hotPink).frame(width: 54, height: 6); Spacer(); Button(AppLanguage.current(appLanguage).cancelTitle) { completion(false) }.font(Brand.font(16)).foregroundStyle(Brand.ink) }
-            Text("Salon Booth Math Lifetime").font(Brand.font(28, weight: .heavy))
-            Text("Keep this week. Look back later. Compare booth vs commission. Once. No subscription.").font(Brand.font(18)).fixedSize(horizontal: false, vertical: true)
-            VStack(alignment: .leading, spacing: 12) { Label("Save every week", systemImage: "checkmark.circle.fill"); Label("View earnings history", systemImage: "checkmark.circle.fill"); Label("Compare booth vs commission", systemImage: "checkmark.circle.fill"); Label("One-time purchase. No subscription.", systemImage: "checkmark.circle.fill") }.font(Brand.font(16)).foregroundStyle(Brand.ink)
+            Text("paywall.lifetimeTitle").font(Brand.font(28, weight: .heavy))
+            Text("paywall.lifetimeBody").font(Brand.font(18)).fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 12) {
+                Label("paywall.saveWeeks", systemImage: "checkmark.circle.fill")
+                Label("paywall.viewHistory", systemImage: "checkmark.circle.fill")
+                Label("paywall.compareModels", systemImage: "checkmark.circle.fill")
+                Label("paywall.once", systemImage: "checkmark.circle.fill")
+            }.font(Brand.font(16)).foregroundStyle(Brand.ink)
             Spacer(minLength: 8)
             PrimaryButton(title: unlockTitle) { Task { completion(await purchases.purchase()) } }
             Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(18)).foregroundStyle(Brand.hotPink).frame(maxWidth: .infinity, minHeight: 56) }
-            Button { completion(false) } label: { Text("Continue Free").font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 56) }
+            Button { completion(false) } label: { Text("paywall.continueFree").font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 56) }
         }.padding(Brand.screenPadding).background(Brand.page).foregroundStyle(Brand.ink)
     }
 }

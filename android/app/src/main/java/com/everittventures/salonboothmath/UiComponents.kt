@@ -37,15 +37,11 @@ internal val AppFontFamily = FontFamily.SansSerif
 @Composable
 internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable ColumnScope.() -> Unit) {
     Column(
-        Modifier
-            .fillMaxSize()
-            .background(Page)
-            .padding(22.dp)
-            .verticalScroll(rememberScrollState()),
+        Modifier.fillMaxSize().background(Page).padding(22.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
         TextButton(onClick = back) {
-            Text("‹ ${stringResource(R.string.this_week)}", color = Color.White, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+            Text("‹ ${stringResource(R.string.this_week)}", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
         }
         Text(title, color = Ink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
         content()
@@ -55,7 +51,7 @@ internal fun SimpleScreen(title: String, back: () -> Unit, content: @Composable 
 @Composable
 internal fun Metric(label: String, value: Long) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(label, color = Pink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+        Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
         Text(formatCents(value), color = Ink, fontSize = 40.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
     }
 }
@@ -71,7 +67,7 @@ internal fun CostRow(label: String, value: Long) {
 @Composable
 internal fun MoneyField(label: String, value: String, showCurrency: Boolean = true, onValue: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-        Text(label, color = Ink, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        Text(label, color = Ink, fontSize = 19.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
         OutlinedTextField(
             value = value,
             onValueChange = onValue,
@@ -113,13 +109,10 @@ internal fun SingleChoiceSegment(options: List<Pair<String, String>>, selected: 
             Button(
                 onClick = { onSelect(id) },
                 modifier = Modifier.weight(1f).height(56.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selected == id) Pink else Surface,
-                    contentColor = Color.White
-                ),
+                colors = ButtonDefaults.buttonColors(containerColor = if (selected == id) Pink else Surface, contentColor = Color.White),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(label, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+                Text(label, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
             }
         }
     }
@@ -127,24 +120,15 @@ internal fun SingleChoiceSegment(options: List<Pair<String, String>>, selected: 
 
 @Composable
 internal fun SettingToggle(label: String, checked: Boolean, onChecked: (Boolean) -> Unit) {
-    Row(
-        Modifier.fillMaxWidth(),
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    Row(Modifier.fillMaxWidth(), verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
         Text(label, color = Ink, fontSize = 18.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily, modifier = Modifier.weight(1f))
-        Switch(
-            checked = checked,
-            onCheckedChange = onChecked,
-            colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Pink)
-        )
+        Switch(checked = checked, onCheckedChange = onChecked, colors = SwitchDefaults.colors(checkedThumbColor = Color.White, checkedTrackColor = Pink))
     }
 }
 
 @Composable
 internal fun payContext(store: AppStore): String = if (store.payModel == "booth") {
-    val suffix = if (store.rentPeriod == "month") stringResource(R.string.month) else stringResource(R.string.week)
-    "${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/$suffix"
+    "${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/${stringResource(R.string.week)}"
 } else {
     stringResource(R.string.keep_cut, store.commissionCutBasisPoints / 100)
 }

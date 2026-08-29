@@ -6,11 +6,26 @@ Bold, grown-up, easy to read, beauty-industry friendly, and deliberately simple 
 
 Pacing can feel immediate, but there are no mascots, streaks, confetti, childish rewards, or game chrome.
 
+## Surface
+
+The app is a wine room, not a white spreadsheet.
+
+- Page: wine `#4B0728`
+- Raised fields / cards: darker wine `#35051D` to `#5A0A31`
+- Reading text on wine: `#FFFFFF`
+- Hot pink `#FF3D6E` is tap, focus, crown, and selected accent only
+- Warning: warm highlight plus words, never color alone
+- Error: distinct from warning plus words
+
+Rule: **Wine is the salon dark. White does the reading. Pink is the tap.**
+
+Do not flip Home back to a white page. The website storefront may use wine/pink/white in a marketing layout; the calculator itself stays wine.
+
 ## Type
 
-Brand face: **native system rounded** on both platforms. iOS uses SwiftUI's rounded system design; Android uses the platform system sans with bold/extrabold weights. Do not claim or require a bundled custom font unless the font asset is actually shipped.
+Brand face: **native system rounded** on both platforms. iOS uses SwiftUI rounded system design. Android uses the platform sans with bold/extrabold weights.
 
-Do not use Inter or serif faces.
+Do not claim Nunito, Inter, or any bundled custom font unless the font files are actually shipped and registered.
 
 - Chrome/week label: 18px / 700
 - Field labels: 18-20px / 700
@@ -20,33 +35,18 @@ Do not use Inter or serif faces.
 - Take-home amount: 52-64px / 800, line-height 1.0, tabular figures
 - Breakdown rows: 18px / 700
 - Buttons: 18-20px / 800
+- History metric labels: 16px minimum
 
 Never go below 16px. Do not use 300 or 400 weights for visible app copy.
-
-## Colors
-
-- Page/cards: `#FFFFFF`
-- Ink: `#0B1220`
-- Berry: `#4B0728`
-- Text on berry: `#FFFFFF`
-- Hot pink: `#FF3D6E`
-- Warning: `#C2410C`
-- Error: `#B42318`
-- Dividers: ink at 8% opacity
-
-Rule: **Berry is the salon dark. Pink is the tap. Ink does the reading.**
-
-Hot pink is for primary buttons, focus rings, the 4px header crown, and tiny decorative accents only. Do not use it for paragraphs, money, headings, or small labels.
 
 ## Controls
 
 - Height: 56-64px
 - Radius: 16-20px
 - Large internal padding
-- Fields: true white with a clearly visible ink border; active fields use a stronger hot-pink focus edge
+- Fields: darker wine fill with a visible white/pink edge; active fields use a stronger hot-pink focus edge
 - Focus must not depend on low-contrast color alone
-- Selected trade/pay tile: berry fill, white icon and label, optional pink ring
-- Unselected tile: white, ink icon and label
+- Selected trade/pay tile: wine fill, white icon and label, optional pink ring
 
 ## Spacing
 
@@ -65,33 +65,35 @@ Do not push cards or text against screen edges.
 
 One screen = one obvious action + one dominant number or choice.
 
-Home is a single vertical flow: berry header with 4px hot-pink crown, four money fields (Services, Cash tips, Card tips, Supplies), the take-home result, Save, then Breakdown. Secondary destinations live behind the overflow menu.
+Home is a single vertical flow: wine header with 4px hot-pink crown, four money fields (Services, Cash tips, Card tips, Supplies), the take-home result, Save, then Breakdown. Secondary destinations live behind the overflow menu.
 
 Secondary math is behind `Breakdown`.
+
+History may show a compact last-4-weeks total, average week, and optional average hourly. It must not show charts, sparklines, or a metric dashboard.
 
 ## Ban list
 
 - Beige
 - Navy
 - Blush backgrounds
-- Pink body text/headlines
+- Pink body text used as the reading color
 - Gold
 - Pastel rainbow
 - Black + neon
 - Thin gray typography
-- Tiny captions
+- Tiny captions under 16px
 - Hairline-only interaction states
 - Dense dashboards
-- Metric card grids
+- Charts and sparklines
 - Multi-column forms
-- Charts on launch
 - Gradients
 - Decorative filler
 - Trade-specific themes
+- Claiming a custom font that is not bundled
 
 ## Accessibility
 
-Ink and berry are the reading colors. White is the primary surface. Text on berry/dark surfaces is full `#FFFFFF`, not muted white.
+White on wine is the reading pair. Text on wine/dark surfaces is full `#FFFFFF`, not muted white for primary copy. Muted white is allowed only for secondary support lines at 16px+.
 
 Warnings and errors use text/icon/shape in addition to color.
 

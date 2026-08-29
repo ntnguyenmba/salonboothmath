@@ -16,27 +16,25 @@ iOS + Android · English + Vietnamese + Spanish · $4.99 once · No subscription
 - Booth vs Commission comparison
 - Rent, commission, card fee, tax set-aside, and extra-fee settings
 - Native Share take-home card
-- Small iOS Home Screen widget
+- Small Home Screen widget
 - Offline, on-device data
 - No booking, clients, calendar, inventory, SMS, AI, or cloud sync
 
 ## Locked visual system
 
+Wine is the app surface. White is the reading color. Pink is the tap.
+
 - Native system rounded typography; no bundled custom font
-- White `#FFFFFF`
-- Ink `#0B1220`
-- Berry `#4B0728`
-- Hot pink `#FF3D6E`
-- Warning `#C2410C`
-- Error `#B42318`
-- Berry Home header with 4px hot-pink crown
-- Full white text on berry/dark surfaces
+- Wine `#4B0728` page
+- White `#FFFFFF` reading text
+- Hot pink `#FF3D6E` actions, focus, 4px crown
+- Warning and error use shape/text as well as color
 - Minimum text size 16px
 - Controls 56-64px high
 - Radius 16-20px
 - Home: four vertical money fields → take-home → Save → Breakdown
 - One action and one dominant number per screen
-- No beige, navy, blush fills, tiny text, dashboard grids, gradients, or faded copy
+- No beige, navy, blush fills, tiny text, dashboard grids, gradients, sparklines, or faded copy
 
 ## Repository rule
 

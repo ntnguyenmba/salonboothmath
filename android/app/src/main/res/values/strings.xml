@@ -17,6 +17,10 @@
     <string name="breakdown">See breakdown</string>
     <string name="compare">Compare</string>
     <string name="history">History</string>
+    <string name="last_four_weeks">Last 4 weeks</string>
+    <string name="average_week">Average week</string>
+    <string name="average_hourly">Average hourly</string>
+    <string name="take_home_trend">Take-home trend</string>
     <string name="settings">Settings</string>
     <string name="share">Share</string>
     <string name="more_options">More options</string>

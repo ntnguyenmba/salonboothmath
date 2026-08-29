@@ -6,7 +6,7 @@ enum Trade: String, CaseIterable, Identifiable, Codable {
     var titleKey: String { switch self { case .nail: "trade.nail"; case .hair: "trade.hair"; case .barber: "trade.barber"; case .esthetician: "trade.esthetician" } }
 }
 
-enum PayModel: String, CaseIterable, Identifiable, Codable { case booth, commission; var id: String { rawValue } }
+enum PayModel: String, CaseIterable, Identifiable, Codable { case booth, commission, hybrid; var id: String { rawValue } }
 enum RentPeriod: String, CaseIterable, Identifiable, Codable { case week, month; var id: String { rawValue } }
 enum TipOwner: String, CaseIterable, Identifiable, Codable { case you, house, split; var id: String { rawValue } }
 
@@ -28,13 +28,22 @@ struct MoneyMath {
     static func houseCut(services: Int, workerCut: Decimal) -> Int { services - servicePay(services: services, cut: workerCut) }
     static func hourlyTakeHome(takeHomeCents: Int, hours: Decimal) -> Int? { hours > 0 ? roundedCents(Decimal(takeHomeCents) / hours) : nil }
     static func taxReserve(takeHomeCents: Int, rate: Decimal) -> Int { takeHomeCents > 0 ? roundedCents(Decimal(takeHomeCents) * rate) : 0 }
-    static func boothTakeHome(services: Int, cashTips: Int, cardTips: Int, supplies: Int, weeklyRent: Int, extraFees: Int = 0, cardFeeRate: Decimal = 0.029, percentServicesOnCard: Decimal = 0.70) -> Int { services + cashTips + cardTips - weeklyRent - cardFees(services: services, cardTips: cardTips, cardFeeRate: cardFeeRate, percentServicesOnCard: percentServicesOnCard) - supplies - extraFees }
+
+    static func boothTakeHome(services: Int, cashTips: Int, cardTips: Int, supplies: Int, weeklyRent: Int, extraFees: Int = 0, cardFeeRate: Decimal = 0.029, percentServicesOnCard: Decimal = 0.70) -> Int {
+        services + cashTips + cardTips - weeklyRent - cardFees(services: services, cardTips: cardTips, cardFeeRate: cardFeeRate, percentServicesOnCard: percentServicesOnCard) - supplies - extraFees
+    }
+
     static func commissionTakeHome(services: Int, cashTips: Int, cardTips: Int, supplies: Int, cut: Decimal, tipOwner: TipOwner, workerPaysCardFees: Bool = false, extraFees: Int = 0, cardFeeRate: Decimal = 0.029, percentServicesOnCard: Decimal = 0.70) -> Int {
         let allTips = cashTips + cardTips
         let tips: Int = switch tipOwner { case .you: allTips; case .house: 0; case .split: roundedCents(Decimal(allTips) / 2) }
         let fees = workerPaysCardFees ? cardFees(services: services, cardTips: cardTips, cardFeeRate: cardFeeRate, percentServicesOnCard: percentServicesOnCard) : 0
         return servicePay(services: services, cut: cut) + tips - fees - supplies - extraFees
     }
+
+    static func hybridTakeHome(services: Int, cashTips: Int, cardTips: Int, supplies: Int, weeklyRent: Int, cut: Decimal, tipOwner: TipOwner, workerPaysCardFees: Bool = true, extraFees: Int = 0, cardFeeRate: Decimal = 0.029, percentServicesOnCard: Decimal = 0.70) -> Int {
+        commissionTakeHome(services: services, cashTips: cashTips, cardTips: cardTips, supplies: supplies, cut: cut, tipOwner: tipOwner, workerPaysCardFees: workerPaysCardFees, extraFees: extraFees, cardFeeRate: cardFeeRate, percentServicesOnCard: percentServicesOnCard) - weeklyRent
+    }
+
     static func weeklyRent(cents: Int, period: RentPeriod) -> Int { period == .week ? cents : roundedCents(Decimal(cents) / Decimal(string: "4.3333")!) }
 
     private static func parseNumber(_ raw: String) -> Decimal? {

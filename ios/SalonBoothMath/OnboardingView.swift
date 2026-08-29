@@ -7,7 +7,7 @@ struct OnboardingView: View {
     @AppStorage("payModel") private var savedPayModel = PayModel.booth.rawValue
     @AppStorage("rentCents") private var savedRentCents = 25000
     @AppStorage("rentPeriod") private var savedRentPeriod = RentPeriod.week.rawValue
-    @AppStorage("commissionCut") private var savedCommissionCut = 0.55
+    @AppStorage("commissionCutBasisPoints") private var commissionCutBasisPoints = 5500
     @State private var step = 0
     @State private var trade: Trade = .nail
     @State private var payModel: PayModel = .booth
@@ -37,7 +37,16 @@ struct OnboardingView: View {
     @ViewBuilder private var moneyStepInput: some View { if payModel == .booth { MoneyEntryField(text: $rent, prefix: "$", suffix: nil); Picker("", selection: $rentPeriod) { Text("rent.week").tag(RentPeriod.week); Text("rent.month").tag(RentPeriod.month) }.pickerStyle(.segmented).frame(height: 56); Text("rent.orMonthly").font(Brand.font(18)).foregroundStyle(Brand.mutedInk) } else { MoneyEntryField(text: $commission, prefix: nil, suffix: "%"); HStack(spacing: 10) { ForEach([50,55,60], id: \.self) { value in commissionPresetButton(value) } } } }
     private func commissionPresetButton(_ value: Int) -> some View { let selected = commission == "\(value)"; return Button("\(value)%") { commission = "\(value)" }.font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 56).background(selected ? Brand.berry : Brand.surface).clipShape(RoundedRectangle(cornerRadius: 16)).overlay(RoundedRectangle(cornerRadius: 16).stroke(selected ? Brand.hotPink : Brand.line, lineWidth: selected ? 3 : 2)) }
     private var doneStep: some View { VStack(spacing: 30) { Spacer(); Text("onboarding.done").font(Brand.font(36, weight: .heavy)).foregroundStyle(.white).multilineTextAlignment(.center); Spacer(); PrimaryButton(title: String(localized: "onboarding.cta")) { didCompleteOnboarding = true } }.padding(Brand.screenPadding).background(Brand.page) }
-    private func saveDefaults() { savedTrade = trade.rawValue; savedPayModel = payModel.rawValue; if payModel == .booth { savedRentCents = MoneyMath.cents(from: rent); savedRentPeriod = rentPeriod.rawValue } else { savedCommissionCut = (Double(commission) ?? 55) / 100 } }
+    private func saveDefaults() {
+        savedTrade = trade.rawValue
+        savedPayModel = payModel.rawValue
+        if payModel == .booth {
+            savedRentCents = MoneyMath.cents(from: rent)
+            savedRentPeriod = rentPeriod.rawValue
+        } else {
+            commissionCutBasisPoints = MoneyMath.basisPoints(fromPercentText: commission, fallback: 5500)
+        }
+    }
     private func symbol(for trade: Trade) -> String { switch trade { case .nail: "hand.raised.fill"; case .hair: "scissors"; case .barber: "scissors"; case .esthetician: "sparkles" } }
 }
 

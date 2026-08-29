@@ -19,14 +19,7 @@ enum Brand {
     static let controlHeight: CGFloat = 60
 
     static func font(_ size: CGFloat, weight: Font.Weight = .bold) -> Font {
-        let name: String
-        switch weight {
-        case .heavy, .black:
-            name = "Nunito-ExtraBold"
-        default:
-            name = "Nunito-Bold"
-        }
-        return .custom(name, size: size)
+        .system(size: size, weight: weight, design: .rounded)
     }
 }
 

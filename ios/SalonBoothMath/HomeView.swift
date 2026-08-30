@@ -75,11 +75,10 @@ struct HomeView: View {
         guard let v = Double(n), v > 0 else { return nil }
         return v
     }
-    private var lifetimePrice: String { purchases.product?.displayPrice ?? "$9.99" }
     private var payContext: String {
         switch payModel {
         case .booth:
-            return "\(L("br.rent", language: appLanguage)) · \(formatCurrency(weeklyRentCents, language: appLanguage))/\(L("rent.week", language: appLanguage))"
+            return "\(L(\"br.rent\", language: appLanguage)) · \(formatCurrency(weeklyRentCents, language: appLanguage))/\(L(\"rent.week\", language: appLanguage))"
         case .commission:
             return String(format: L("home.payContextSplit", table: "Hybrid", language: appLanguage), commissionCutBasisPoints / 100, max(0, 100 - commissionCutBasisPoints / 100))
         case .hybrid:
@@ -172,13 +171,16 @@ struct HomeView: View {
 
     private var header: some View {
         ZStack {
-            VStack(spacing: 3) {
-                Text(isCurrentWeek ? L("home.thisWeek", language: appLanguage) : formatWeekRange(activeWeekStart, language: appLanguage))
-                    .font(Brand.font(19))
-                Text(payContext)
-                    .font(Brand.font(16))
-                    .foregroundStyle(.white)
+            Button { showSettings = true } label: {
+                VStack(spacing: 3) {
+                    Text(isCurrentWeek ? L("home.thisWeek", language: appLanguage) : formatWeekRange(activeWeekStart, language: appLanguage))
+                        .font(Brand.font(19))
+                    Text(payContext)
+                        .font(Brand.font(16))
+                        .foregroundStyle(.white)
+                }
             }
+            .buttonStyle(.plain)
             HStack {
                 if !isCurrentWeek {
                     Button { returnToCurrentWeek() } label: {
@@ -350,10 +352,14 @@ struct HomeView: View {
     }
 
     private func shareCurrentWeek() {
-        guard let image = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart) else { return }
         let amount = formatCurrency(takeHomeCents, language: appLanguage)
         let week = formatWeekRange(activeWeekStart, language: appLanguage)
-        sharePayload = SharePayload(items: [image, amount, week])
+        let text = "\(L(\"home.youTookHome\", language: appLanguage)) \(amount) · \(week)"
+        if let image = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart) {
+            sharePayload = SharePayload(items: [image, text])
+        } else {
+            sharePayload = SharePayload(items: [text])
+        }
     }
 
     private func openCompare() {

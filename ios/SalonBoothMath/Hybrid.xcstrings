@@ -1,0 +1,12 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "pay.hybrid" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Hybrid" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Híbrido" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hybrid" } } } },
+    "home.hybridContext" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "%@/week + keep %d%% + tips" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "%@/semana + conservas %d%% + propinas" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "%@/tuần + giữ %d%% + tip" } } } },
+    "compare.onHybrid" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "On hybrid" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Con híbrido" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nếu hybrid" } } } },
+    "br.taxNote" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Tax reserve is an optional estimate. It is not deducted from take-home." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "La reserva para impuestos es una estimación opcional. No se descuenta del neto." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khoản để dành thuế là ước tính tùy chọn. Khoản này không bị trừ khỏi tiền còn lại." } } } },
+    "settings.taxNote" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Optional estimate only. This does not reduce the take-home number." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Solo una estimación opcional. No reduce el neto mostrado." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chỉ là ước tính tùy chọn. Không làm giảm số tiền còn lại hiển thị." } } } },
+    "br.effectiveHourly" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Effective hourly" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Neto por hora" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thực nhận mỗi giờ" } } } }
+  },
+  "version" : "1.0"
+}

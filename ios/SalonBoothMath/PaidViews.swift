@@ -9,44 +9,109 @@ struct BreakdownView: View {
     @FocusState private var hoursFocused: Bool
 
     var body: some View {
-        ScrollView { VStack(alignment: .leading, spacing: 28) {
-            Text("home.breakdown").font(Brand.font(28, weight: .heavy))
-            VStack(spacing: 0) {
-                row("br.gross", grossCents); if payModel == .booth { row("br.rent", rentCents) }; if payModel == .commission { row("br.houseCut", houseCutCents) }; if cardFeesCents > 0 { row("br.cardFeesEst", cardFeesCents) }; row("br.supplies", suppliesCents); if extraFeesCents > 0 { row("br.extra", extraFeesCents) }; row("br.takeHome", takeHomeCents, strong: true); if taxReserveCents > 0 { row("br.taxReserve", taxReserveCents) }
-            }.clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
+        ScrollView {
+            VStack(alignment: .leading, spacing: 28) {
+                Text("home.breakdown").font(Brand.font(28, weight: .heavy))
+                VStack(spacing: 0) {
+                    row("br.gross", grossCents)
+                    if payModel != .commission { row("br.rent", rentCents) }
+                    if payModel != .booth { row("br.houseCut", houseCutCents) }
+                    if cardFeesCents > 0 { row("br.cardFeesEst", cardFeesCents) }
+                    row("br.supplies", suppliesCents)
+                    if extraFeesCents > 0 { row("br.extra", extraFeesCents) }
+                    row("br.takeHome", takeHomeCents, strong: true)
+                    if taxReserveCents > 0 { row("br.taxReserve", taxReserveCents) }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
 
-            VStack(alignment: .leading, spacing: 10) {
-                Text("settings.hours").font(Brand.font(17))
-                TextField("0", text: $hoursText)
-                    .keyboardType(.decimalPad)
-                    .focused($hoursFocused)
-                    .font(Brand.font(24, weight: .heavy))
-                    .padding(.horizontal, 16)
-                    .frame(minHeight: 58)
-                    .background(Brand.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-                    .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(hoursFocused ? Brand.hotPink : Brand.line, lineWidth: hoursFocused ? 3 : 2))
+                Text("br.taxNote")
+                    .font(Brand.font(16))
+                    .foregroundStyle(Brand.mutedInk)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("settings.hours").font(Brand.font(17))
+                    TextField("0", text: $hoursText)
+                        .keyboardType(.decimalPad)
+                        .focused($hoursFocused)
+                        .font(Brand.font(24, weight: .heavy))
+                        .padding(.horizontal, 16)
+                        .frame(minHeight: 58)
+                        .background(Brand.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(hoursFocused ? Brand.hotPink : Brand.line, lineWidth: hoursFocused ? 3 : 2))
+                    if let hourly = hourlyCents {
+                        HStack {
+                            Text("br.effectiveHourly").font(Brand.font(17))
+                            Spacer()
+                            Text("\(formatCurrency(hourly))/hr").font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                        }
+                    }
+                }
             }
-        }.padding(Brand.screenPadding) }
-        .background(Brand.page.ignoresSafeArea()).foregroundStyle(Brand.ink).standardNavigationControls()
+            .padding(Brand.screenPadding)
+        }
+        .background(Brand.page.ignoresSafeArea())
+        .foregroundStyle(Brand.ink)
+        .standardNavigationControls()
     }
+
+    private var hourlyCents: Int? {
+        let normalized = hoursText.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
+        guard let hours = Decimal(string: normalized), hours > 0 else { return nil }
+        return MoneyMath.hourlyTakeHome(takeHomeCents: takeHomeCents, hours: hours)
+    }
+
     private func row(_ key: LocalizedStringKey, _ cents: Int, strong: Bool = false) -> some View {
-        HStack { Text(key); Spacer(); Text(formatCurrency(cents)).monospacedDigit() }.font(Brand.font(strong ? 20 : 18, weight: .heavy)).padding(.horizontal, 18).frame(minHeight: 58).background(strong ? Brand.berry : Brand.surface).overlay(alignment: .bottom) { Rectangle().fill(Brand.line).frame(height: 1) }
+        HStack { Text(key); Spacer(); Text(formatCurrency(cents)).monospacedDigit() }
+            .font(Brand.font(strong ? 20 : 18, weight: .heavy))
+            .padding(.horizontal, 18)
+            .frame(minHeight: 58)
+            .background(strong ? Brand.berry : Brand.surface)
+            .overlay(alignment: .bottom) { Rectangle().fill(Brand.line).frame(height: 1) }
     }
 }
 
 struct CompareView: View {
-    let boothCents: Int, commissionCents: Int, commissionPercent: Int
+    let boothCents: Int, commissionCents: Int, hybridCents: Int, commissionPercent: Int
+
+    private var winner: Int { max(boothCents, commissionCents, hybridCents) }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 30) {
-            Text("compare.title").font(Brand.font(28, weight: .heavy))
-            comparison(label: String(localized: "compare.onBooth"), amount: boothCents, winner: boothCents >= commissionCents)
-            comparison(label: String(format: String(localized: "compare.onCommission"), "\(commissionPercent)%"), amount: commissionCents, winner: commissionCents > boothCents)
-            Text("compare.note").font(Brand.font(18)).foregroundStyle(Brand.mutedInk); Spacer()
-        }.padding(Brand.screenPadding).background(Brand.page.ignoresSafeArea()).foregroundStyle(Brand.ink).standardNavigationControls()
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                Text("compare.title").font(Brand.font(28, weight: .heavy))
+                comparison(label: String(localized: "compare.onBooth"), amount: boothCents, selected: boothCents == winner)
+                comparison(label: String(format: String(localized: "compare.onCommission"), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
+                comparison(label: String(localized: "compare.onHybrid"), amount: hybridCents, selected: hybridCents == winner)
+                Text("compare.note").font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
+            }
+            .padding(Brand.screenPadding)
+        }
+        .background(Brand.page.ignoresSafeArea())
+        .foregroundStyle(Brand.ink)
+        .standardNavigationControls()
     }
-    private func comparison(label: String, amount: Int, winner: Bool) -> some View {
-        HStack { VStack(alignment: .leading, spacing: 6) { Text(label).font(Brand.font(18)); Text(formatCurrency(amount)).font(Brand.font(42, weight: .heavy)).monospacedDigit() }; Spacer(); if winner { Image(systemName: "checkmark.circle.fill").font(.system(size: 34, weight: .bold)).foregroundStyle(Brand.hotPink).accessibilityLabel(Text("a11y.selected")) } }.padding(20).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(winner ? Brand.hotPink : Brand.line, lineWidth: winner ? 3 : 2))
+
+    private func comparison(label: String, amount: Int, selected: Bool) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(label).font(Brand.font(18))
+                Text(formatCurrency(amount)).font(Brand.font(42, weight: .heavy)).monospacedDigit()
+            }
+            Spacer()
+            if selected {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 34, weight: .bold))
+                    .foregroundStyle(Brand.hotPink)
+                    .accessibilityLabel(Text("a11y.selected"))
+            }
+        }
+        .padding(20)
+        .background(Brand.surface)
+        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(selected ? Brand.hotPink : Brand.line, lineWidth: selected ? 3 : 2))
     }
 }
 
@@ -81,11 +146,22 @@ struct HistoryView: View {
                             }
                             Spacer()
                             Text(formatCurrency(week.takeHomeCents)).font(Brand.font(22, weight: .heavy)).monospacedDigit()
-                        }.foregroundStyle(Brand.ink).padding(.horizontal, 18).frame(minHeight: 68).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
-                    }.buttonStyle(.plain)
+                        }
+                        .foregroundStyle(Brand.ink)
+                        .padding(.horizontal, 18)
+                        .frame(minHeight: 68)
+                        .background(Brand.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
+                    }
+                    .buttonStyle(.plain)
                 }
-            }.padding(Brand.screenPadding)
-        }.background(Brand.page.ignoresSafeArea()).foregroundStyle(Brand.ink).standardNavigationControls()
+            }
+            .padding(Brand.screenPadding)
+        }
+        .background(Brand.page.ignoresSafeArea())
+        .foregroundStyle(Brand.ink)
+        .standardNavigationControls()
     }
 
     private var metrics: some View {
@@ -105,7 +181,11 @@ struct HistoryView: View {
             Text(label).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
             Text(value).font(Brand.font(23, weight: .heavy)).monospacedDigit().minimumScaleFactor(0.75).lineLimit(1)
         }
-        .frame(maxWidth: .infinity, alignment: .leading).padding(16).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)).overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 1.5))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(Brand.surface)
+        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+        .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 1.5))
     }
 
     private func weekRange(_ start: Date) -> String {

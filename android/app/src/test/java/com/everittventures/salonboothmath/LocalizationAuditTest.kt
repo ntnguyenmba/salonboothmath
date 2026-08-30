@@ -50,6 +50,19 @@ class LocalizationAuditTest {
         val en = stringMap("values")
         val es = stringMap("values-es")
         val vi = stringMap("values-vi")
+        val required = listOf(
+            "you_took_home", "add_today", "add_to_week", "breakdown", "compare",
+            "save_week", "services", "cash_tips", "card_tips", "supplies",
+            "tips_explain_you", "tips_explain_house", "tips_explain_split",
+            "compare_verdict_booth", "compare_verdict_commission",
+            "compare_verdict_hybrid", "compare_verdict_tie", "this_week",
+            "booth_rent", "paywall_body", "history", "settings"
+        )
+        required.forEach { key ->
+            assertTrue("$key missing EN", en.containsKey(key))
+            assertTrue("$key missing ES", es.containsKey(key))
+            assertTrue("$key missing VI", vi.containsKey(key))
+        }
         assertEquals("You take home", en["you_took_home"])
         assertEquals("Te llevas", es["you_took_home"])
         assertEquals("Bạn còn lại", vi["you_took_home"])
@@ -59,6 +72,21 @@ class LocalizationAuditTest {
         assertTrue(en["compare_verdict_booth"]!!.contains("%1\$s"))
         assertTrue(es["compare_verdict_booth"]!!.contains("%1\$s"))
         assertTrue(vi["compare_verdict_booth"]!!.contains("%1\$s"))
+    }
+
+    @Test fun phoneEnglishDoesNotSupplySelectedAppCopy() {
+        val en = stringMap("values")
+        val es = stringMap("values-es")
+        val vi = stringMap("values-vi")
+        assertTrue(es["you_took_home"] != en["you_took_home"])
+        assertTrue(vi["you_took_home"] != en["you_took_home"])
+        assertTrue(es["add_today"] != en["add_today"])
+        assertTrue(vi["add_today"] != en["add_today"])
+        assertTrue(es["compare_verdict_booth"]!!.contains("más") || es["compare_verdict_booth"]!!.contains("deja"))
+        assertTrue(vi["compare_verdict_booth"]!!.contains("nhiều hơn") || vi["compare_verdict_booth"]!!.contains("tuần"))
+        assertEquals("es-US", localeFor("es").toLanguageTag())
+        assertEquals("vi-US", localeFor("vi").toLanguageTag())
+        assertEquals("en-US", localeFor("en").toLanguageTag())
     }
 
     @Test fun compareWinnerDeltaIsTheAnswerTheUserNeeds() {

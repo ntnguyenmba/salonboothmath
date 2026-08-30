@@ -94,13 +94,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tax reserve is an optional estimate. It is not deducted from take-home."
+            "value": "Tax set-aside is an optional estimate. It is not taken out of what you take home."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La reserva para impuestos es una estimación opcional. No se descuenta del neto."
+            "value": "La reserva para impuestos es una estimación opcional. No se descuenta de lo que te llevas."
           }
         },
         "vi": {
@@ -116,13 +116,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional estimate only. This does not reduce the take-home number."
+            "value": "Optional estimate only. This does not reduce what you take home."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo una estimación opcional. No reduce el neto mostrado."
+            "value": "Solo una estimación opcional. No reduce lo que te llevas."
           }
         },
         "vi": {

@@ -50,9 +50,9 @@ internal fun selectedAppLanguage(): String {
 }
 internal fun appLanguage(context: Context): String = context.getSharedPreferences("salon_booth_math", Context.MODE_PRIVATE).getString("app_language", "en") ?: "en"
 internal fun localeFor(language: String): Locale = when (language) {
-    "es" -> Locale("es")
-    "vi" -> Locale("vi")
-    else -> Locale.ENGLISH
+    "es" -> Locale.forLanguageTag("es-US")
+    "vi" -> Locale.forLanguageTag("vi-US")
+    else -> Locale.forLanguageTag("en-US")
 }
 internal fun formatCents(cents: Long, language: String = selectedAppLanguage()): String {
     val format = NumberFormat.getCurrencyInstance(localeFor(language))

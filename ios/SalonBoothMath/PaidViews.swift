@@ -159,7 +159,7 @@ struct HistoryView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(formatWeekRange(week.weekStart, language: appLanguage)).font(Brand.font(18))
                                 if let hours = week.hours, hours > 0 {
-                                    Text("\(hours.formatted(.number.precision(.fractionLength(0...1)))) \(L("history.hours", language: appLanguage))").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
+                                    Text("\(formatHoursLabel(hours, language: appLanguage)) \(L("history.hours", language: appLanguage))").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                                 }
                             }
                             Spacer()

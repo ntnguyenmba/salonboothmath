@@ -2,6 +2,7 @@ package com.everittventures.salonboothmath
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -51,10 +52,13 @@ object ShareCard {
         }
 
         val language = appLanguage(context)
+        val localized = context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+            setLocale(localeFor(language))
+        })
         val amount = formatCents(takeHomeCents, language)
         val week = weekRange(weekStartMillis, language)
 
-        canvas.drawText(context.getString(R.string.you_took_home), 76f, 190f, labelPaint)
+        canvas.drawText(localized.getString(R.string.you_took_home), 76f, 190f, labelPaint)
         canvas.drawText(amount, 76f, 430f, amountPaint)
         canvas.drawText(week, 76f, 560f, bodyPaint)
         canvas.drawText("Salon Booth Math", 76f, 930f, bodyPaint)

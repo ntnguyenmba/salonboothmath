@@ -23,9 +23,45 @@ final class LocalizationAuditTests: XCTestCase {
         }
     }
 
+    func testRequiredKeysExistInAllCatalogs() throws {
+        let required = [
+            "home.youTookHome", "home.breakdown", "home.save", "home.thisWeek",
+            "field.services", "field.tipsCash", "field.tipsCard", "field.supplies",
+            "compare.title", "compare.verdictBooth", "compare.verdictCommission",
+            "compare.verdictHybrid", "compare.verdictTie",
+            "history.title", "settings.language", "settings.aboutBody",
+            "settings.tipYou", "settings.tipHouse", "settings.tipSplit",
+            "paywall.unlockLifetime", "widget.description"
+        ]
+        let data = try Data(contentsOf: iosRoot().appendingPathComponent("SalonBoothMath/Localizable.xcstrings"))
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let strings = try XCTUnwrap(json["strings"] as? [String: Any])
+        for key in required {
+            XCTAssertNotNil(strings[key], "Missing required key \(key)")
+        }
+        let hybrid = [
+            "home.addToday", "home.addToWeek", "home.payContextSplit",
+            "tips.split5050", "nav.back", "nav.cancel"
+        ]
+        let hybridData = try Data(contentsOf: iosRoot().appendingPathComponent("SalonBoothMath/Hybrid.xcstrings"))
+        let hybridJSON = try XCTUnwrap(JSONSerialization.jsonObject(with: hybridData) as? [String: Any])
+        let hybridStrings = try XCTUnwrap(hybridJSON["strings"] as? [String: Any])
+        for key in hybrid {
+            XCTAssertNotNil(hybridStrings[key], "Missing Hybrid key \(key)")
+        }
+    }
+
     func testNoForbiddenLocaleCurrentInAppUI() throws {
         let hits = try scanSwift { $0.contains("Locale.current") }
         XCTAssertTrue(hits.isEmpty, "Locale.current used for app UI:\n\(hits.joined(separator: "\n"))")
+    }
+
+    func testFormattedValuesPassSelectedLocale() throws {
+        let hits = try scanSwift { line in
+            guard line.contains(".formatted(") else { return false }
+            return !line.contains("locale")
+        }
+        XCTAssertTrue(hits.isEmpty, ".formatted without locale:\n\(hits.joined(separator: "\n"))")
     }
 
     func testStringLocalizedAlwaysPassesSelectedLocale() throws {

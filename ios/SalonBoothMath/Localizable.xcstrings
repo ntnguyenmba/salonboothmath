@@ -122,7 +122,7 @@
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bạn nhận lương kiểu nào?"
+            "value": "Bạn nhận tiền theo kiểu nào?"
           }
         },
         "es": {
@@ -380,19 +380,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Split"
+            "value": "50-50"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chia"
+            "value": "Chia 50-50"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Se reparte"
+            "value": "50-50"
           }
         }
       }
@@ -710,7 +710,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Card fees (est.)"
+            "value": "Card fees (estimate)"
           }
         },
         "vi": {
@@ -722,7 +722,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comisión de tarjeta (est.)"
+            "value": "Comisión de tarjeta (estimado)"
           }
         }
       }
@@ -798,19 +798,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tax reserve"
+            "value": "Tax set-aside estimate"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Để dành thuế"
+            "value": "Ước tính để dành thuế"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reserva para impuestos"
+            "value": "Reserva estimada para impuestos"
           }
         }
       }
@@ -820,7 +820,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth rent is taking %@ of this week’s gross."
+            "value": "Booth rent is taking %@ of this week’s total."
           }
         },
         "vi": {
@@ -832,7 +832,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La renta del puesto representa %@ del bruto de esta semana."
+            "value": "La renta del puesto representa %@ del total de esta semana."
           }
         }
       }
@@ -930,19 +930,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Past weeks"
+            "value": "History"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Các tuần trước"
+            "value": "Lịch sử"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Semanas anteriores"
+            "value": "Historial"
           }
         }
       }
@@ -1068,13 +1068,13 @@
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nghề"
+            "value": "Nghề của bạn"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oficio"
+            "value": "A qué te dedicas"
           }
         }
       }
@@ -1084,13 +1084,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pay model"
+            "value": "How you get paid"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Modelo de pago"
+            "value": "Cómo te pagan"
           }
         },
         "vi": {
@@ -1216,19 +1216,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Worker pays card fees"
+            "value": "I pay the card processing fees"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El trabajador paga las comisiones de tarjeta"
+            "value": "Yo pago las comisiones de tarjeta"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thợ trả phí thẻ"
+            "value": "Tôi trả phí xử lý thẻ"
           }
         }
       }
@@ -1656,19 +1656,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "See this week’s take-home without opening the app."
+            "value": "See what you take home this week without opening the app."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xem tiền còn lại tuần này mà không cần mở ứng dụng."
+            "value": "Xem bạn còn lại bao nhiêu tuần này mà không cần mở ứng dụng."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mira el neto de esta semana sin abrir la app."
+            "value": "Mira cuánto te llevas esta semana sin abrir la app."
           }
         }
       }
@@ -1700,7 +1700,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You took home %@"
+            "value": "You take home %@"
           }
         },
         "vi": {
@@ -1712,7 +1712,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Te quedaste %@"
+            "value": "Te llevas %@"
           }
         }
       }

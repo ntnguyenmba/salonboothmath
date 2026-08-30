@@ -78,14 +78,21 @@ func inputCurrencyCents(_ cents: Int) -> String {
 }
 
 func formatWeekRange(_ start: Date, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = AppLanguage.current(language).locale
+    let locale = appLocale(language)
     let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start
-    let style = Date.FormatStyle.dateTime.month(.abbreviated).day().locale(locale)
-    return "\(start.formatted(style))–\(end.formatted(style))"
+    return "\(start.formatted(.dateTime.month(.abbreviated).day().locale(locale)))–\(end.formatted(.dateTime.month(.abbreviated).day().locale(locale)))"
 }
 
 func formatDay(_ date: Date, language: String = AppLanguage.stored.rawValue) -> String {
-    date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(AppLanguage.current(language).locale))
+    date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(appLocale(language)))
+}
+
+func formatHoursLabel(_ hours: Double, language: String = AppLanguage.stored.rawValue) -> String {
+    hours.formatted(.number.precision(.fractionLength(0...1)).locale(appLocale(language)))
+}
+
+func formatHoursInput(_ hours: Double) -> String {
+    hours.formatted(.number.precision(.fractionLength(0...1)).locale(Locale(identifier: "en_US_POSIX")))
 }
 
 struct LanguagePicker: View {

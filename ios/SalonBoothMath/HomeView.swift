@@ -100,6 +100,7 @@ struct HomeView: View {
                 }
             }
             .foregroundStyle(Brand.ink)
+            .environment(\.locale, language.locale)
             .navigationDestination(isPresented: $showBreakdown) {
                 BreakdownView(
                     grossCents: grossCents,
@@ -130,6 +131,7 @@ struct HomeView: View {
         }
         .sheet(isPresented: $showAddToday) {
             AddTodaySheet { addToday($0) }
+                .environment(\.locale, language.locale)
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
         }
@@ -138,6 +140,7 @@ struct HomeView: View {
                 showPaywall = false
                 if unlocked { runPendingAction() }
             }
+            .environment(\.locale, language.locale)
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
@@ -288,7 +291,7 @@ struct HomeView: View {
         supplies = inputCurrencyCents(supplyCents + line.suppliesCents)
         if let hoursToday = line.hours {
             let total = (hoursValue ?? 0) + hoursToday
-            hours = total.formatted(.number.precision(.fractionLength(0...1)))
+            hours = formatHoursInput(total)
         }
         days.append(line)
         addedTodayGross = line.grossCents
@@ -339,7 +342,7 @@ struct HomeView: View {
         cashTips = inputCurrencyCents(week.cashTipsCents)
         cardTips = inputCurrencyCents(week.cardTipsCents)
         supplies = inputCurrencyCents(week.suppliesCents)
-        hours = week.hours.map { $0.formatted(.number.precision(.fractionLength(0...1))) } ?? ""
+        hours = week.hours.map { formatHoursInput($0) } ?? ""
         days = week.days
         savedPayModel = week.payModel.rawValue
     }
@@ -464,6 +467,7 @@ struct PaywallView: View {
         .padding(24)
         .background(Brand.page)
         .foregroundStyle(Brand.ink)
+        .environment(\.locale, AppLanguage.current(appLanguage).locale)
     }
 }
 

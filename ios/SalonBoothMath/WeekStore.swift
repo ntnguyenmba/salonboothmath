@@ -1,5 +1,35 @@
 import Foundation
 
+struct DayLine: Codable, Identifiable, Equatable {
+    let id: UUID
+    var dateStart: Date
+    var servicesCents: Int
+    var cashTipsCents: Int
+    var cardTipsCents: Int
+    var suppliesCents: Int
+    var hours: Double?
+
+    init(
+        id: UUID = UUID(),
+        dateStart: Date,
+        servicesCents: Int,
+        cashTipsCents: Int,
+        cardTipsCents: Int,
+        suppliesCents: Int,
+        hours: Double? = nil
+    ) {
+        self.id = id
+        self.dateStart = Calendar.current.startOfDay(for: dateStart)
+        self.servicesCents = servicesCents
+        self.cashTipsCents = cashTipsCents
+        self.cardTipsCents = cardTipsCents
+        self.suppliesCents = suppliesCents
+        self.hours = hours
+    }
+
+    var grossCents: Int { servicesCents + cashTipsCents + cardTipsCents }
+}
+
 struct WeekRecord: Codable, Identifiable, Equatable {
     let id: UUID
     var weekStart: Date
@@ -11,6 +41,7 @@ struct WeekRecord: Codable, Identifiable, Equatable {
     var hours: Double?
     var payModel: PayModel
     var takeHomeCents: Int
+    var days: [DayLine]
 
     init(
         id: UUID = UUID(),
@@ -22,7 +53,8 @@ struct WeekRecord: Codable, Identifiable, Equatable {
         extraFeesCents: Int = 0,
         hours: Double? = nil,
         payModel: PayModel,
-        takeHomeCents: Int
+        takeHomeCents: Int,
+        days: [DayLine] = []
     ) {
         self.id = id
         self.weekStart = weekStart
@@ -34,6 +66,26 @@ struct WeekRecord: Codable, Identifiable, Equatable {
         self.hours = hours
         self.payModel = payModel
         self.takeHomeCents = takeHomeCents
+        self.days = days
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, weekStart, servicesCents, cashTipsCents, cardTipsCents, suppliesCents, extraFeesCents, hours, payModel, takeHomeCents, days
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
+        weekStart = try c.decode(Date.self, forKey: .weekStart)
+        servicesCents = try c.decode(Int.self, forKey: .servicesCents)
+        cashTipsCents = try c.decode(Int.self, forKey: .cashTipsCents)
+        cardTipsCents = try c.decode(Int.self, forKey: .cardTipsCents)
+        suppliesCents = try c.decode(Int.self, forKey: .suppliesCents)
+        extraFeesCents = try c.decodeIfPresent(Int.self, forKey: .extraFeesCents) ?? 0
+        hours = try c.decodeIfPresent(Double.self, forKey: .hours)
+        payModel = try c.decodeIfPresent(PayModel.self, forKey: .payModel) ?? .booth
+        takeHomeCents = try c.decode(Int.self, forKey: .takeHomeCents)
+        days = try c.decodeIfPresent([DayLine].self, forKey: .days) ?? []
     }
 }
 
@@ -43,9 +95,7 @@ final class WeekStore: ObservableObject {
 
     private let storageKey = "savedWeeks.v1"
 
-    init() {
-        load()
-    }
+    init() { load() }
 
     func save(_ week: WeekRecord) {
         if let index = weeks.firstIndex(where: { Calendar.current.isDate($0.weekStart, equalTo: week.weekStart, toGranularity: .weekOfYear) }) {
@@ -54,6 +104,7 @@ final class WeekStore: ObservableObject {
             weeks.append(week)
         }
         weeks.sort { $0.weekStart > $1.weekStart }
+        if weeks.count > 52 { weeks = Array(weeks.prefix(52)) }
         persist()
     }
 

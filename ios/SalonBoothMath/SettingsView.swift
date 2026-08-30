@@ -25,6 +25,7 @@ struct SettingsView: View {
 
     private var language: AppLanguage { AppLanguage.current(appLanguage) }
     private var model: PayModel { PayModel(rawValue: savedPayModel) ?? .booth }
+    private var houseKeepPercent: Int { max(0, 100 - commissionCutBasisPoints / 100) }
 
     var body: some View {
         ScrollView {
@@ -63,9 +64,9 @@ struct SettingsView: View {
 
                 if model != .booth {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(String(localized: "settings.serviceSplit", table: "Hybrid")).font(Brand.font(18))
+                        Text(L("settings.serviceSplit", table: "Hybrid", language: appLanguage)).font(Brand.font(18))
                         MoneyEntryField(text: $commissionText, prefix: nil, suffix: "%")
-                        Text(String(format: String(localized: "settings.houseKeeps", table: "Hybrid"), max(0, 100 - commissionCutBasisPoints / 100)))
+                        Text(String(format: L("settings.houseKeeps", table: "Hybrid", language: appLanguage), houseKeepPercent))
                             .font(Brand.font(16))
                             .foregroundStyle(Brand.mutedInk)
                     }
@@ -73,7 +74,7 @@ struct SettingsView: View {
                     Picker("commission.tipsWho", selection: $tipOwner) {
                         Text("tips.you").tag(TipOwner.you.rawValue)
                         Text("tips.house").tag(TipOwner.house.rawValue)
-                        Text(String(localized: "tips.split5050", table: "Hybrid")).tag(TipOwner.split.rawValue)
+                        Text(L("tips.split5050", table: "Hybrid", language: appLanguage)).tag(TipOwner.split.rawValue)
                     }.pickerStyle(.segmented)
                     Toggle("settings.workerCardFees", isOn: $workerPaysCardFees).font(Brand.font(18)).tint(Brand.hotPink)
                 }
@@ -81,7 +82,7 @@ struct SettingsView: View {
                 settingField("settings.cardFee", text: $cardFeeText, prefix: nil, suffix: "%")
                 settingField("settings.pctCard", text: $cardShareText, prefix: nil, suffix: "%")
                 settingField("settings.tax", text: $taxText, prefix: nil, suffix: "%")
-                Text("settings.taxNote").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
+                Text(L("settings.taxNote", table: "Hybrid", language: appLanguage)).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                 settingField("settings.extraFees", text: $extraFeesText, prefix: "$", suffix: nil)
 
                 Text("settings.disclaimer").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
@@ -130,7 +131,7 @@ private struct AboutSalonBoothMathView: View {
     var body: some View {
         VStack(spacing: 18) {
             BrandMark(size: 92); Text("Salon Booth Math").font(Brand.font(30, weight: .heavy))
-            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê booth, chia phần dịch vụ và kiểu kết hợp, không kèm phần mềm quản lý salon rườm rà."))
+            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê chỗ, chia phần và kết hợp, không kèm phần mềm quản lý salon rườm rà."))
                 .font(Brand.font(17)).foregroundStyle(Brand.muted).multilineTextAlignment(.center)
             Text(localized(language, en: "Version", es: "Versión", vi: "Phiên bản") + " \(version) (\(build))").font(Brand.font(16)).foregroundStyle(Brand.muted)
             Spacer(); Text("© 2026 Everitt Ventures LLC").font(Brand.font(16)).foregroundStyle(Brand.muted)

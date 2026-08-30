@@ -3,25 +3,17 @@ package com.everittventures.salonboothmath
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -41,46 +33,38 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
 @Composable internal fun Metric(label:String,value:Long){Column(verticalArrangement=Arrangement.spacedBy(4.dp)){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text(formatCents(value),color=Ink,fontSize=40.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun CostRow(label:String,value:Long){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text("−${formatCents(value)}",color=Ink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun MoneyField(label:String,value:String,showCurrency:Boolean=true,onValue:(String)->Unit){
-    val interaction = remember { MutableInteractionSource() }
-    val focused by interaction.collectIsFocusedAsState()
     Column(verticalArrangement=Arrangement.spacedBy(9.dp)){
         Text(label,color=Ink,fontSize=19.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-        BasicTextField(
+        TextField(
             value=value,
             onValueChange={ raw ->
                 val normalized = raw.filter { it.isDigit() || it == '.' || it == ',' }.replace(',', '.')
                 val parts = normalized.split('.')
-                val cleaned = if (parts.size <= 1) normalized else parts[0] + "." + parts.drop(1).joinToString("").take(2)
-                onValue(cleaned)
+                onValue(if (parts.size <= 1) normalized else parts[0] + "." + parts.drop(1).joinToString("").take(2))
             },
             modifier=Modifier.fillMaxWidth(),
             enabled=true,
             readOnly=false,
             singleLine=true,
-            interactionSource=interaction,
-            keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Number),
-            textStyle=TextStyle(color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
-            cursorBrush=SolidColor(Pink),
-            decorationBox={ inner ->
-                Row(
-                    modifier=Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight=64.dp)
-                        .background(Surface, RoundedCornerShape(18.dp))
-                        .border(if (focused) 3.dp else 2.dp, if (focused) Pink else Color.White.copy(alpha=.32f), RoundedCornerShape(18.dp))
-                        .padding(horizontal=16.dp),
-                    verticalAlignment=Alignment.CenterVertically
-                ) {
-                    if (showCurrency) {
-                        Text(appCurrencySymbol(), color=Color.White, fontSize=24.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily)
-                        Spacer(Modifier.width(8.dp))
-                    }
-                    Box(Modifier.weight(1f), contentAlignment=Alignment.CenterStart) {
-                        if (value.isEmpty()) Text("0", color=Color.White.copy(alpha=.35f), fontSize=24.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily)
-                        inner()
-                    }
-                }
-            }
+            keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Decimal),
+            prefix=if (showCurrency) {{ Text(appCurrencySymbol(), color=Color.White, fontSize=22.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily) }} else null,
+            placeholder={ Text("0", color=Color.White.copy(alpha=.35f), fontSize=22.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily) },
+            textStyle=LocalTextStyle.current.copy(color=Color.White,fontSize=22.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
+            shape=RoundedCornerShape(18.dp),
+            colors=TextFieldDefaults.colors(
+                focusedTextColor=Color.White,
+                unfocusedTextColor=Color.White,
+                cursorColor=Pink,
+                focusedContainerColor=Surface,
+                unfocusedContainerColor=Surface,
+                disabledContainerColor=Surface,
+                focusedIndicatorColor=Pink,
+                unfocusedIndicatorColor=Color.Transparent,
+                focusedPrefixColor=Color.White,
+                unfocusedPrefixColor=Color.White,
+                focusedPlaceholderColor=Color.White.copy(alpha=.35f),
+                unfocusedPlaceholderColor=Color.White.copy(alpha=.35f)
+            )
         )
     }
 }

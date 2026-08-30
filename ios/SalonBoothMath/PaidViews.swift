@@ -25,7 +25,7 @@ struct BreakdownView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
                 .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
 
-                Text("br.taxNote")
+                Text(String(localized: "br.taxNote", table: "Hybrid"))
                     .font(Brand.font(16))
                     .foregroundStyle(Brand.mutedInk)
                     .fixedSize(horizontal: false, vertical: true)
@@ -43,7 +43,7 @@ struct BreakdownView: View {
                         .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(hoursFocused ? Brand.hotPink : Brand.line, lineWidth: hoursFocused ? 3 : 2))
                     if let hourly = hourlyCents {
                         HStack {
-                            Text("br.effectiveHourly").font(Brand.font(17))
+                            Text(String(localized: "br.effectiveHourly", table: "Hybrid")).font(Brand.font(17))
                             Spacer()
                             Text("\(formatCurrency(hourly))/hr").font(Brand.font(22, weight: .heavy)).monospacedDigit()
                         }
@@ -84,7 +84,7 @@ struct CompareView: View {
                 Text("compare.title").font(Brand.font(28, weight: .heavy))
                 comparison(label: String(localized: "compare.onBooth"), amount: boothCents, selected: boothCents == winner)
                 comparison(label: String(format: String(localized: "compare.onCommission"), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
-                comparison(label: String(localized: "compare.onHybrid"), amount: hybridCents, selected: hybridCents == winner)
+                comparison(label: String(localized: "compare.onHybrid", table: "Hybrid"), amount: hybridCents, selected: hybridCents == winner)
                 Text("compare.note").font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
             }
             .padding(Brand.screenPadding)

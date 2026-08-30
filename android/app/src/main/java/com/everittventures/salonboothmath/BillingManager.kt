@@ -25,7 +25,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     private val _isUnlocked = MutableStateFlow(false)
     val isUnlocked: StateFlow<Boolean> = _isUnlocked
 
-    private val _displayPrice = MutableStateFlow("$4.99")
+    private val _displayPrice = MutableStateFlow("$9.99")
     val displayPrice: StateFlow<String> = _displayPrice
 
     private var productDetails: ProductDetails? = null

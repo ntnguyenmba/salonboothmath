@@ -1,0 +1,56 @@
+name: Booth Rent Wording Cleanup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/booth-rent-wording-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Make booth rent wording period-neutral
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          path = Path('ios/SalonBoothMath/Localizable.xcstrings')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          key = data['strings']['rent.weekly']['localizations']
+          key['en']['stringUnit']['value'] = 'Booth rent'
+          key['es']['stringUnit']['value'] = 'Renta del puesto'
+          key['vi']['stringUnit']['value'] = 'Tiền thuê chỗ'
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Android already uses period-neutral wording; assert it stays that way.
+          expected = {
+              'android/app/src/main/res/values/strings.xml': 'Booth rent',
+              'android/app/src/main/res/values-es/strings.xml': 'Renta del puesto',
+              'android/app/src/main/res/values-vi/strings.xml': 'Tiền thuê chỗ',
+          }
+          import xml.etree.ElementTree as ET
+          for filename, value in expected.items():
+              root = ET.parse(filename).getroot()
+              actual = next(node.text for node in root.findall('string') if node.attrib.get('name') == 'weekly_rent')
+              if actual != value:
+                  raise SystemExit(f'{filename}: weekly_rent is {actual!r}, expected {value!r}')
+
+      - name: Commit wording cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios/SalonBoothMath/Localizable.xcstrings
+          if git diff --cached --quiet; then
+            echo "Booth rent wording already clean."
+          else
+            git commit -m "Use period-neutral booth rent wording"
+            git push origin HEAD:main
+          fi

@@ -32,7 +32,15 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
 @Composable internal fun PrimaryButton(label:String,action:()->Unit){Button(onClick=action,colors=ButtonDefaults.buttonColors(containerColor=Pink,contentColor=Color.White),modifier=Modifier.fillMaxWidth().height(62.dp),shape=RoundedCornerShape(18.dp)){Text(label,fontSize=19.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun SingleChoiceSegment(options:List<Pair<String,String>>,selected:String,onSelect:(String)->Unit){Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){options.forEach{(id,label)->Button(onClick={onSelect(id)},modifier=Modifier.weight(1f).height(56.dp),colors=ButtonDefaults.buttonColors(containerColor=if(selected==id)Pink else Surface,contentColor=Color.White),shape=RoundedCornerShape(16.dp)){Text(label,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily,maxLines=1)}}}}
 @Composable internal fun SettingToggle(label:String,checked:Boolean,onChecked:(Boolean)->Unit){Row(Modifier.fillMaxWidth(),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily,modifier=Modifier.weight(1f));Switch(checked=checked,onCheckedChange=onChecked,colors=SwitchDefaults.colors(checkedThumbColor=Color.White,checkedTrackColor=Pink))}}
-@Composable internal fun payContext(store:AppStore):String=when(store.payModel){"commission"->stringResource(R.string.keep_cut,store.commissionCutBasisPoints/100);"hybrid"->stringResource(R.string.hybrid_context,store.commissionCutBasisPoints/100);else->"${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/${stringResource(R.string.week)}"}
+@Composable internal fun payContext(store:AppStore):String {
+    val keep = store.commissionCutBasisPoints/100
+    val house = 100 - keep
+    return when(store.payModel){
+        "commission" -> stringResource(R.string.keep_cut, keep, house)
+        "hybrid" -> stringResource(R.string.hybrid_context, keep)
+        else -> "${stringResource(R.string.booth_rent)} · ${formatCents(store.weeklyRentCents)}/${stringResource(R.string.week)}"
+    }
+}
 internal fun formatCents(cents:Long):String=NumberFormat.getCurrencyInstance().format(BigDecimal.valueOf(cents,2)); internal fun inputMoney(cents:Long):String=BigDecimal.valueOf(cents,2).stripTrailingZeros().toPlainString(); internal fun cleanDecimal(value:Double):String=BigDecimal.valueOf(value).stripTrailingZeros().toPlainString(); internal fun percentText(basisPoints:Int):String=BigDecimal(basisPoints).movePointLeft(2).stripTrailingZeros().toPlainString()
 internal fun percentBasisPoints(text:String,fallback:String):Int{val normalized=text.trim().replace(',','.');val percent=normalized.toBigDecimalOrNull()?:BigDecimal(fallback);return percent.multiply(BigDecimal("100")).setScale(0,RoundingMode.HALF_UP).toInt()}
 internal fun startOfWeek():Long{val c=Calendar.getInstance();c.set(Calendar.DAY_OF_WEEK,c.firstDayOfWeek);c.set(Calendar.HOUR_OF_DAY,0);c.set(Calendar.MINUTE,0);c.set(Calendar.SECOND,0);c.set(Calendar.MILLISECOND,0);return c.timeInMillis}

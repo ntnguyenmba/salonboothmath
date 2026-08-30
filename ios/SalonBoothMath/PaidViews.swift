@@ -67,8 +67,8 @@ struct BreakdownView: View {
         return MoneyMath.hourlyTakeHome(takeHomeCents: takeHomeCents, hours: hours)
     }
 
-    private func row(_ key: LocalizedStringKey, _ cents: Int, strong: Bool = false) -> some View {
-        namedRow(String(localized: key, locale: Locale(identifier: appLanguage)), cents, strong: strong)
+    private func row(_ key: String.LocalizationValue, _ cents: Int, strong: Bool = false) -> some View {
+        namedRow(L(key, language: appLanguage), cents, strong: strong)
     }
 
     private func namedRow(_ label: String, _ cents: Int, strong: Bool = false) -> some View {

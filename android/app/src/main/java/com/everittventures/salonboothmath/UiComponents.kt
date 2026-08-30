@@ -1,5 +1,7 @@
 package com.everittventures.salonboothmath
 
+import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,8 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -38,11 +38,13 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
         Text(label,color=Ink,fontSize=19.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
         OutlinedTextField(
             value=value,
-            onValueChange={raw->
-                val normalized=raw.replace(',','.')
-                if(normalized.isEmpty() || normalized.matches(Regex("\\d*(\\.\\d{0,2})?"))) onValue(normalized)
+            onValueChange={ raw ->
+                val normalized = raw.replace(',', '.')
+                if (normalized.isEmpty() || normalized.matches(Regex("\\d*(\\.\\d{0,2})?"))) onValue(normalized)
             },
-            modifier=Modifier.fillMaxWidth().height(68.dp),
+            modifier=Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp),
+            enabled=true,
+            readOnly=false,
             singleLine=true,
             keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Decimal),
             prefix=if(showCurrency){{Text(appCurrencySymbol(),color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}else null,

@@ -62,12 +62,18 @@ struct SettingsView: View {
                 }
 
                 if model != .booth {
-                    settingField("commission.cut", text: $commissionText, prefix: nil, suffix: "%")
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(String(localized: "settings.serviceSplit", table: "Hybrid")).font(Brand.font(18))
+                        MoneyEntryField(text: $commissionText, prefix: nil, suffix: "%")
+                        Text(String(format: String(localized: "settings.houseKeeps", table: "Hybrid"), max(0, 100 - commissionCutBasisPoints / 100)))
+                            .font(Brand.font(16))
+                            .foregroundStyle(Brand.mutedInk)
+                    }
                     sectionTitle(String(localized: "commission.tipsWho"))
                     Picker("commission.tipsWho", selection: $tipOwner) {
                         Text("tips.you").tag(TipOwner.you.rawValue)
                         Text("tips.house").tag(TipOwner.house.rawValue)
-                        Text("tips.split").tag(TipOwner.split.rawValue)
+                        Text(String(localized: "tips.split5050", table: "Hybrid")).tag(TipOwner.split.rawValue)
                     }.pickerStyle(.segmented)
                     Toggle("settings.workerCardFees", isOn: $workerPaysCardFees).font(Brand.font(18)).tint(Brand.hotPink)
                 }
@@ -124,7 +130,7 @@ private struct AboutSalonBoothMathView: View {
     var body: some View {
         VStack(spacing: 18) {
             BrandMark(size: 92); Text("Salon Booth Math").font(Brand.font(30, weight: .heavy))
-            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho booth, hoa hồng và hybrid, không kèm phần mềm quản lý salon rườm rà."))
+            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê booth, chia phần dịch vụ và kiểu kết hợp, không kèm phần mềm quản lý salon rườm rà."))
                 .font(Brand.font(17)).foregroundStyle(Brand.muted).multilineTextAlignment(.center)
             Text(localized(language, en: "Version", es: "Versión", vi: "Phiên bản") + " \(version) (\(build))").font(Brand.font(16)).foregroundStyle(Brand.muted)
             Spacer(); Text("© 2026 Everitt Ventures LLC").font(Brand.font(16)).foregroundStyle(Brand.muted)

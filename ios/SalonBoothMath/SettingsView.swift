@@ -35,7 +35,7 @@ struct SettingsView: View {
                     BrandMark(size: 58)
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Salon Booth Math").font(Brand.font(22, weight: .heavy))
-                        Text(copy(en: "Simple money math for salon professionals", es: "Cálculos simples de dinero para profesionales de salón", vi: "Tính tiền đơn giản cho người làm salon"))
+                        Text(copy(en: "Simple money math for salon professionals", es: "Cálculos simples de dinero para profesionales de salón", vi: "Tính tiền đơn giản cho người làm nghề tiệm"))
                             .font(Brand.font(16)).foregroundStyle(Brand.muted)
                     }
                 }

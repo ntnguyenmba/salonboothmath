@@ -57,8 +57,7 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
                 focusedContainerColor=Surface,
                 unfocusedContainerColor=Surface,
                 focusedPrefixColor=Color.White,
-                unfocusedPrefixColor=Color.White,
-                selectionColors=TextSelectionColors(handleColor=Pink,backgroundColor=Pink.copy(alpha=.35f))
+                unfocusedPrefixColor=Color.White
             )
         )
     }

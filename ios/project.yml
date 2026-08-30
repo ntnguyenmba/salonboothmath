@@ -16,6 +16,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.everittventures.salonboothmath
         INFOPLIST_FILE: SalonBoothMath/Info.plist
+        INFOPLIST_KEY_UIRequiresFullScreen: YES
         CODE_SIGN_ENTITLEMENTS: SalonBoothMath/SalonBoothMath.entitlements
         TARGETED_DEVICE_FAMILY: "1,2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

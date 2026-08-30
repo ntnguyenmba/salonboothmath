@@ -3,17 +3,25 @@ package com.everittventures.salonboothmath
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,35 +40,47 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
 @Composable internal fun SimpleScreen(title:String,back:()->Unit,content:@Composable ColumnScope.()->Unit){Column(Modifier.fillMaxSize().background(Page).padding(22.dp).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(20.dp)){TextButton(onClick=back){Text("‹ ${stringResource(R.string.back)}",color=Color.White,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)};Text(title,color=Ink,fontSize=32.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);content()}}
 @Composable internal fun Metric(label:String,value:Long){Column(verticalArrangement=Arrangement.spacedBy(4.dp)){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text(formatCents(value),color=Ink,fontSize=40.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun CostRow(label:String,value:Long){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text("−${formatCents(value)}",color=Ink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable internal fun MoneyField(label:String,value:String,showCurrency:Boolean=true,onValue:(String)->Unit){
+    val interaction = remember { MutableInteractionSource() }
+    val focused by interaction.collectIsFocusedAsState()
     Column(verticalArrangement=Arrangement.spacedBy(9.dp)){
         Text(label,color=Ink,fontSize=19.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-        OutlinedTextField(
+        BasicTextField(
             value=value,
             onValueChange={ raw ->
-                val normalized = raw.replace(',', '.')
-                if (normalized.isEmpty() || normalized.matches(Regex("\\d*(\\.\\d{0,2})?"))) onValue(normalized)
+                val normalized = raw.filter { it.isDigit() || it == '.' || it == ',' }.replace(',', '.')
+                val parts = normalized.split('.')
+                val cleaned = if (parts.size <= 1) normalized else parts[0] + "." + parts.drop(1).joinToString("").take(2)
+                onValue(cleaned)
             },
-            modifier=Modifier.fillMaxWidth().defaultMinSize(minHeight = 64.dp),
+            modifier=Modifier.fillMaxWidth(),
             enabled=true,
             readOnly=false,
             singleLine=true,
-            keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Decimal),
-            prefix=if(showCurrency){{Text(appCurrencySymbol(),color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}else null,
-            textStyle=LocalTextStyle.current.copy(color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
-            shape=RoundedCornerShape(18.dp),
-            colors=OutlinedTextFieldDefaults.colors(
-                focusedTextColor=Color.White,
-                unfocusedTextColor=Color.White,
-                cursorColor=Pink,
-                focusedBorderColor=Pink,
-                unfocusedBorderColor=Color.White.copy(alpha=.32f),
-                focusedContainerColor=Surface,
-                unfocusedContainerColor=Surface,
-                focusedPrefixColor=Color.White,
-                unfocusedPrefixColor=Color.White
-            )
+            interactionSource=interaction,
+            keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Number),
+            textStyle=TextStyle(color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
+            cursorBrush=SolidColor(Pink),
+            decorationBox={ inner ->
+                Row(
+                    modifier=Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight=64.dp)
+                        .background(Surface, RoundedCornerShape(18.dp))
+                        .border(if (focused) 3.dp else 2.dp, if (focused) Pink else Color.White.copy(alpha=.32f), RoundedCornerShape(18.dp))
+                        .padding(horizontal=16.dp),
+                    verticalAlignment=Alignment.CenterVertically
+                ) {
+                    if (showCurrency) {
+                        Text(appCurrencySymbol(), color=Color.White, fontSize=24.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily)
+                        Spacer(Modifier.width(8.dp))
+                    }
+                    Box(Modifier.weight(1f), contentAlignment=Alignment.CenterStart) {
+                        if (value.isEmpty()) Text("0", color=Color.White.copy(alpha=.35f), fontSize=24.sp, fontWeight=FontWeight.ExtraBold, fontFamily=AppFontFamily)
+                        inner()
+                    }
+                }
+            }
         )
     }
 }

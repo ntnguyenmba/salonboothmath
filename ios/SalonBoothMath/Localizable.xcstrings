@@ -1,84 +1,1722 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "onboarding.trade.title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "What do you do?" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn làm nghề gì?" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "¿A qué te dedicas?" } } } },
-    "trade.nail" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Nail" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nail" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Uñas" } } } },
-    "trade.hair" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Hair" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tóc" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Cabello" } } } },
-    "trade.barber" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Barber" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Barber" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Barbería" } } } },
-    "trade.esthetician" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Esthetician" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chăm sóc da" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Estética" } } } },
-    "onboarding.pay.title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "How do you get paid?" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn nhận lương kiểu nào?" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Cómo te pagan?" } } } },
-    "pay.booth" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Booth rent" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thuê chỗ (booth)" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Renta de puesto" } } } },
-    "pay.commission" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Commission" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hoa hồng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Comisión" } } } },
-    "home.keepCut" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "You keep %d%% + tips" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn giữ %d%% + tiền tip" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Te quedas con %d%% + propinas" } } } },
-    "rent.weekly" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Weekly booth rent" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiền booth mỗi tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Renta semanal del puesto" } } } },
-    "rent.orMonthly" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Or enter monthly — we’ll split it" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hoặc nhập theo tháng — ứng dụng sẽ chia ra" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "O ingresa el mes — lo dividimos" } } } },
-    "rent.week" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Semana" } } } },
-    "rent.month" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Month" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tháng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Mes" } } } },
-    "commission.cut" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Your cut" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Phần của bạn" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Tu porcentaje" } } } },
-    "commission.tipsWho" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Who keeps tips?" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Ai giữ tiền tip?" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "¿Quién se queda las propinas?" } } } },
-    "tips.you" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "You" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Tú" } } } },
-    "tips.house" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "House" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiệm" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "El salón" } } } },
-    "tips.split" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Split" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Se reparte" } } } },
-    "onboarding.done" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Let’s see this week." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem tuần này." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Veamos esta semana." } } } },
-    "onboarding.cta" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Enter this week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nhập tuần này" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Capturar esta semana" } } } },
-    "home.thisWeek" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "This week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tuần này" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta semana" } } } },
-    "field.services" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Services" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Dịch vụ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Servicios" } } } },
-    "field.tipsCash" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Cash tips" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tip tiền mặt" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Propinas en efectivo" } } } },
-    "field.tipsCard" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Card tips" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tip qua thẻ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Propinas con tarjeta" } } } },
-    "field.supplies" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Supplies" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đồ nghề / sản phẩm" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Insumos" } } } },
-    "home.youTookHome" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "YOU TOOK HOME" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "BẠN CÒN LẠI" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "TE QUEDASTE" } } } },
-    "home.save" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lưu tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar semana" } } } },
-    "home.breakdown" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "See breakdown" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem chi tiết" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver desglose" } } } },
-    "home.share" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Share" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Compartir" } } } },
-    "br.gross" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Gross" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tổng thu" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Bruto" } } } },
-    "br.rent" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Booth rent" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiền booth" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Renta del puesto" } } } },
-    "br.houseCut" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "House cut" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Phần tiệm" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Parte del salón" } } } },
-    "br.cardFeesEst" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Card fees (est.)" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Phí thẻ (ước tính)" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Comisión de tarjeta (est.)" } } } },
-    "br.supplies" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Supplies" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đồ nghề / sản phẩm" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Insumos" } } } },
-    "br.extra" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Extra fees" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Phí thêm" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Cargos extra" } } } },
-    "br.takeHome" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Take-home" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Còn lại" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Neto" } } } },
-    "br.taxReserve" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Tax reserve" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để dành thuế" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Reserva para impuestos" } } } },
-    "br.rentHigh" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Booth is eating %@ of what you booked." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Booth đang ăn %@ doanh số tuần này." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "El puesto se come el %@ de lo cobrado." } } } },
-    "compare.title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Same week, other deal" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cùng tuần, cách trả khác" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Misma semana, otro trato" } } } },
-    "compare.onBooth" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "On booth" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nếu thuê booth" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Con renta de puesto" } } } },
-    "compare.onCommission" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "On %@ commission" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nếu hoa hồng %@" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Con comisión del %@" } } } },
-    "compare.note" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "This is this week only. Rent and % are what you saved in Settings." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chỉ tuần này. Tiền booth và % lấy từ Cài đặt." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Solo esta semana. Renta y % salen de Ajustes." } } } },
-    "history.title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Past weeks" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Các tuần trước" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Semanas anteriores" } } } },
-    "history.lastFour" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Last 4 weeks" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "4 tuần gần nhất" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Últimas 4 semanas" } } } },
-    "history.averageWeek" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Average week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trung bình mỗi tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Promedio semanal" } } } },
-    "history.averageHourly" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Average hourly" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trung bình mỗi giờ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Promedio por hora" } } } },
-    "history.hours" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "hrs" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "giờ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "h" } } } },
-    "settings.title" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cài đặt" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Ajustes" } } } },
-    "settings.trade" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "What you do" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nghề" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Oficio" } } } },
-    "settings.payModel" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "How you get paid" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cách nhận lương" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Forma de pago" } } } },
-    "settings.cardFee" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Card fee %" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "% phí thẻ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "% comisión de tarjeta" } } } },
-    "settings.pctCard" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "% of services on card" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "% dịch vụ quẹt thẻ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "% de servicios con tarjeta" } } } },
-    "settings.hours" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Hours this week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Số giờ tuần này" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Horas esta semana" } } } },
-    "settings.tax" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Tax set-aside" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để riêng thuế" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Apartado de impuestos" } } } },
-    "settings.extraFees" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Extra weekly fees" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Phí thêm mỗi tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Cargos extra semanales" } } } },
-    "settings.workerCardFees" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "I pay the card processing fees" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tôi trả phí xử lý thẻ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Yo pago las comisiones de tarjeta" } } } },
-    "settings.disclaimer" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Estimates only. Not tax, legal, or financial advice." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chỉ là ước tính. Không phải tư vấn thuế, pháp lý hoặc tài chính." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Solo estimaciones. No es asesoría fiscal, legal ni financiera." } } } },
-    "settings.save" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save settings" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lưu cài đặt" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Guardar ajustes" } } } },
-    "settings.legal" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Legal & Support" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Pháp lý & Hỗ trợ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Legal y soporte" } } } },
-    "settings.privacy" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Privacy Policy" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chính sách quyền riêng tư" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Política de privacidad" } } } },
-    "settings.terms" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Terms of Use" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Điều khoản sử dụng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Términos de uso" } } } },
-    "settings.support" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Contact Support" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Liên hệ hỗ trợ" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Contactar soporte" } } } },
-    "settings.restore" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore Purchases" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khôi phục mua hàng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Restaurar compras" } } } },
-    "settings.about" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "About" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Giới thiệu" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Acerca de" } } } },
-    "settings.tagline" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Simple money math for salon professionals" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tính tiền gọn cho thợ làm đẹp" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Cálculo claro para profesionales de salón" } } } },
-    "legal.disclaimer" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Calculations and tax reserve estimates are provided for informational purposes only and are not tax, accounting, financial, or legal advice." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Số liệu và phần để dành thuế chỉ để tham khảo, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Los cálculos y la reserva de impuestos son solo informativos. No son asesoría fiscal, contable, financiera ni legal." } } } },
-    "paywall.lifetimeTitle" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Salon Booth Math Lifetime" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Salon Booth Math trọn đời" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Salon Booth Math de por vida" } } } },
-    "paywall.lifetimeBody" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Keep this week. Look back later. Compare booth vs commission. Once. No subscription." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Giữ tuần này. Xem lại sau. So sánh booth với hoa hồng. Một lần. Không gói tháng." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Conserva esta semana. Mira atrás después. Compara booth vs. comisión. Una vez. Sin suscripción." } } } },
-    "paywall.saveWeeks" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Save every week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Lưu mỗi tuần" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Guarda cada semana" } } } },
-    "paywall.viewHistory" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "View earnings history" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem lịch sử thu nhập" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Ver historial de ingresos" } } } },
-    "paywall.compareModels" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Compare booth vs commission" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "So sánh booth với hoa hồng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Compara booth vs. comisión" } } } },
-    "paywall.once" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "One-time purchase. No subscription." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mua một lần. Không đăng ký tháng." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Compra única. Sin suscripción." } } } },
-    "paywall.unlockLifetime" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Unlock Lifetime · %@" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Mở trọn đời · %@" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Desbloquear de por vida · %@" } } } },
-    "paywall.continueFree" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue Free" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiếp tục miễn phí" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Seguir gratis" } } } },
-    "paywall.restore" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore Purchase" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khôi phục mua hàng" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Restaurar compra" } } } },
-    "widget.description" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "See this week’s take-home without opening the app." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem tiền còn lại tuần này mà không cần mở ứng dụng." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Mira el neto de esta semana sin abrir la app." } } } },
-    "a11y.selected" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "Selected" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đã chọn" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Seleccionado" } } } },
-    "a11y.takeHome %@" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "You took home %@" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn còn lại %@" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Te quedaste %@" } } } }
+  "sourceLanguage": "en",
+  "strings": {
+    "onboarding.trade.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What do you do?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn làm nghề gì?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿A qué te dedicas?"
+          }
+        }
+      }
+    },
+    "trade.nail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nail"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Làm móng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uñas"
+          }
+        }
+      }
+    },
+    "trade.hair": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hair"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tóc"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cabello"
+          }
+        }
+      }
+    },
+    "trade.barber": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barber"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cắt tóc nam"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barbería"
+          }
+        }
+      }
+    },
+    "trade.esthetician": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esthetician"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chăm sóc da"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estética"
+          }
+        }
+      }
+    },
+    "onboarding.pay.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How do you get paid?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn nhận lương kiểu nào?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cómo te pagan?"
+          }
+        }
+      }
+    },
+    "pay.booth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth rent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thuê chỗ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta de puesto"
+          }
+        }
+      }
+    },
+    "pay.commission": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commission"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoa hồng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comisión"
+          }
+        }
+      }
+    },
+    "home.keepCut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You keep %d%% + tips"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn giữ %d%% + tiền boa"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te quedas con %d%% + propinas"
+          }
+        }
+      }
+    },
+    "rent.weekly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weekly booth rent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê chỗ mỗi tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta semanal del puesto"
+          }
+        }
+      }
+    },
+    "rent.orMonthly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Or enter monthly — we’ll split it"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoặc nhập theo tháng — ứng dụng sẽ chia ra"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O ingresa el mes — lo dividimos"
+          }
+        }
+      }
+    },
+    "rent.week": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semana"
+          }
+        }
+      }
+    },
+    "rent.month": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Month"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tháng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mes"
+          }
+        }
+      }
+    },
+    "commission.cut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your cut"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần của bạn"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu porcentaje"
+          }
+        }
+      }
+    },
+    "commission.tipsWho": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who keeps tips?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ai giữ tiền boa?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quién se queda las propinas?"
+          }
+        }
+      }
+    },
+    "tips.you": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú"
+          }
+        }
+      }
+    },
+    "tips.house": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiệm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El salón"
+          }
+        }
+      }
+    },
+    "tips.split": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se reparte"
+          }
+        }
+      }
+    },
+    "onboarding.done": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let’s see this week."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem tuần này."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veamos esta semana."
+          }
+        }
+      }
+    },
+    "onboarding.cta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter this week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập tuần này"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capturar esta semana"
+          }
+        }
+      }
+    },
+    "home.thisWeek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuần này"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta semana"
+          }
+        }
+      }
+    },
+    "field.services": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch vụ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Servicios"
+          }
+        }
+      }
+    },
+    "field.tipsCash": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cash tips"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa bằng tiền mặt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propinas en efectivo"
+          }
+        }
+      }
+    },
+    "field.tipsCard": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card tips"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa qua thẻ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propinas con tarjeta"
+          }
+        }
+      }
+    },
+    "field.supplies": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supplies"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đồ nghề / sản phẩm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insumos"
+          }
+        }
+      }
+    },
+    "home.youTookHome": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "YOU TOOK HOME"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "BẠN CÒN LẠI"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TE QUEDASTE"
+          }
+        }
+      }
+    },
+    "home.save": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar semana"
+          }
+        }
+      }
+    },
+    "home.breakdown": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See breakdown"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem chi tiết"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver desglose"
+          }
+        }
+      }
+    },
+    "home.share": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compartir"
+          }
+        }
+      }
+    },
+    "br.gross": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gross"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tổng thu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bruto"
+          }
+        }
+      }
+    },
+    "br.rent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth rent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê chỗ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta del puesto"
+          }
+        }
+      }
+    },
+    "br.houseCut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House cut"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần tiệm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte del salón"
+          }
+        }
+      }
+    },
+    "br.cardFeesEst": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card fees (est.)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phí thẻ (ước tính)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comisión de tarjeta (est.)"
+          }
+        }
+      }
+    },
+    "br.supplies": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supplies"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đồ nghề / sản phẩm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insumos"
+          }
+        }
+      }
+    },
+    "br.extra": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extra fees"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phí thêm"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargos extra"
+          }
+        }
+      }
+    },
+    "br.takeHome": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take-home"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Còn lại"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neto"
+          }
+        }
+      }
+    },
+    "br.taxReserve": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tax reserve"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để dành thuế"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reserva para impuestos"
+          }
+        }
+      }
+    },
+    "br.rentHigh": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth is eating %@ of what you booked."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth đang ăn %@ doanh số tuần này."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El puesto se come el %@ de lo cobrado."
+          }
+        }
+      }
+    },
+    "compare.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Same week, other deal"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cùng tuần, cách trả khác"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misma semana, otro trato"
+          }
+        }
+      }
+    },
+    "compare.onBooth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On booth"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu thuê booth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con renta de puesto"
+          }
+        }
+      }
+    },
+    "compare.onCommission": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On %@ commission"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu hoa hồng %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Con comisión del %@"
+          }
+        }
+      }
+    },
+    "compare.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is this week only. Rent and % are what you saved in Settings."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ tuần này. Tiền booth và % lấy từ Cài đặt."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo esta semana. Renta y % salen de Ajustes."
+          }
+        }
+      }
+    },
+    "history.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Past weeks"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các tuần trước"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semanas anteriores"
+          }
+        }
+      }
+    },
+    "history.lastFour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last 4 weeks"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "4 tuần gần nhất"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Últimas 4 semanas"
+          }
+        }
+      }
+    },
+    "history.averageWeek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trung bình mỗi tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promedio semanal"
+          }
+        }
+      }
+    },
+    "history.averageHourly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Average hourly"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trung bình mỗi giờ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Promedio por hora"
+          }
+        }
+      }
+    },
+    "history.hours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hrs"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "giờ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "h"
+          }
+        }
+      }
+    },
+    "settings.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cài đặt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajustes"
+          }
+        }
+      }
+    },
+    "settings.trade": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What you do"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nghề"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oficio"
+          }
+        }
+      }
+    },
+    "settings.payModel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How you get paid"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cách nhận lương"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forma de pago"
+          }
+        }
+      }
+    },
+    "settings.cardFee": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Card fee %"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% phí thẻ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% comisión de tarjeta"
+          }
+        }
+      }
+    },
+    "settings.pctCard": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% of services on card"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% dịch vụ quẹt thẻ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% de servicios con tarjeta"
+          }
+        }
+      }
+    },
+    "settings.hours": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hours this week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số giờ tuần này"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horas esta semana"
+          }
+        }
+      }
+    },
+    "settings.tax": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tax set-aside"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để riêng thuế"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apartado de impuestos"
+          }
+        }
+      }
+    },
+    "settings.extraFees": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extra weekly fees"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phí thêm mỗi tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cargos extra semanales"
+          }
+        }
+      }
+    },
+    "settings.workerCardFees": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I pay the card processing fees"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi trả phí xử lý thẻ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yo pago las comisiones de tarjeta"
+          }
+        }
+      }
+    },
+    "settings.disclaimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimates only. Not tax, legal, or financial advice."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ là ước tính. Không phải tư vấn thuế, pháp lý hoặc tài chính."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo estimaciones. No es asesoría fiscal, legal ni financiera."
+          }
+        }
+      }
+    },
+    "settings.save": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save settings"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu cài đặt"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar ajustes"
+          }
+        }
+      }
+    },
+    "settings.legal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legal & Support"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pháp lý & Hỗ trợ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legal y soporte"
+          }
+        }
+      }
+    },
+    "settings.privacy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy Policy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chính sách quyền riêng tư"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Política de privacidad"
+          }
+        }
+      }
+    },
+    "settings.terms": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Terms of Use"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều khoản sử dụng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Términos de uso"
+          }
+        }
+      }
+    },
+    "settings.support": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact Support"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liên hệ hỗ trợ"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contactar soporte"
+          }
+        }
+      }
+    },
+    "settings.restore": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchases"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khôi phục mua hàng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar compras"
+          }
+        }
+      }
+    },
+    "settings.about": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giới thiệu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acerca de"
+          }
+        }
+      }
+    },
+    "settings.tagline": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simple money math for salon professionals"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tính tiền gọn cho thợ làm đẹp"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cálculo claro para profesionales de salón"
+          }
+        }
+      }
+    },
+    "legal.disclaimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculations and tax reserve estimates are provided for informational purposes only and are not tax, accounting, financial, or legal advice."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số liệu và phần để dành thuế chỉ để tham khảo, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los cálculos y la reserva de impuestos son solo informativos. No son asesoría fiscal, contable, financiera ni legal."
+          }
+        }
+      }
+    },
+    "paywall.lifetimeTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salon Booth Math Lifetime"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salon Booth Math trọn đời"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salon Booth Math de por vida"
+          }
+        }
+      }
+    },
+    "paywall.lifetimeBody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep this week. Look back later. Compare booth vs commission. Once. No subscription."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giữ tuần này. Xem lại sau. So sánh booth với hoa hồng. Một lần. Không gói tháng."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conserva esta semana. Mira atrás después. Compara booth vs. comisión. Una vez. Sin suscripción."
+          }
+        }
+      }
+    },
+    "paywall.saveWeeks": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save every week"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu mỗi tuần"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda cada semana"
+          }
+        }
+      }
+    },
+    "paywall.viewHistory": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View earnings history"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem lịch sử thu nhập"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver historial de ingresos"
+          }
+        }
+      }
+    },
+    "paywall.compareModels": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare booth vs commission"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sánh booth với hoa hồng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara booth vs. comisión"
+          }
+        }
+      }
+    },
+    "paywall.once": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One-time purchase. No subscription."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua một lần. Không đăng ký tháng."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compra única. Sin suscripción."
+          }
+        }
+      }
+    },
+    "paywall.unlockLifetime": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock Lifetime · %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở trọn đời · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquear de por vida · %@"
+          }
+        }
+      }
+    },
+    "paywall.continueFree": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue Free"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục miễn phí"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seguir gratis"
+          }
+        }
+      }
+    },
+    "paywall.restore": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Purchase"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khôi phục mua hàng"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restaurar compra"
+          }
+        }
+      }
+    },
+    "widget.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See this week’s take-home without opening the app."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem tiền còn lại tuần này mà không cần mở ứng dụng."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira el neto de esta semana sin abrir la app."
+          }
+        }
+      }
+    },
+    "a11y.selected": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã chọn"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionado"
+          }
+        }
+      }
+    },
+    "a11y.takeHome %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You took home %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te quedaste %@"
+          }
+        }
+      }
+    }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

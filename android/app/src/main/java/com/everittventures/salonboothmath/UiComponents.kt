@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
@@ -43,18 +44,22 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
         else -> "${stringResource(R.string.weekly_rent)} · ${formatCents(store.weeklyRentCents)}/${stringResource(R.string.week)}"
     }
 }
+internal fun selectedAppLanguage(): String {
+    val tag = AppCompatDelegate.getApplicationLocales().toLanguageTags().substringBefore(",").trim()
+    return if (tag.isEmpty()) "en" else tag
+}
 internal fun appLanguage(context: Context): String = context.getSharedPreferences("salon_booth_math", Context.MODE_PRIVATE).getString("app_language", "en") ?: "en"
 internal fun localeFor(language: String): Locale = when (language) {
     "es" -> Locale("es")
     "vi" -> Locale("vi")
     else -> Locale.ENGLISH
 }
-internal fun formatCents(cents: Long, language: String = Locale.getDefault().language): String {
+internal fun formatCents(cents: Long, language: String = selectedAppLanguage()): String {
     val format = NumberFormat.getCurrencyInstance(localeFor(language))
     format.currency = Currency.getInstance("USD")
     return format.format(BigDecimal.valueOf(cents, 2))
 }
-internal fun appCurrencySymbol(language: String = Locale.getDefault().language): String {
+internal fun appCurrencySymbol(language: String = selectedAppLanguage()): String {
     val format = NumberFormat.getCurrencyInstance(localeFor(language))
     format.currency = Currency.getInstance("USD")
     return format.currency?.symbol ?: "$"
@@ -62,4 +67,4 @@ internal fun appCurrencySymbol(language: String = Locale.getDefault().language):
 internal fun inputMoney(cents:Long):String=BigDecimal.valueOf(cents,2).stripTrailingZeros().toPlainString(); internal fun cleanDecimal(value:Double):String=BigDecimal.valueOf(value).stripTrailingZeros().toPlainString(); internal fun percentText(basisPoints:Int):String=BigDecimal(basisPoints).movePointLeft(2).stripTrailingZeros().toPlainString()
 internal fun percentBasisPoints(text:String,fallback:String):Int{val normalized=text.trim().replace(',','.');val percent=normalized.toBigDecimalOrNull()?:BigDecimal(fallback);return percent.multiply(BigDecimal("100")).setScale(0,RoundingMode.HALF_UP).toInt()}
 internal fun startOfWeek():Long{val c=Calendar.getInstance();c.set(Calendar.DAY_OF_WEEK,c.firstDayOfWeek);c.set(Calendar.HOUR_OF_DAY,0);c.set(Calendar.MINUTE,0);c.set(Calendar.SECOND,0);c.set(Calendar.MILLISECOND,0);return c.timeInMillis}
-internal fun weekRange(startMillis:Long, language: String = Locale.getDefault().language):String{val locale=localeFor(language);val start=Calendar.getInstance().apply{timeInMillis=startMillis};val end=(start.clone() as Calendar).apply{add(Calendar.DAY_OF_MONTH,6)};val sf=SimpleDateFormat("MMM d",locale);val ef=if(start.get(Calendar.MONTH)==end.get(Calendar.MONTH))SimpleDateFormat("d",locale)else SimpleDateFormat("MMM d",locale);return "${sf.format(Date(startMillis))}–${ef.format(Date(end.timeInMillis))}"}
+internal fun weekRange(startMillis:Long, language: String = selectedAppLanguage()):String{val locale=localeFor(language);val start=Calendar.getInstance().apply{timeInMillis=startMillis};val end=(start.clone() as Calendar).apply{add(Calendar.DAY_OF_MONTH,6)};val sf=SimpleDateFormat("MMM d",locale);val ef=if(start.get(Calendar.MONTH)==end.get(Calendar.MONTH))SimpleDateFormat("d",locale)else SimpleDateFormat("MMM d",locale);return "${sf.format(Date(startMillis))}–${ef.format(Date(end.timeInMillis))}"}

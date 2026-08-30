@@ -51,6 +51,12 @@ final class MoneyMathTests: XCTestCase {
         XCTAssertEqual(MoneyMath.houseTips(cashTips: 3, cardTips: 0, tipOwner: .split), 1)
     }
 
+    func testCompareVerdictUsesBoothWhenBoothWinsBySeventySix() {
+        let verdict = compareVerdict(boothCents: 10_000, commissionCents: 2_400, hybridCents: 1_000, language: "en")
+        XCTAssertTrue(verdict.contains("76") || verdict.contains("$76"), verdict)
+        XCTAssertTrue(verdict.localizedCaseInsensitiveContains("booth"), verdict)
+    }
+
     func testHybridSubtractsWeeklyRentAfterCommissionMath() {
         XCTAssertEqual(
             MoneyMath.hybridTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, weeklyRent: 25_000, cut: Decimal(string: "0.55")!, tipOwner: .you, workerPaysCardFees: false, extraFees: 2_000),

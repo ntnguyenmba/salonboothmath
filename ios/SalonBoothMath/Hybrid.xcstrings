@@ -138,19 +138,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Effective hourly"
+            "value": "Per hour"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neto por hora"
+            "value": "Por hora"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Thực nhận mỗi giờ"
+            "value": "Mỗi giờ"
           }
         }
       }
@@ -160,19 +160,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "TAKE-HOME"
+            "value": "You take home"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "NETO"
+            "value": "Te llevas"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "CÒN LẠI"
+            "value": "Bạn còn lại"
           }
         }
       }
@@ -380,19 +380,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Would booth or commission pay more this week?"
+            "value": "Compare"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Qué paga más esta semana: puesto o comisión?"
+            "value": "Comparar"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tuần này thuê chỗ hay chia phần dịch vụ có lợi hơn?"
+            "value": "So sánh"
           }
         }
       }

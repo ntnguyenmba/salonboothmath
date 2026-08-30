@@ -35,7 +35,7 @@ struct SettingsView: View {
                     BrandMark(size: 58)
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Salon Booth Math").font(Brand.font(22, weight: .heavy))
-                        Text(copy(en: "Simple money math for salon professionals", es: "Cálculos simples de dinero para profesionales de salón", vi: "Tính tiền đơn giản cho người làm nghề tiệm"))
+                        Text(L("settings.tagline", language: appLanguage))
                             .font(Brand.font(16)).foregroundStyle(Brand.muted)
                     }
                 }
@@ -122,13 +122,13 @@ struct SettingsView: View {
 
     private var legalSupportSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            sectionTitle(copy(en: "Legal & Support", es: "Legal y soporte", vi: "Pháp lý & hỗ trợ"))
-            Link(destination: LegalURLs.privacy) { settingsRow(copy(en: "Privacy Policy", es: "Política de privacidad", vi: "Chính sách quyền riêng tư"), icon: "hand.raised.fill") }
-            Link(destination: LegalURLs.terms) { settingsRow(copy(en: "Terms of Use", es: "Términos de uso", vi: "Điều khoản sử dụng"), icon: "doc.text.fill") }
-            Link(destination: LegalURLs.support) { settingsRow(copy(en: "Contact Support", es: "Contactar soporte", vi: "Liên hệ hỗ trợ"), icon: "envelope.fill") }
+            sectionTitle(L("settings.legal", language: appLanguage))
+            Link(destination: LegalURLs.privacy) { settingsRow(L("settings.privacy", language: appLanguage), icon: "hand.raised.fill") }
+            Link(destination: LegalURLs.terms) { settingsRow(L("settings.terms", language: appLanguage), icon: "doc.text.fill") }
+            Link(destination: LegalURLs.support) { settingsRow(L("settings.support", language: appLanguage), icon: "envelope.fill") }
             Button { Task { await purchases.restore() } } label: { settingsRow(L("paywall.restore", language: appLanguage), icon: "arrow.clockwise") }
-            NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(copy(en: "About", es: "Acerca de", vi: "Giới thiệu"), icon: "info.circle.fill") }
-            Text(copy(en: "Calculations and tax reserve estimates are for informational purposes only and are not tax, accounting, financial, or legal advice.", es: "Los cálculos y las estimaciones de reserva para impuestos son solo informativos y no constituyen asesoría fiscal, contable, financiera ni legal.", vi: "Các phép tính và ước tính khoản để dành cho thuế chỉ mang tính thông tin, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý."))
+            NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(L("settings.about", language: appLanguage), icon: "info.circle.fill") }
+            Text(L("legal.disclaimer", language: appLanguage))
                 .font(Brand.font(16)).foregroundStyle(Brand.muted).fixedSize(horizontal: false, vertical: true)
             Text("© 2026 Everitt Ventures LLC").font(Brand.font(16)).foregroundStyle(Brand.muted)
         }
@@ -176,18 +176,10 @@ struct SettingsView: View {
         extraFeesCents = MoneyMath.cents(from: extraFeesText)
     }
 
-    private func copy(en: String, es: String, vi: String) -> String {
-        switch language {
-        case .english: en
-        case .spanish: es
-        case .vietnamese: vi
-        }
-    }
 }
 
 private struct AboutSalonBoothMathView: View {
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
-    private var language: AppLanguage { AppLanguage.current(appLanguage) }
     private var version: String { Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0" }
     private var build: String { Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1" }
 
@@ -195,9 +187,9 @@ private struct AboutSalonBoothMathView: View {
         VStack(spacing: 18) {
             BrandMark(size: 92)
             Text("Salon Booth Math").font(Brand.font(30, weight: .heavy))
-            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê chỗ, chia phần và kết hợp, không kèm phần mềm quản lý tiệm rườm rà."))
+            Text(L("settings.aboutBody", language: appLanguage))
                 .font(Brand.font(17)).foregroundStyle(Brand.muted).multilineTextAlignment(.center)
-            Text(localized(language, en: "Version", es: "Versión", vi: "Phiên bản") + " \(version) (\(build))")
+            Text(String(format: L("settings.version", language: appLanguage), version, build))
                 .font(Brand.font(16)).foregroundStyle(Brand.muted)
             Spacer()
             Text("© 2026 Everitt Ventures LLC").font(Brand.font(16)).foregroundStyle(Brand.muted)
@@ -206,16 +198,8 @@ private struct AboutSalonBoothMathView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Brand.page.ignoresSafeArea())
         .foregroundStyle(Brand.ink)
-        .navigationTitle(localized(language, en: "About", es: "Acerca de", vi: "Giới thiệu"))
+        .navigationTitle(L("settings.about", language: appLanguage))
         .navigationBarTitleDisplayMode(.inline)
         .standardNavigationControls()
-    }
-}
-
-private func localized(_ language: AppLanguage, en: String, es: String, vi: String) -> String {
-    switch language {
-    case .english: en
-    case .spanish: es
-    case .vietnamese: vi
     }
 }

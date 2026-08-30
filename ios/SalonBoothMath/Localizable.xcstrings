@@ -138,13 +138,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth"
+            "value": "Booth rent"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Puesto"
+            "value": "Renta de puesto"
           }
         },
         "vi": {
@@ -556,19 +556,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "YOU TOOK HOME"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "BẠN CÒN LẠI"
+            "value": "You take home"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "TE QUEDASTE"
+            "value": "Te llevas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại"
           }
         }
       }
@@ -600,19 +600,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "See breakdown"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Xem chi tiết"
+            "value": "Breakdown"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ver desglose"
+            "value": "Desglose"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chi tiết"
           }
         }
       }
@@ -644,19 +644,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gross"
+            "value": "Total in"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total cobrado"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Tổng thu"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bruto"
           }
         }
       }
@@ -776,19 +776,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Take-home"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Còn lại"
+            "value": "You take home"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neto"
+            "value": "Te llevas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại"
           }
         }
       }
@@ -842,19 +842,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Same week, other deal"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cùng tuần, cách trả khác"
+            "value": "Compare"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Misma semana, otro trato"
+            "value": "Comparar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sánh"
           }
         }
       }
@@ -1788,19 +1788,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You keep 100% of cash and card tips."
+            "value": "You keep all tips"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tú conservas el 100% de las propinas en efectivo y tarjeta."
+            "value": "Tú te quedas todas las propinas"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bạn giữ 100% tiền boa bằng tiền mặt và qua thẻ."
+            "value": "Bạn giữ hết tiền boa"
           }
         }
       }
@@ -1810,19 +1810,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The house/owner keeps 100% of cash and card tips."
+            "value": "House keeps all tips"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El salón/dueño conserva el 100% de las propinas en efectivo y tarjeta."
+            "value": "El salón se queda todas las propinas"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiệm/chủ giữ 100% tiền boa bằng tiền mặt và qua thẻ."
+            "value": "Tiệm giữ hết tiền boa"
           }
         }
       }
@@ -1832,19 +1832,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cash and card tips are split 50-50 between you and the house."
+            "value": "Tips are split equally"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las propinas en efectivo y tarjeta se dividen 50-50 entre tú y el salón."
+            "value": "Las propinas se parten a la mitad"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiền boa bằng tiền mặt và qua thẻ được chia 50-50 giữa bạn và tiệm."
+            "value": "Tiền boa chia đều"
           }
         }
       }
@@ -1889,6 +1889,138 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tùy chọn"
+          }
+        }
+      }
+    },
+    "compare.verdictBooth": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth leaves you %@ more this week."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El puesto te deja %@ más esta semana."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thuê chỗ để bạn còn nhiều hơn %@ tuần này."
+          }
+        }
+      }
+    },
+    "compare.verdictCommission": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The split leaves you %@ more this week."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La parte te deja %@ más esta semana."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia phần để bạn còn nhiều hơn %@ tuần này."
+          }
+        }
+      }
+    },
+    "compare.verdictHybrid": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid leaves you %@ more this week."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El híbrido te deja %@ más esta semana."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết hợp để bạn còn nhiều hơn %@ tuần này."
+          }
+        }
+      }
+    },
+    "compare.verdictTie": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This week they pay the same."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta semana te pagan igual."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuần này các kiểu trả bằng nhau."
+          }
+        }
+      }
+    },
+    "settings.aboutBody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See what you take home on booth rent, commission, or both."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira cuánto te llevas con renta de puesto, comisión o ambos."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem bạn còn lại bao nhiêu khi thuê chỗ, chia phần, hoặc cả hai."
+          }
+        }
+      }
+    },
+    "settings.version": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Version %@ (%@)"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Versión %@ (%@)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phiên bản %@ (%@)"
           }
         }
       }

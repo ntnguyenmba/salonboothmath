@@ -100,6 +100,10 @@ struct CompareView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Text(L("compare.title", language: appLanguage)).font(Brand.font(28, weight: .heavy))
+                Text(compareVerdict(boothCents: boothCents, commissionCents: commissionCents, hybridCents: hybridCents, language: appLanguage))
+                    .font(Brand.font(20, weight: .heavy))
+                    .foregroundStyle(Brand.hotPink)
+                    .fixedSize(horizontal: false, vertical: true)
                 comparison(label: L("pay.booth", language: appLanguage), amount: boothCents, selected: boothCents == winner)
                 comparison(label: L("pay.commission", language: appLanguage), amount: commissionCents, selected: commissionCents == winner)
                 comparison(label: L("pay.hybrid", table: "Hybrid", language: appLanguage), amount: hybridCents, selected: hybridCents == winner)

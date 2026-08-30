@@ -270,7 +270,7 @@ struct HomeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
             }
             Button { openCompare() } label: {
-                Text(L("home.compareDeal", table: "Hybrid", language: appLanguage))
+                Text(L("compare.title", language: appLanguage))
                     .font(Brand.font(18))
                     .foregroundStyle(Brand.ink)
                     .frame(maxWidth: .infinity, minHeight: 58)

@@ -1,9 +1,72 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "home.thisWeek" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "This week" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tuần này" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Esta semana" } } } },
-    "home.youTookHome" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "YOU TOOK HOME" } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "BẠN CÒN LẠI" } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "TE QUEDASTE" } } } },
-    "widget.description" : { "localizations" : { "en" : { "stringUnit" : { "state" : "translated", "value" : "See this week’s take-home without opening the app." } }, "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem tiền còn lại tuần này mà không cần mở ứng dụng." } }, "es" : { "stringUnit" : { "state" : "translated", "value" : "Mira el neto de esta semana sin abrir la app." } } } }
+  "sourceLanguage": "en",
+  "strings": {
+    "home.thisWeek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Esta semana"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuần này"
+          }
+        }
+      }
+    },
+    "home.youTookHome": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You take home"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te llevas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại"
+          }
+        }
+      }
+    },
+    "widget.description": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See what you take home this week without opening the app."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira cuánto te llevas esta semana sin abrir la app."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem bạn còn lại bao nhiêu tuần này mà không cần mở ứng dụng."
+          }
+        }
+      }
+    }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

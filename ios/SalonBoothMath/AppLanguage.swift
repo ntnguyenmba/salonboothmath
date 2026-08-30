@@ -35,8 +35,12 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     }
 }
 
+func appLocale(_ language: String = AppLanguage.stored.rawValue) -> Locale {
+    AppLanguage.current(language).locale
+}
+
 func L(_ key: String.LocalizationValue, table: String? = nil, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = AppLanguage.current(language).locale
+    let locale = appLocale(language)
     if let table {
         return String(localized: key, table: table, locale: locale)
     }
@@ -44,9 +48,25 @@ func L(_ key: String.LocalizationValue, table: String? = nil, language: String =
 }
 
 func formatCurrency(_ cents: Int, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = AppLanguage.current(language).locale
     let amount = Decimal(cents) / 100
-    return amount.formatted(.currency(code: "USD").locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+    return amount.formatted(.currency(code: "USD").locale(appLocale(language)).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+}
+
+func compareVerdict(boothCents: Int, commissionCents: Int, hybridCents: Int, language: String = AppLanguage.stored.rawValue) -> String {
+    let scores: [(String, Int)] = [("booth", boothCents), ("commission", commissionCents), ("hybrid", hybridCents)]
+    let best = scores.map(\.1).max() ?? 0
+    let winners = scores.filter { $0.1 == best }
+    guard winners.count == 1 else { return L("compare.verdictTie", language: language) }
+    let second = scores.filter { $0.0 != winners[0].0 }.map(\.1).max() ?? best
+    let extra = best - second
+    guard extra > 0 else { return L("compare.verdictTie", language: language) }
+    let key: String.LocalizationValue
+    switch winners[0].0 {
+    case "booth": key = "compare.verdictBooth"
+    case "commission": key = "compare.verdictCommission"
+    default: key = "compare.verdictHybrid"
+    }
+    return String(format: L(key, language: language), formatCurrency(extra, language: language))
 }
 
 func appCurrencySymbol(_ language: String = AppLanguage.stored.rawValue) -> String {

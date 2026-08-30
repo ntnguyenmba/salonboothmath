@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Salon Booth Math</string>
     <string name="this_week">This week</string>
@@ -11,12 +11,12 @@
     <string name="tax_set_aside">Tax set-aside %</string>
     <string name="card_fee_percent">Card fee %</string>
     <string name="services_on_card">Services paid by card %</string>
-    <string name="you_took_home">YOU TOOK HOME</string>
+    <string name="you_took_home">You take home</string>
     <string name="save_week">Save week</string>
     <string name="save_week_lifetime">Save week</string>
-    <string name="breakdown">See breakdown</string>
+    <string name="breakdown">Breakdown</string>
     <string name="compare">Compare</string>
-    <string name="compare_deal">Would booth or commission pay more this week?</string>
+    <string name="compare_deal">Compare</string>
     <string name="history">History</string>
     <string name="last_four_weeks">Last 4 weeks</string>
     <string name="average_week">Average week</string>
@@ -30,8 +30,8 @@
     <string name="hours_today_optional">Hours today · optional</string>
     <string name="cancel">Cancel</string>
     <string name="back">Back</string>
-    <string name="unlock">Lifetime Access</string>
-    <string name="paywall_body">Keep every day you added. Look back later and compare booth, commission, and hybrid pay. One purchase. No subscription.</string>
+    <string name="unlock">Keep this week’s numbers</string>
+    <string name="paywall_body">Save weeks, look back later, and compare booth vs split. One purchase. No subscription.</string>
     <string name="unlock_price">Unlock Lifetime · %1$s</string>
     <string name="restore_purchase">Restore Purchase</string>
     <string name="not_now">Not now</string>
@@ -43,9 +43,9 @@
     <string name="trade_barber">Barber</string>
     <string name="trade_esthetician">Esthetician</string>
     <string name="pay_question">How do you get paid?</string>
-    <string name="pay_model">Pay model</string>
-    <string name="trade">Trade</string>
-    <string name="booth_rent">Booth</string>
+    <string name="pay_model">How you get paid</string>
+    <string name="trade">What you do</string>
+    <string name="booth_rent">Booth rent</string>
     <string name="commission">Commission</string>
     <string name="hybrid">Hybrid</string>
     <string name="keep_cut">You keep %1$d%% · house keeps %2$d%%</string>
@@ -60,27 +60,27 @@
     <string name="tips_you">You</string>
     <string name="tips_house">House/Owner</string>
     <string name="tips_split">50-50</string>
-    <string name="tips_explain_you">You keep 100% of cash and card tips.</string>
-    <string name="tips_explain_house">The house/owner keeps 100% of cash and card tips.</string>
-    <string name="tips_explain_split">Cash and card tips are split 50-50 between you and the house.</string>
-    <string name="worker_card_fees">Worker pays card fees</string>
-    <string name="widget_description">See this week’s take-home without opening the app.</string>
-    <string name="gross">Gross</string>
+    <string name="tips_explain_you">You keep all tips</string>
+    <string name="tips_explain_house">House keeps all tips</string>
+    <string name="tips_explain_split">Tips are split equally</string>
+    <string name="worker_card_fees">I pay the card processing fees</string>
+    <string name="widget_description">See what you take home this week without opening the app.</string>
+    <string name="gross">Total in</string>
     <string name="your_share">Your service share</string>
     <string name="house_cut">House/owner service share</string>
     <string name="your_tips">Your tips</string>
     <string name="house_tips">House/owner tips</string>
     <string name="card_fees">Card fees</string>
-    <string name="take_home">Take-home</string>
+    <string name="take_home">You take home</string>
     <string name="per_hour">Per hour</string>
     <string name="per_hour_suffix">/hr</string>
     <string name="tax_reserve">Tax set-aside estimate</string>
-    <string name="rent_warning">Booth rent is taking 40% or more of this week’s gross.</string>
-    <string name="compare_booth">Booth</string>
+    <string name="rent_warning">Booth rent is taking 40% or more of this week’s total.</string>
+    <string name="compare_booth">Booth rent</string>
     <string name="compare_commission">Commission</string>
     <string name="compare_hybrid">Hybrid</string>
     <string name="save_settings">Save settings</string>
-    <string name="estimate_disclaimer">Tax set-aside is optional planning only and is not deducted from take-home. Estimates are not tax, accounting, financial, or legal advice.</string>
+    <string name="estimate_disclaimer">Tax set-aside is optional. It is not taken out of what you take home. Estimates are not tax, accounting, financial, or legal advice.</string>
     <string name="legal_support">Legal &amp; Support</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_use">Terms of Use</string>
@@ -89,4 +89,10 @@
     <string name="about_text">Salon Booth Math by Everitt Ventures LLC. Your calculator and saved weeks stay on this device. Purchases are processed by Google Play.</string>
     <string name="language">Language</string>
     <string name="selected">Selected</string>
+    <string name="compare_verdict_booth">Booth leaves you %1$s more this week.</string>
+    <string name="compare_verdict_commission">The split leaves you %1$s more this week.</string>
+    <string name="compare_verdict_hybrid">Hybrid leaves you %1$s more this week.</string>
+    <string name="compare_verdict_tie">This week they pay the same.</string>
+    <string name="settings_tagline">Simple money math for salon professionals</string>
+    <string name="about_body">See what you take home on booth rent, commission, or both.</string>
 </resources>

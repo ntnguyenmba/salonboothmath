@@ -2,18 +2,19 @@
 
 **What did I take home this week?**
 
-A focused offline take-home tool for nail techs, hair stylists, barbers, and estheticians working on booth rent or commission.
+A focused offline take-home tool for nail techs, hair stylists, barbers, and estheticians working on booth rent, commission, or hybrid pay.
 
-iOS + Android · English + Vietnamese + Spanish · $4.99 once · No subscription
+iOS + Android · English + Vietnamese + Spanish · $9.99 once · No subscription
 
-## v1
+## Product
 
 - No account
 - Free current-week calculator: Services + Cash tips + Card tips + Supplies + live take-home
+- Free Add today entry into the current week
 - Breakdown is free
-- One-time $4.99 lifetime unlock
+- One-time $9.99 lifetime unlock
 - Saved weeks and History
-- Booth vs Commission comparison
+- Booth vs Commission vs Hybrid comparison
 - Rent, commission, card fee, tax set-aside, and extra-fee settings
 - Native Share take-home card
 - Small Home Screen widget
@@ -32,7 +33,7 @@ Wine is the app surface. White is the reading color. Pink is the tap.
 - Minimum text size 16px
 - Controls 56-64px high
 - Radius 16-20px
-- Home: four vertical money fields → take-home → Save → Breakdown
+- Home: four vertical money fields → take-home → Add today → Save → Breakdown
 - One action and one dominant number per screen
 - No beige, navy, blush fills, tiny text, dashboard grids, gradients, sparklines, or faded copy
 
@@ -45,7 +46,5 @@ All work goes directly to `main`. Cursor and Codex should also work on `main` an
 - `ios/` SwiftUI + StoreKit 2 + WidgetKit
 - `android/` Jetpack Compose + Google Play Billing
 - `docs/` locked product/design/localization/release specifications
-
-First implementation target: onboarding → This Week → live take-home math.
 
 Not tax, legal, or financial advice.

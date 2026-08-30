@@ -105,6 +105,7 @@ struct SettingsView: View {
         }
         .background(Brand.page.ignoresSafeArea())
         .foregroundStyle(Brand.ink)
+        .environment(\.locale, AppLanguage.current(appLanguage).locale)
         .navigationTitle(L("settings.title", language: appLanguage))
         .navigationBarTitleDisplayMode(.inline)
         .standardNavigationControls()

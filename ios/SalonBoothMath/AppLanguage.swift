@@ -6,7 +6,13 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     case spanish = "es"
 
     var id: String { rawValue }
-    var locale: Locale { Locale(identifier: rawValue) }
+    var locale: Locale {
+        switch self {
+        case .english: Locale(identifier: "en_US")
+        case .spanish: Locale(identifier: "es_US")
+        case .vietnamese: Locale(identifier: "vi_US")
+        }
+    }
 
     var displayName: String {
         switch self {
@@ -30,17 +36,21 @@ enum AppLanguage: String, CaseIterable, Identifiable {
 }
 
 func L(_ key: String.LocalizationValue, table: String? = nil, language: String = AppLanguage.stored.rawValue) -> String {
+    let locale = AppLanguage.current(language).locale
     if let table {
-        return String(localized: key, table: table, locale: Locale(identifier: language))
+        return String(localized: key, table: table, locale: locale)
     }
-    return String(localized: key, locale: Locale(identifier: language))
+    return String(localized: key, locale: locale)
 }
 
 func formatCurrency(_ cents: Int, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = Locale(identifier: language)
+    let locale = AppLanguage.current(language).locale
     let amount = Decimal(cents) / 100
-    let code = Locale.current.currency?.identifier ?? "USD"
-    return amount.formatted(.currency(code: code).locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+    return amount.formatted(.currency(code: "USD").locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+}
+
+func appCurrencySymbol(_ language: String = AppLanguage.stored.rawValue) -> String {
+    AppLanguage.current(language).locale.currencySymbol ?? "$"
 }
 
 func inputCurrencyCents(_ cents: Int) -> String {
@@ -48,14 +58,14 @@ func inputCurrencyCents(_ cents: Int) -> String {
 }
 
 func formatWeekRange(_ start: Date, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = Locale(identifier: language)
+    let locale = AppLanguage.current(language).locale
     let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start
     let style = Date.FormatStyle.dateTime.month(.abbreviated).day().locale(locale)
     return "\(start.formatted(style))–\(end.formatted(style))"
 }
 
 func formatDay(_ date: Date, language: String = AppLanguage.stored.rawValue) -> String {
-    date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(Locale(identifier: language)))
+    date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(AppLanguage.current(language).locale))
 }
 
 struct LanguagePicker: View {
@@ -91,7 +101,7 @@ private struct StandardNavigationControls: ViewModifier {
     func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)
-            .environment(\.locale, Locale(identifier: appLanguage))
+            .environment(\.locale, AppLanguage.current(appLanguage).locale)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(L("nav.back", table: "Hybrid", language: appLanguage)) { dismiss() }

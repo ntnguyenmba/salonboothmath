@@ -26,10 +26,10 @@ struct AddTodaySheet: View {
                         .font(Brand.font(16))
                         .foregroundStyle(Brand.hotPink)
                 }
-                TodayMoneyField(title: L("field.services", language: appLanguage), text: $services)
-                TodayMoneyField(title: L("field.tipsCash", language: appLanguage), text: $cashTips)
-                TodayMoneyField(title: L("field.tipsCard", language: appLanguage), text: $cardTips)
-                TodayMoneyField(title: L("field.supplies", language: appLanguage), text: $supplies)
+                TodayMoneyField(title: L("field.services", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $services)
+                TodayMoneyField(title: L("field.tipsCash", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cashTips)
+                TodayMoneyField(title: L("field.tipsCard", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cardTips)
+                TodayMoneyField(title: L("field.supplies", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $supplies)
                 VStack(alignment: .leading, spacing: 10) {
                     Text(L("settings.hoursToday", table: "Hybrid", language: appLanguage)).font(Brand.font(17))
                     TextField("0", text: $hours)
@@ -58,19 +58,20 @@ struct AddTodaySheet: View {
         }
         .background(Brand.page.ignoresSafeArea())
         .foregroundStyle(Brand.ink)
-        .environment(\.locale, Locale(identifier: appLanguage))
+        .environment(\.locale, AppLanguage.current(appLanguage).locale)
     }
 }
 
 private struct TodayMoneyField: View {
     let title: String
+    let currencySymbol: String
     @Binding var text: String
     @FocusState private var focused: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title).font(Brand.font(17))
             HStack(spacing: 8) {
-                Text(Locale.current.currencySymbol ?? "$")
+                Text(currencySymbol)
                 TextField("0", text: $text).keyboardType(.decimalPad).focused($focused)
             }
             .font(Brand.font(25, weight: .heavy))

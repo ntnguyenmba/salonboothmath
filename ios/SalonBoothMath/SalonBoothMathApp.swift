@@ -14,7 +14,7 @@ struct SalonBoothMathApp: App {
                     OnboardingView()
                 }
             }
-            .environment(\.locale, Locale(identifier: appLanguage))
+            .environment(\.locale, AppLanguage.current(appLanguage).locale)
             .preferredColorScheme(.dark)
             .tint(Brand.hotPink)
         }

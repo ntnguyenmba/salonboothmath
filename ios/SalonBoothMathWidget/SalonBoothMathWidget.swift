@@ -70,13 +70,25 @@ struct SalonBoothMathWidgetView: View {
     }
 
     private func widgetCopy(_ key: String.LocalizationValue) -> String {
-        String(localized: key, locale: Locale(identifier: language))
+        let locale: Locale = {
+            switch language {
+            case "es": return Locale(identifier: "es_US")
+            case "vi": return Locale(identifier: "vi_US")
+            default: return Locale(identifier: "en_US")
+            }
+        }()
+        return String(localized: key, locale: locale)
     }
 
     private func currency(_ cents: Int) -> String {
-        let locale = Locale(identifier: language)
-        let code = Locale.current.currency?.identifier ?? "USD"
-        return (Decimal(cents) / 100).formatted(.currency(code: code).locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+        let locale: Locale = {
+            switch language {
+            case "es": return Locale(identifier: "es_US")
+            case "vi": return Locale(identifier: "vi_US")
+            default: return Locale(identifier: "en_US")
+            }
+        }()
+        return (Decimal(cents) / 100).formatted(.currency(code: "USD").locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
     }
 }
 

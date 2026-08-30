@@ -214,10 +214,10 @@ struct HomeView: View {
 
     private var fields: some View {
         VStack(spacing: 20) {
-            HomeMoneyField(title: L("field.services", language: appLanguage), text: $services)
-            HomeMoneyField(title: L("field.tipsCash", language: appLanguage), text: $cashTips)
-            HomeMoneyField(title: L("field.tipsCard", language: appLanguage), text: $cardTips)
-            HomeMoneyField(title: L("field.supplies", language: appLanguage), text: $supplies)
+            HomeMoneyField(title: L("field.services", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $services)
+            HomeMoneyField(title: L("field.tipsCash", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cashTips)
+            HomeMoneyField(title: L("field.tipsCard", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cardTips)
+            HomeMoneyField(title: L("field.supplies", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $supplies)
         }
         .padding(.horizontal, Brand.screenPadding)
     }
@@ -389,6 +389,7 @@ struct HomeView: View {
 
 private struct HomeMoneyField: View {
     let title: String
+    let currencySymbol: String
     @Binding var text: String
     @FocusState private var focused: Bool
 
@@ -396,7 +397,7 @@ private struct HomeMoneyField: View {
         VStack(alignment: .leading, spacing: 11) {
             Text(title).font(Brand.font(18)).foregroundStyle(Brand.ink)
             HStack(spacing: 8) {
-                Text(Locale.current.currencySymbol ?? "$")
+                Text(currencySymbol)
                 TextField("0", text: $text).keyboardType(.decimalPad).focused($focused)
             }
             .font(Brand.font(29, weight: .heavy))

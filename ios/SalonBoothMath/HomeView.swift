@@ -1,6 +1,11 @@
 import SwiftUI
 import UIKit
 
+private struct SharePayload: Identifiable {
+    let id = UUID()
+    let items: [Any]
+}
+
 struct HomeView: View {
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
     @AppStorage("payModel") private var savedPayModel = PayModel.booth.rawValue
@@ -36,10 +41,9 @@ struct HomeView: View {
     @State private var showCompare = false
     @State private var showHistory = false
     @State private var showSettings = false
-    @State private var showShare = false
     @State private var showAddToday = false
     @State private var addedTodayGross: Int?
-    @State private var shareImage: UIImage?
+    @State private var sharePayload: SharePayload?
     @State private var pendingAction: LockedAction?
 
     private enum LockedAction { case save, compare, history }
@@ -144,10 +148,9 @@ struct HomeView: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
-        .sheet(isPresented: $showShare) {
-            if let shareImage {
-                ActivityShareView(items: [shareImage, formatCurrency(takeHomeCents, language: appLanguage), formatWeekRange(activeWeekStart, language: appLanguage)])
-            }
+        .sheet(item: $sharePayload) { payload in
+            ActivityShareView(items: payload.items)
+                .ignoresSafeArea()
         }
         .onAppear {
             restoreCurrentWeekDraft()
@@ -190,12 +193,6 @@ struct HomeView: View {
                         }
                     }
                     Divider()
-                    if !purchases.isUnlocked {
-                        Button(String(format: L("paywall.unlockLifetime", language: appLanguage), lifetimePrice)) {
-                            pendingAction = nil
-                            showPaywall = true
-                        }
-                    }
                     Button(L("home.share", language: appLanguage)) { shareCurrentWeek() }
                     Button(L("history.title", language: appLanguage)) { requireUnlock(.history) }
                     Button(L("compare.title", language: appLanguage)) { openCompare() }
@@ -353,8 +350,10 @@ struct HomeView: View {
     }
 
     private func shareCurrentWeek() {
-        shareImage = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart)
-        showShare = shareImage != nil
+        guard let image = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart) else { return }
+        let amount = formatCurrency(takeHomeCents, language: appLanguage)
+        let week = formatWeekRange(activeWeekStart, language: appLanguage)
+        sharePayload = SharePayload(items: [image, amount, week])
     }
 
     private func openCompare() {
@@ -473,8 +472,10 @@ struct PaywallView: View {
 
 struct ActivityShareView: UIViewControllerRepresentable {
     let items: [Any]
+
     func makeUIViewController(context: Context) -> UIActivityViewController {
         UIActivityViewController(activityItems: items, applicationActivities: nil)
     }
+
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

@@ -1,0 +1,72 @@
+name: iOS Localization Source Audit
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ios-localization-source-audit.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-and-audit:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Fix source-driven localization and audit
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('ios/SalonBoothMath')
+          # SwiftUI Text with string literals like Text("home.title") resolves via the
+          # environment locale, but this app changes its own appLanguage at runtime.
+          # Route localization-key literals through L() so the selected app language
+          # applies immediately on every screen.
+          patterns = [
+              (re.compile(r'Text\("([A-Za-z0-9_.-]+)"\)'), lambda m: f'Text(L("{m.group(1)}", language: appLanguage))'),
+              (re.compile(r'navigationTitle\("([A-Za-z0-9_.-]+)"\)'), lambda m: f'navigationTitle(L("{m.group(1)}", language: appLanguage))'),
+          ]
+          changed=[]
+          for p in root.glob('*.swift'):
+              s=p.read_text()
+              old=s
+              # Only rewrite localization-looking keys, not literals such as 0 or symbols.
+              for rx, repl in patterns:
+                  s=rx.sub(repl,s)
+              if s != old:
+                  # Ensure views using L(...language: appLanguage) have appLanguage.
+                  # Most app views already do; do not inject blindly into utility/model files.
+                  if 'language: appLanguage' in s and '@AppStorage("appLanguage")' not in s:
+                      print(f'NEEDS_APP_LANGUAGE:{p}')
+                  p.write_text(s)
+                  changed.append(str(p))
+          print('changed', *changed, sep='\n')
+
+          # Fail on user-facing localization-key literals still passed directly to Text/navigationTitle.
+          bad=[]
+          for p in root.glob('*.swift'):
+              s=p.read_text()
+              for n,line in enumerate(s.splitlines(),1):
+                  if re.search(r'(?:Text|navigationTitle)\("[A-Za-z][A-Za-z0-9_-]*\.[A-Za-z0-9_.-]+"\)', line):
+                      bad.append(f'{p}:{n}:{line.strip()}')
+          if bad:
+              raise SystemExit('Unrouted localization keys:\n'+'\n'.join(bad))
+          PY
+
+          # Show suspicious literal English UI constructors for manual follow-up.
+          grep -RInE 'Text\("[A-Za-z][A-Za-z ]{2,}"\)|Button\("[A-Za-z][A-Za-z ]{2,}"|navigationTitle\("[A-Za-z][A-Za-z ]{2,}"' ios/SalonBoothMath --include='*.swift' || true
+
+          if git diff --quiet; then
+            echo 'No source changes needed'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add ios/SalonBoothMath
+            git commit -m 'Route iOS UI through selected app language'
+            git push origin HEAD:main
+          fi

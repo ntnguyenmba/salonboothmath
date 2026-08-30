@@ -30,7 +30,7 @@ final class LocalizationAuditTests: XCTestCase {
             "compare.title", "compare.verdictBooth", "compare.verdictCommission",
             "compare.verdictHybrid", "compare.verdictTie",
             "history.title", "settings.language", "settings.aboutBody",
-            "settings.tipYou", "settings.tipHouse", "settings.tipSplit",
+            "settings.payModel", "settings.tipYou", "settings.tipHouse", "settings.tipSplit",
             "paywall.unlockLifetime", "widget.description"
         ]
         let data = try Data(contentsOf: iosRoot().appendingPathComponent("SalonBoothMath/Localizable.xcstrings"))

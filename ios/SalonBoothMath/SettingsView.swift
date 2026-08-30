@@ -90,9 +90,9 @@ struct SettingsView: View {
     private var legalSupportSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             sectionTitle(copy(en: "Legal & Support", es: "Legal y soporte", vi: "Pháp lý & hỗ trợ"))
-            Link(destination: URL(string: "https://sites.google.com/everittventures.com/salon-booth-math/privacy")!) { settingsRow(copy(en: "Privacy Policy", es: "Política de privacidad", vi: "Chính sách quyền riêng tư"), icon: "hand.raised.fill") }
-            Link(destination: URL(string: "https://sites.google.com/everittventures.com/salon-booth-math/terms")!) { settingsRow(copy(en: "Terms of Use", es: "Términos de uso", vi: "Điều khoản sử dụng"), icon: "doc.text.fill") }
-            Link(destination: URL(string: "https://sites.google.com/everittventures.com/salon-booth-math/support")!) { settingsRow(copy(en: "Contact Support", es: "Contactar soporte", vi: "Liên hệ hỗ trợ"), icon: "envelope.fill") }
+            Link(destination: LegalURLs.privacy) { settingsRow(copy(en: "Privacy Policy", es: "Política de privacidad", vi: "Chính sách quyền riêng tư"), icon: "hand.raised.fill") }
+            Link(destination: LegalURLs.terms) { settingsRow(copy(en: "Terms of Use", es: "Términos de uso", vi: "Điều khoản sử dụng"), icon: "doc.text.fill") }
+            Link(destination: LegalURLs.support) { settingsRow(copy(en: "Contact Support", es: "Contactar soporte", vi: "Liên hệ hỗ trợ"), icon: "envelope.fill") }
             Button { Task { await purchases.restore() } } label: { settingsRow(copy(en: "Restore Purchases", es: "Restaurar compras", vi: "Khôi phục giao dịch mua"), icon: "arrow.clockwise") }
             NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(copy(en: "About", es: "Acerca de", vi: "Giới thiệu"), icon: "info.circle.fill") }
             Text(copy(en: "Calculations and tax reserve estimates are for informational purposes only and are not tax, accounting, financial, or legal advice.", es: "Los cálculos y las estimaciones de reserva para impuestos son solo informativos y no constituyen asesoría fiscal, contable, financiera ni legal.", vi: "Các phép tính và ước tính khoản để dành cho thuế chỉ mang tính thông tin, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý."))

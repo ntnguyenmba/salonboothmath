@@ -61,7 +61,7 @@ jobs:
           hybrid_path = root / 'ios/SalonBoothMath/Hybrid.xcstrings'
           hybrid = json.loads(hybrid_path.read_text(encoding='utf-8'))
           hybrid_vi = {
-              'home.hybridContext': '%@/tuần + giữ %d%% + tiền boa',
+              'home.hybridContext': '%@/%@ · bạn giữ %d%%',
               'settings.houseKeeps': 'Tiệm/chủ giữ %d%%',
               'br.houseShare': 'Phần dịch vụ của tiệm',
           }
@@ -90,10 +90,10 @@ jobs:
               'commission': 'Chia phần',
               'hybrid': 'Kết hợp',
               'keep_cut': 'Bạn giữ %1$d%% · tiệm giữ %2$d%%',
-              'hybrid_context': 'Tiền thuê chỗ + bạn giữ %1$d%%',
+              'hybrid_context': '%1$s/%2$s · bạn giữ %3$d%%',
               'weekly_rent': 'Tiền thuê chỗ',
               'house_keeps': 'Tiệm/chủ giữ %1$d%%',
-              'tips_house': 'Tiệm',
+              'tips_house': 'Tiệm/chủ',
               'house_cut': 'Phần dịch vụ của tiệm/chủ',
               'paywall_body': 'Giữ lại từng ngày bạn đã thêm. Xem lại lịch sử và so sánh thuê chỗ, chia phần và kiểu kết hợp. Mua một lần. Không đăng ký tháng.',
               'cash_tips': 'Tiền boa bằng tiền mặt',

@@ -26,6 +26,17 @@ struct MoneyMath {
     static func cardFees(services: Int, cardTips: Int, cardFeeRate: Decimal, percentServicesOnCard: Decimal) -> Int { roundedCents((Decimal(cardTips) + Decimal(services) * percentServicesOnCard) * cardFeeRate) }
     static func servicePay(services: Int, cut: Decimal) -> Int { roundedCents(Decimal(services) * cut) }
     static func houseCut(services: Int, workerCut: Decimal) -> Int { services - servicePay(services: services, cut: workerCut) }
+    static func workerTips(cashTips: Int, cardTips: Int, tipOwner: TipOwner) -> Int {
+        let allTips = cashTips + cardTips
+        switch tipOwner {
+        case .you: return allTips
+        case .house: return 0
+        case .split: return roundedCents(Decimal(allTips) / 2)
+        }
+    }
+    static func houseTips(cashTips: Int, cardTips: Int, tipOwner: TipOwner) -> Int {
+        cashTips + cardTips - workerTips(cashTips: cashTips, cardTips: cardTips, tipOwner: tipOwner)
+    }
     static func hourlyTakeHome(takeHomeCents: Int, hours: Decimal) -> Int? { hours > 0 ? roundedCents(Decimal(takeHomeCents) / hours) : nil }
     static func taxReserve(takeHomeCents: Int, rate: Decimal) -> Int { takeHomeCents > 0 ? roundedCents(Decimal(takeHomeCents) * rate) : 0 }
 
@@ -34,8 +45,7 @@ struct MoneyMath {
     }
 
     static func commissionTakeHome(services: Int, cashTips: Int, cardTips: Int, supplies: Int, cut: Decimal, tipOwner: TipOwner, workerPaysCardFees: Bool = false, extraFees: Int = 0, cardFeeRate: Decimal = 0.029, percentServicesOnCard: Decimal = 0.70) -> Int {
-        let allTips = cashTips + cardTips
-        let tips: Int = switch tipOwner { case .you: allTips; case .house: 0; case .split: roundedCents(Decimal(allTips) / 2) }
+        let tips = workerTips(cashTips: cashTips, cardTips: cardTips, tipOwner: tipOwner)
         let fees = workerPaysCardFees ? cardFees(services: services, cardTips: cardTips, cardFeeRate: cardFeeRate, percentServicesOnCard: percentServicesOnCard) : 0
         return servicePay(services: services, cut: cut) + tips - fees - supplies - extraFees
     }

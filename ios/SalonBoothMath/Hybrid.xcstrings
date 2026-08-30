@@ -28,19 +28,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@/week + keep %d%% + tips"
+            "value": "%@/%@ · you keep %d%%"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@/semana + conservas %d%% + propinas"
+            "value": "%@/%@ · conservas %d%%"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@/tuần + giữ %d%% + tiền boa"
+            "value": "%@/%@ · bạn giữ %d%%"
           }
         }
       }
@@ -72,19 +72,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "On hybrid"
+            "value": "Hybrid"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con híbrido"
+            "value": "Híbrido"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nếu kết hợp"
+            "value": "Kết hợp"
           }
         }
       }
@@ -298,7 +298,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El salón se queda con %d%%"
+            "value": "El salón/dueño se queda con %d%%"
           }
         },
         "vi": {
@@ -364,13 +364,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Parte de servicios del salón"
+            "value": "Parte de servicios del salón/dueño"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Phần dịch vụ của tiệm"
+            "value": "Phần dịch vụ của tiệm/chủ"
           }
         }
       }
@@ -481,6 +481,94 @@
           "stringUnit": {
             "state": "translated",
             "value": "Số giờ hôm nay · tùy chọn"
+          }
+        }
+      }
+    },
+    "br.yourTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus propinas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của bạn"
+          }
+        }
+      }
+    },
+    "br.houseTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House/owner tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propinas del salón/dueño"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của tiệm/chủ"
+          }
+        }
+      }
+    },
+    "settings.rentPeriod": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth rent period"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periodo de renta del puesto"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chu kỳ tiền thuê chỗ"
+          }
+        }
+      }
+    },
+    "unit.perHour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/hr"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/h"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/giờ"
           }
         }
       }

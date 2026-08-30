@@ -27,4 +27,42 @@ final class MoneyMathTests: XCTestCase {
         XCTAssertEqual(MoneyMath.basisPoints(fromPercentText: "2.9", fallback: 0), 290)
         XCTAssertEqual(MoneyMath.rate(fromBasisPoints: 290), Decimal(string: "0.029")!)
     }
+
+    func testYouKeepAllTips() {
+        XCTAssertEqual(MoneyMath.workerTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .you), 15_000)
+        XCTAssertEqual(MoneyMath.houseTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .you), 0)
+        XCTAssertEqual(MoneyMath.commissionTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, cut: Decimal(string: "0.55")!, tipOwner: .you, extraFees: 2_000), 64_000)
+    }
+
+    func testHouseKeepsAllTips() {
+        XCTAssertEqual(MoneyMath.workerTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .house), 0)
+        XCTAssertEqual(MoneyMath.houseTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .house), 15_000)
+        XCTAssertEqual(MoneyMath.commissionTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, cut: Decimal(string: "0.55")!, tipOwner: .house, extraFees: 2_000), 49_000)
+    }
+
+    func testFiftyFiftyTipSplitUsesSameRounding() {
+        XCTAssertEqual(MoneyMath.workerTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .split), 7_500)
+        XCTAssertEqual(MoneyMath.houseTips(cashTips: 10_000, cardTips: 5_000, tipOwner: .split), 7_500)
+        XCTAssertEqual(MoneyMath.commissionTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, cut: Decimal(string: "0.55")!, tipOwner: .split, extraFees: 2_000), 56_500)
+    }
+
+    func testOddCentSplitRoundsHalfAwayFromZero() {
+        XCTAssertEqual(MoneyMath.workerTips(cashTips: 3, cardTips: 0, tipOwner: .split), 2)
+        XCTAssertEqual(MoneyMath.houseTips(cashTips: 3, cardTips: 0, tipOwner: .split), 1)
+    }
+
+    func testHybridSubtractsWeeklyRentAfterCommissionMath() {
+        XCTAssertEqual(
+            MoneyMath.hybridTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, weeklyRent: 25_000, cut: Decimal(string: "0.55")!, tipOwner: .you, workerPaysCardFees: false, extraFees: 2_000),
+            39_000
+        )
+        XCTAssertEqual(
+            MoneyMath.hybridTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, weeklyRent: 25_000, cut: Decimal(string: "0.55")!, tipOwner: .house, workerPaysCardFees: false, extraFees: 2_000),
+            24_000
+        )
+        XCTAssertEqual(
+            MoneyMath.hybridTakeHome(services: 100_000, cashTips: 10_000, cardTips: 5_000, supplies: 4_000, weeklyRent: 25_000, cut: Decimal(string: "0.55")!, tipOwner: .split, workerPaysCardFees: false, extraFees: 2_000),
+            31_500
+        )
+    }
 }

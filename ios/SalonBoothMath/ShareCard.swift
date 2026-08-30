@@ -1,8 +1,10 @@
 import SwiftUI
+import UIKit
 
 struct TakeHomeShareCard: View {
     let takeHomeCents: Int
     let weekStart: Date
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 
     var body: some View {
         VStack(spacing: 0) {
@@ -15,12 +17,12 @@ struct TakeHomeShareCard: View {
                     .font(Brand.font(22, weight: .heavy))
                     .foregroundStyle(.white)
 
-                Text(currency(takeHomeCents))
+                Text(formatCurrency(takeHomeCents, language: appLanguage))
                     .font(Brand.font(64, weight: .heavy))
                     .monospacedDigit()
                     .foregroundStyle(.white)
 
-                Text(weekRange)
+                Text(formatWeekRange(weekStart, language: appLanguage))
                     .font(Brand.font(20, weight: .bold))
                     .foregroundStyle(.white)
 
@@ -35,15 +37,6 @@ struct TakeHomeShareCard: View {
             .background(Brand.berry)
         }
         .frame(width: 1080, height: 1080)
-    }
-
-    private var weekRange: String {
-        let end = Calendar.current.date(byAdding: .day, value: 6, to: weekStart) ?? weekStart
-        return weekStart.formatted(.dateTime.month(.abbreviated).day()) + "–" + end.formatted(.dateTime.day())
-    }
-
-    private func currency(_ cents: Int) -> String {
-        (Decimal(cents) / 100).formatted(.currency(code: Locale.current.currency?.identifier ?? "USD").precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
     }
 }
 

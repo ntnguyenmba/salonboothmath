@@ -53,16 +53,16 @@
             "value": "Hair"
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tóc"
-          }
-        },
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Cabello"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Làm tóc"
           }
         }
       }
@@ -138,19 +138,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth rent"
+            "value": "Booth"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Puesto"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Thuê chỗ"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Renta de puesto"
           }
         }
       }
@@ -163,16 +163,16 @@
             "value": "Commission"
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hoa hồng"
-          }
-        },
         "es": {
           "stringUnit": {
             "state": "translated",
             "value": "Comisión"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia phần"
           }
         }
       }
@@ -204,19 +204,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Weekly booth rent"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiền thuê chỗ mỗi tuần"
+            "value": "Booth rent"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Renta semanal del puesto"
+            "value": "Renta del puesto"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê chỗ"
           }
         }
       }
@@ -292,19 +292,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Your cut"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Phần của bạn"
+            "value": "Your service split"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tu porcentaje"
+            "value": "Tu parte de servicios"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần dịch vụ của bạn"
           }
         }
       }
@@ -317,16 +317,16 @@
             "value": "Who keeps tips?"
           }
         },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Quién se queda con las propinas?"
+          }
+        },
         "vi": {
           "stringUnit": {
             "state": "translated",
             "value": "Ai giữ tiền boa?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Quién se queda las propinas?"
           }
         }
       }
@@ -358,19 +358,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "House"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tiệm"
+            "value": "House/Owner"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El salón"
+            "value": "Salón/dueño"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiệm/chủ"
           }
         }
       }
@@ -820,19 +820,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth is eating %@ of what you booked."
+            "value": "Booth rent is taking %@ of this week’s gross."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth đang ăn %@ doanh số tuần này."
+            "value": "Tiền thuê chỗ đang chiếm %@ tổng thu tuần này."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El puesto se come el %@ de lo cobrado."
+            "value": "La renta del puesto representa %@ del bruto de esta semana."
           }
         }
       }
@@ -864,19 +864,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "On booth"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nếu thuê booth"
+            "value": "Booth"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con renta de puesto"
+            "value": "Puesto"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thuê chỗ"
           }
         }
       }
@@ -886,19 +886,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "On %@ commission"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nếu hoa hồng %@"
+            "value": "Commission"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con comisión del %@"
+            "value": "Comisión"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia phần"
           }
         }
       }
@@ -908,19 +908,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This is this week only. Rent and % are what you saved in Settings."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chỉ tuần này. Tiền booth và % lấy từ Cài đặt."
+            "value": "This is this week only. Rent and percent come from Settings."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo esta semana. Renta y % salen de Ajustes."
+            "value": "Solo esta semana. La renta y el porcentaje salen de Ajustes."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ tuần này. Tiền thuê chỗ và phần trăm lấy từ Cài đặt."
           }
         }
       }
@@ -1084,19 +1084,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "How you get paid"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cách nhận lương"
+            "value": "Pay model"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forma de pago"
+            "value": "Modelo de pago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cách nhận tiền"
           }
         }
       }
@@ -1128,19 +1128,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "% of services on card"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "% dịch vụ quẹt thẻ"
+            "value": "Services paid by card %"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "% de servicios con tarjeta"
+            "value": "% de servicios pagados con tarjeta"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% dịch vụ thanh toán bằng thẻ"
           }
         }
       }
@@ -1172,19 +1172,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tax set-aside"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Để riêng thuế"
+            "value": "Tax set-aside %"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apartado de impuestos"
+            "value": "Reserva para impuestos %"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% để dành thuế"
           }
         }
       }
@@ -1194,19 +1194,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Extra weekly fees"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Phí thêm mỗi tuần"
+            "value": "Extra fees"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cargos extra semanales"
+            "value": "Cargos extra"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phí thêm"
           }
         }
       }
@@ -1216,19 +1216,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "I pay the card processing fees"
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tôi trả phí xử lý thẻ"
+            "value": "Worker pays card fees"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yo pago las comisiones de tarjeta"
+            "value": "El trabajador paga las comisiones de tarjeta"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thợ trả phí thẻ"
           }
         }
       }
@@ -1480,19 +1480,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keep this week. Look back later. Compare booth vs commission. Once. No subscription."
-          }
-        },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Giữ tuần này. Xem lại sau. So sánh booth với hoa hồng. Một lần. Không gói tháng."
+            "value": "Keep every day you added. Look back later and compare booth, commission, and hybrid pay. One purchase. No subscription."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conserva esta semana. Mira atrás después. Compara booth vs. comisión. Una vez. Sin suscripción."
+            "value": "Conserva cada día que agregaste. Consulta el historial y compara puesto, comisión y modelo híbrido. Una compra. Sin suscripción."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giữ lại từng ngày bạn đã thêm. Xem lại lịch sử và so sánh thuê chỗ, chia phần và kiểu kết hợp. Mua một lần. Không đăng ký tháng."
           }
         }
       }
@@ -1549,16 +1549,16 @@
             "value": "Compare booth vs commission"
           }
         },
-        "vi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "So sánh booth với hoa hồng"
-          }
-        },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compara booth vs. comisión"
+            "value": "Compara puesto vs. comisión"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sánh thuê chỗ với chia phần"
           }
         }
       }
@@ -1713,6 +1713,182 @@
           "stringUnit": {
             "state": "translated",
             "value": "Te quedaste %@"
+          }
+        }
+      }
+    },
+    "br.yourTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus propinas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của bạn"
+          }
+        }
+      }
+    },
+    "br.houseTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House/owner tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propinas del salón/dueño"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của tiệm/chủ"
+          }
+        }
+      }
+    },
+    "settings.rentPeriod": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booth rent period"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periodo de renta del puesto"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chu kỳ tiền thuê chỗ"
+          }
+        }
+      }
+    },
+    "settings.tipYou": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You keep 100% of cash and card tips."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú conservas el 100% de las propinas en efectivo y tarjeta."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn giữ 100% tiền boa bằng tiền mặt và qua thẻ."
+          }
+        }
+      }
+    },
+    "settings.tipHouse": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The house/owner keeps 100% of cash and card tips."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El salón/dueño conserva el 100% de las propinas en efectivo y tarjeta."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiệm/chủ giữ 100% tiền boa bằng tiền mặt và qua thẻ."
+          }
+        }
+      }
+    },
+    "settings.tipSplit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cash and card tips are split 50-50 between you and the house."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Las propinas en efectivo y tarjeta se dividen 50-50 entre tú y el salón."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa bằng tiền mặt và qua thẻ được chia 50-50 giữa bạn và tiệm."
+          }
+        }
+      }
+    },
+    "unit.perHour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/hr"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/h"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/giờ"
+          }
+        }
+      }
+    },
+    "nav.menu": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menu"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Menú"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tùy chọn"
           }
         }
       }

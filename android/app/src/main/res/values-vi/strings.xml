@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Salon Booth Math</string>
     <string name="this_week">Tuần này</string>
@@ -6,12 +6,12 @@
     <string name="cash_tips">Tiền boa bằng tiền mặt</string>
     <string name="card_tips">Tiền boa qua thẻ</string>
     <string name="supplies">Đồ nghề / sản phẩm</string>
-    <string name="extra_shop_fees">Phí tiệm thêm / chia tip</string>
+    <string name="extra_shop_fees">Phí thêm</string>
     <string name="hours_this_week">Số giờ tuần này</string>
     <string name="tax_set_aside">% để dành thuế</string>
     <string name="card_fee_percent">% phí thẻ</string>
     <string name="services_on_card">% dịch vụ thanh toán bằng thẻ</string>
-    <string name="you_took_home">TIỀN CÒN LẠI</string>
+    <string name="you_took_home">BẠN CÒN LẠI</string>
     <string name="save_week">Lưu tuần</string>
     <string name="save_week_lifetime">Lưu tuần</string>
     <string name="breakdown">Xem chi tiết</string>
@@ -29,6 +29,7 @@
     <string name="added_today">Đã thêm hôm nay · %1$s</string>
     <string name="hours_today_optional">Số giờ hôm nay · tùy chọn</string>
     <string name="cancel">Hủy</string>
+    <string name="back">Quay lại</string>
     <string name="unlock">Quyền truy cập trọn đời</string>
     <string name="paywall_body">Giữ lại từng ngày bạn đã thêm. Xem lại lịch sử và so sánh thuê chỗ, chia phần và kiểu kết hợp. Mua một lần. Không đăng ký tháng.</string>
     <string name="unlock_price">Mở trọn đời · %1$s</string>
@@ -42,33 +43,42 @@
     <string name="trade_barber">Cắt tóc nam</string>
     <string name="trade_esthetician">Chăm sóc da</string>
     <string name="pay_question">Bạn nhận tiền theo kiểu nào?</string>
+    <string name="pay_model">Cách nhận tiền</string>
+    <string name="trade">Nghề</string>
     <string name="booth_rent">Thuê chỗ</string>
     <string name="commission">Chia phần</string>
     <string name="hybrid">Kết hợp</string>
     <string name="keep_cut">Bạn giữ %1$d%% · tiệm giữ %2$d%%</string>
-    <string name="hybrid_context">Tiền thuê chỗ + bạn giữ %1$d%%</string>
+    <string name="hybrid_context">%1$s/%2$s · bạn giữ %3$d%%</string>
     <string name="weekly_rent">Tiền thuê chỗ</string>
+    <string name="booth_rent_period">Chu kỳ tiền thuê chỗ</string>
     <string name="week">Tuần</string>
     <string name="month">Tháng</string>
     <string name="your_cut">Phần dịch vụ của bạn</string>
     <string name="house_keeps">Tiệm/chủ giữ %1$d%%</string>
     <string name="who_keeps_tips">Ai giữ tiền boa?</string>
     <string name="tips_you">Bạn</string>
-    <string name="tips_house">Tiệm</string>
+    <string name="tips_house">Tiệm/chủ</string>
     <string name="tips_split">Chia 50-50</string>
-    <string name="worker_card_fees">Tôi trả phí xử lý thẻ</string>
+    <string name="tips_explain_you">Bạn giữ 100% tiền boa bằng tiền mặt và qua thẻ.</string>
+    <string name="tips_explain_house">Tiệm/chủ giữ 100% tiền boa bằng tiền mặt và qua thẻ.</string>
+    <string name="tips_explain_split">Tiền boa bằng tiền mặt và qua thẻ được chia 50-50 giữa bạn và tiệm.</string>
+    <string name="worker_card_fees">Thợ trả phí thẻ</string>
     <string name="widget_description">Xem tiền còn lại tuần này mà không cần mở ứng dụng.</string>
     <string name="gross">Tổng thu</string>
     <string name="your_share">Phần dịch vụ của bạn</string>
     <string name="house_cut">Phần dịch vụ của tiệm/chủ</string>
+    <string name="your_tips">Tiền boa của bạn</string>
+    <string name="house_tips">Tiền boa của tiệm/chủ</string>
     <string name="card_fees">Phí thẻ</string>
     <string name="take_home">Còn lại</string>
     <string name="per_hour">Mỗi giờ</string>
+    <string name="per_hour_suffix">/giờ</string>
     <string name="tax_reserve">Ước tính để dành thuế</string>
     <string name="rent_warning">Tiền thuê chỗ chiếm 40% hoặc hơn tổng thu tuần này.</string>
-    <string name="compare_booth">Nếu thuê chỗ</string>
-    <string name="compare_commission">Nếu chia phần %1$d%%</string>
-    <string name="compare_hybrid">Nếu kết hợp</string>
+    <string name="compare_booth">Thuê chỗ</string>
+    <string name="compare_commission">Chia phần</string>
+    <string name="compare_hybrid">Kết hợp</string>
     <string name="save_settings">Lưu cài đặt</string>
     <string name="estimate_disclaimer">Khoản để dành thuế chỉ là kế hoạch tùy chọn và không bị trừ khỏi tiền còn lại. Các ước tính không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý.</string>
     <string name="legal_support">Pháp lý &amp; Hỗ trợ</string>
@@ -78,4 +88,5 @@
     <string name="about">Giới thiệu</string>
     <string name="about_text">Salon Booth Math của Everitt Ventures LLC. Máy tính và các tuần đã lưu nằm trên thiết bị này. Mua hàng được xử lý qua Google Play.</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="selected">Đã chọn</string>
 </resources>

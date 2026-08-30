@@ -32,14 +32,28 @@ object MoneyMath {
 
     fun cardFees(servicesCents: Long, cardTipsCents: Long, cardFeeRate: BigDecimal, percentServicesOnCard: BigDecimal): Long = BigDecimal.valueOf(cardTipsCents).add(BigDecimal.valueOf(servicesCents).multiply(percentServicesOnCard)).multiply(cardFeeRate).setScale(0, RoundingMode.HALF_UP).longValueExact()
 
+    fun servicePay(servicesCents: Long, cut: BigDecimal): Long = BigDecimal.valueOf(servicesCents).multiply(cut).setScale(0, RoundingMode.HALF_UP).longValueExact()
+
+    fun houseCut(servicesCents: Long, workerCut: BigDecimal): Long = servicesCents - servicePay(servicesCents, workerCut)
+
+    fun workerTips(cashTipsCents: Long, cardTipsCents: Long, tipOwner: TipOwner): Long {
+        val allTips = cashTipsCents + cardTipsCents
+        return when (tipOwner) {
+            TipOwner.YOU -> allTips
+            TipOwner.HOUSE -> 0L
+            TipOwner.SPLIT -> BigDecimal.valueOf(allTips).divide(BigDecimal("2"), 0, RoundingMode.HALF_UP).longValueExact()
+        }
+    }
+
+    fun houseTips(cashTipsCents: Long, cardTipsCents: Long, tipOwner: TipOwner): Long =
+        cashTipsCents + cardTipsCents - workerTips(cashTipsCents, cardTipsCents, tipOwner)
+
     fun boothTakeHome(servicesCents: Long, cashTipsCents: Long, cardTipsCents: Long, suppliesCents: Long, weeklyRentCents: Long, extraFeesCents: Long = 0, cardFeeRate: BigDecimal = BigDecimal("0.029"), percentServicesOnCard: BigDecimal = BigDecimal("0.70")): Long = servicesCents + cashTipsCents + cardTipsCents - weeklyRentCents - cardFees(servicesCents, cardTipsCents, cardFeeRate, percentServicesOnCard) - suppliesCents - extraFeesCents
 
     fun commissionTakeHome(servicesCents: Long, cashTipsCents: Long, cardTipsCents: Long, suppliesCents: Long, cut: BigDecimal, tipOwner: TipOwner = TipOwner.YOU, workerPaysCardFees: Boolean = false, extraFeesCents: Long = 0, cardFeeRate: BigDecimal = BigDecimal("0.029"), percentServicesOnCard: BigDecimal = BigDecimal("0.70")): Long {
-        val servicePay = BigDecimal.valueOf(servicesCents).multiply(cut).setScale(0, RoundingMode.HALF_UP).longValueExact()
-        val allTips = cashTipsCents + cardTipsCents
-        val tips = when (tipOwner) { TipOwner.YOU -> allTips; TipOwner.HOUSE -> 0L; TipOwner.SPLIT -> BigDecimal.valueOf(allTips).divide(BigDecimal("2"), 0, RoundingMode.HALF_UP).longValueExact() }
+        val tips = workerTips(cashTipsCents, cardTipsCents, tipOwner)
         val fees = if (workerPaysCardFees) cardFees(servicesCents, cardTipsCents, cardFeeRate, percentServicesOnCard) else 0L
-        return servicePay + tips - fees - suppliesCents - extraFeesCents
+        return servicePay(servicesCents, cut) + tips - fees - suppliesCents - extraFeesCents
     }
 
     fun hybridTakeHome(servicesCents: Long, cashTipsCents: Long, cardTipsCents: Long, suppliesCents: Long, weeklyRentCents: Long, cut: BigDecimal, tipOwner: TipOwner = TipOwner.YOU, workerPaysCardFees: Boolean = true, extraFeesCents: Long = 0, cardFeeRate: BigDecimal = BigDecimal("0.029"), percentServicesOnCard: BigDecimal = BigDecimal("0.70")): Long = commissionTakeHome(servicesCents, cashTipsCents, cardTipsCents, suppliesCents, cut, tipOwner, workerPaysCardFees, extraFeesCents, cardFeeRate, percentServicesOnCard) - weeklyRentCents

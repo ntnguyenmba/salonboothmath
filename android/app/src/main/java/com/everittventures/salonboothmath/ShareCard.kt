@@ -9,10 +9,6 @@ import android.graphics.Paint
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 object ShareCard {
     fun share(context: Context, takeHomeCents: Long, weekStartMillis: Long) {
@@ -54,9 +50,9 @@ object ShareCard {
             typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
         }
 
-        val amount = NumberFormat.getCurrencyInstance().format(takeHomeCents / 100.0)
-        val start = Date(weekStartMillis)
-        val week = SimpleDateFormat("MMM d", Locale.getDefault()).format(start)
+        val language = appLanguage(context)
+        val amount = formatCents(takeHomeCents, language)
+        val week = weekRange(weekStartMillis, language)
 
         canvas.drawText(context.getString(R.string.you_took_home), 76f, 190f, labelPaint)
         canvas.drawText(amount, 76f, 430f, amountPaint)

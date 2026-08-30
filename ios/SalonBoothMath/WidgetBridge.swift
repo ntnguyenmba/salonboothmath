@@ -8,6 +8,7 @@ enum WidgetBridge {
     static func updateCurrentWeek(takeHomeCents: Int) {
         let defaults = UserDefaults(suiteName: appGroup)
         defaults?.set(takeHomeCents, forKey: takeHomeKey)
+        defaults?.set(AppLanguage.stored.rawValue, forKey: "widget.appLanguage")
         defaults?.set(Date().timeIntervalSince1970, forKey: "widget.updatedAt")
         WidgetCenter.shared.reloadTimelines(ofKind: "SalonBoothMathWidget")
     }

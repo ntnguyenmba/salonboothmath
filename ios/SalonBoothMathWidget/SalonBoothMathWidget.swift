@@ -31,6 +31,9 @@ struct Provider: TimelineProvider {
 
 struct SalonBoothMathWidgetView: View {
     let entry: TakeHomeEntry
+    private var language: String {
+        UserDefaults(suiteName: appGroup)?.string(forKey: "widget.appLanguage") ?? "en"
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -42,7 +45,7 @@ struct SalonBoothMathWidgetView: View {
 
             Spacer(minLength: 2)
 
-            Text("home.youTookHome")
+            Text(widgetCopy("home.youTookHome"))
                 .font(.custom("Nunito Sans", size: 15).weight(.bold))
                 .foregroundStyle(.white)
                 .lineLimit(1)
@@ -53,7 +56,7 @@ struct SalonBoothMathWidgetView: View {
                 .minimumScaleFactor(0.7)
                 .lineLimit(1)
 
-            Text("home.thisWeek")
+            Text(widgetCopy("home.thisWeek"))
                 .font(.custom("Nunito Sans", size: 16).weight(.bold))
                 .foregroundStyle(.white)
 
@@ -63,11 +66,17 @@ struct SalonBoothMathWidgetView: View {
         .containerBackground(Color(hex: 0x4A1835), for: .widget)
         .widgetURL(URL(string: "salonboothmath://home"))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text("\(String(localized: "home.youTookHome")) \(currency(entry.takeHomeCents)). \(String(localized: "home.thisWeek"))."))
+        .accessibilityLabel(Text("\(widgetCopy("home.youTookHome")) \(currency(entry.takeHomeCents)). \(widgetCopy("home.thisWeek"))."))
+    }
+
+    private func widgetCopy(_ key: String.LocalizationValue) -> String {
+        String(localized: key, locale: Locale(identifier: language))
     }
 
     private func currency(_ cents: Int) -> String {
-        (Decimal(cents) / 100).formatted(.currency(code: Locale.current.currency?.identifier ?? "USD").precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
+        let locale = Locale(identifier: language)
+        let code = Locale.current.currency?.identifier ?? "USD"
+        return (Decimal(cents) / 100).formatted(.currency(code: code).locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
     }
 }
 

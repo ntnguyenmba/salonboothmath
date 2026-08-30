@@ -1,8 +1,16 @@
 import SwiftUI
 
 struct BreakdownView: View {
-    let grossCents: Int, rentCents: Int, houseCutCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
-    var yourShareCents: Int = 0
+    let grossCents: Int
+    let rentCents: Int
+    let yourShareCents: Int
+    let houseCutCents: Int
+    let yourTipsCents: Int
+    let houseTipsCents: Int
+    let cardFeesCents: Int
+    let suppliesCents: Int
+    let extraFeesCents: Int
+    let takeHomeCents: Int
     let taxReserveCents: Int
     let payModel: PayModel
     @Binding var hoursText: String
@@ -15,11 +23,13 @@ struct BreakdownView: View {
                 Text(L("home.breakdown", language: appLanguage)).font(Brand.font(28, weight: .heavy))
                 VStack(spacing: 0) {
                     row("br.gross", grossCents)
-                    if payModel != .commission { row("br.rent", rentCents) }
                     if payModel != .booth {
-                        namedRow(L("br.yourShare", table: "Hybrid", language: appLanguage), yourShareCents > 0 ? yourShareCents : max(0, (payModel == .booth ? 0 : (grossCents - houseCutCents))))
+                        namedRow(L("br.yourShare", table: "Hybrid", language: appLanguage), yourShareCents)
                         namedRow(L("br.houseShare", table: "Hybrid", language: appLanguage), houseCutCents)
+                        namedRow(L("br.yourTips", language: appLanguage), yourTipsCents)
+                        namedRow(L("br.houseTips", language: appLanguage), houseTipsCents)
                     }
+                    if payModel != .commission { row("br.rent", rentCents) }
                     if cardFeesCents > 0 { row("br.cardFeesEst", cardFeesCents) }
                     row("br.supplies", suppliesCents)
                     if extraFeesCents > 0 { row("br.extra", extraFeesCents) }
@@ -49,7 +59,7 @@ struct BreakdownView: View {
                         HStack {
                             Text(L("br.effectiveHourly", table: "Hybrid", language: appLanguage)).font(Brand.font(17))
                             Spacer()
-                            Text("\(formatCurrency(hourly, language: appLanguage))/hr").font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                            Text("\(formatCurrency(hourly, language: appLanguage))\(L("unit.perHour", language: appLanguage))").font(Brand.font(22, weight: .heavy)).monospacedDigit()
                         }
                     }
                 }
@@ -82,7 +92,7 @@ struct BreakdownView: View {
 }
 
 struct CompareView: View {
-    let boothCents: Int, commissionCents: Int, hybridCents: Int, commissionPercent: Int
+    let boothCents: Int, commissionCents: Int, hybridCents: Int
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
     private var winner: Int { max(boothCents, commissionCents, hybridCents) }
 
@@ -90,9 +100,9 @@ struct CompareView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Text(L("compare.title", language: appLanguage)).font(Brand.font(28, weight: .heavy))
-                comparison(label: L("compare.onBooth", language: appLanguage), amount: boothCents, selected: boothCents == winner)
-                comparison(label: String(format: L("compare.onCommission", language: appLanguage), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
-                comparison(label: L("compare.onHybrid", table: "Hybrid", language: appLanguage), amount: hybridCents, selected: hybridCents == winner)
+                comparison(label: L("pay.booth", language: appLanguage), amount: boothCents, selected: boothCents == winner)
+                comparison(label: L("pay.commission", language: appLanguage), amount: commissionCents, selected: commissionCents == winner)
+                comparison(label: L("pay.hybrid", table: "Hybrid", language: appLanguage), amount: hybridCents, selected: hybridCents == winner)
                 Text(L("compare.note", language: appLanguage)).font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
             }
             .padding(Brand.screenPadding)
@@ -175,7 +185,7 @@ struct HistoryView: View {
                 metricCard(label: L("history.averageWeek", language: appLanguage), value: formatCurrency(averageWeek, language: appLanguage))
             }
             if let averageHourlyCents {
-                metricCard(label: L("history.averageHourly", language: appLanguage), value: "\(formatCurrency(averageHourlyCents, language: appLanguage))/hr")
+                metricCard(label: L("history.averageHourly", language: appLanguage), value: "\(formatCurrency(averageHourlyCents, language: appLanguage))\(L("unit.perHour", language: appLanguage))")
             }
         }
     }

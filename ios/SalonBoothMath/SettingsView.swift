@@ -59,7 +59,8 @@ struct SettingsView: View {
 
                 if model != .commission {
                     settingField("rent.weekly", text: $rentText, prefix: "$", suffix: nil)
-                    Picker("", selection: $savedRentPeriod) {
+                    Text(L("settings.rentPeriod", language: appLanguage)).font(Brand.font(18))
+                    Picker(L("settings.rentPeriod", language: appLanguage), selection: $savedRentPeriod) {
                         Text(L("rent.week", language: appLanguage)).tag(RentPeriod.week.rawValue)
                         Text(L("rent.month", language: appLanguage)).tag(RentPeriod.month.rawValue)
                     }.pickerStyle(.segmented)
@@ -112,12 +113,9 @@ struct SettingsView: View {
 
     private var tipRuleExplanation: String {
         switch selectedTipOwner {
-        case .you:
-            return copy(en: "You keep 100% of cash and card tips.", es: "Tú conservas el 100% de las propinas en efectivo y tarjeta.", vi: "Bạn giữ 100% tiền boa bằng tiền mặt và qua thẻ.")
-        case .house:
-            return copy(en: "The house/owner keeps 100% of cash and card tips.", es: "El salón/dueño conserva el 100% de las propinas en efectivo y tarjeta.", vi: "Tiệm/chủ giữ 100% tiền boa bằng tiền mặt và qua thẻ.")
-        case .split:
-            return copy(en: "Cash and card tips are split 50-50 between you and the house.", es: "Las propinas en efectivo y tarjeta se dividen 50-50 entre tú y el salón.", vi: "Tiền boa bằng tiền mặt và qua thẻ được chia 50-50 giữa bạn và tiệm.")
+        case .you: return L("settings.tipYou", language: appLanguage)
+        case .house: return L("settings.tipHouse", language: appLanguage)
+        case .split: return L("settings.tipSplit", language: appLanguage)
         }
     }
 
@@ -127,7 +125,7 @@ struct SettingsView: View {
             Link(destination: LegalURLs.privacy) { settingsRow(copy(en: "Privacy Policy", es: "Política de privacidad", vi: "Chính sách quyền riêng tư"), icon: "hand.raised.fill") }
             Link(destination: LegalURLs.terms) { settingsRow(copy(en: "Terms of Use", es: "Términos de uso", vi: "Điều khoản sử dụng"), icon: "doc.text.fill") }
             Link(destination: LegalURLs.support) { settingsRow(copy(en: "Contact Support", es: "Contactar soporte", vi: "Liên hệ hỗ trợ"), icon: "envelope.fill") }
-            Button { Task { await purchases.restore() } } label: { settingsRow(copy(en: "Restore Purchases", es: "Restaurar compras", vi: "Khôi phục giao dịch mua"), icon: "arrow.clockwise") }
+            Button { Task { await purchases.restore() } } label: { settingsRow(L("paywall.restore", language: appLanguage), icon: "arrow.clockwise") }
             NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(copy(en: "About", es: "Acerca de", vi: "Giới thiệu"), icon: "info.circle.fill") }
             Text(copy(en: "Calculations and tax reserve estimates are for informational purposes only and are not tax, accounting, financial, or legal advice.", es: "Los cálculos y las estimaciones de reserva para impuestos son solo informativos y no constituyen asesoría fiscal, contable, financiera ni legal.", vi: "Các phép tính và ước tính khoản để dành cho thuế chỉ mang tính thông tin, không phải tư vấn thuế, kế toán, tài chính hoặc pháp lý."))
                 .font(Brand.font(16)).foregroundStyle(Brand.muted).fixedSize(horizontal: false, vertical: true)
@@ -196,7 +194,7 @@ private struct AboutSalonBoothMathView: View {
         VStack(spacing: 18) {
             BrandMark(size: 92)
             Text("Salon Booth Math").font(Brand.font(30, weight: .heavy))
-            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê chỗ, chia phần và kết hợp, không kèm phần mềm quản lý salon rườm rà."))
+            Text(localized(language, en: "Booth, commission, and hybrid take-home math without salon-management clutter.", es: "Cálculo de ingresos netos para puesto, comisión e híbrido, sin el exceso de gestión de salón.", vi: "Tính tiền còn lại cho thuê chỗ, chia phần và kết hợp, không kèm phần mềm quản lý tiệm rườm rà."))
                 .font(Brand.font(17)).foregroundStyle(Brand.muted).multilineTextAlignment(.center)
             Text(localized(language, en: "Version", es: "Versión", vi: "Phiên bản") + " \(version) (\(build))")
                 .font(Brand.font(16)).foregroundStyle(Brand.muted)

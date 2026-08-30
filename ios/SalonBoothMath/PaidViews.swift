@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct BreakdownView: View {
-    let grossCents: Int, rentCents: Int, houseCutCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
+    let grossCents: Int, rentCents: Int, houseCutCents: Int, yourShareCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
     let taxReserveCents: Int
     let payModel: PayModel
     @Binding var hoursText: String
@@ -15,7 +15,10 @@ struct BreakdownView: View {
                 VStack(spacing: 0) {
                     row("br.gross", grossCents)
                     if payModel != .commission { row("br.rent", rentCents) }
-                    if payModel != .booth { row("br.houseCut", houseCutCents) }
+                    if payModel != .booth {
+                        namedRow(L("br.yourShare", table: "Hybrid", language: appLanguage), yourShareCents)
+                        namedRow(L("br.houseShare", table: "Hybrid", language: appLanguage), houseCutCents)
+                    }
                     if cardFeesCents > 0 { row("br.cardFeesEst", cardFeesCents) }
                     row("br.supplies", suppliesCents)
                     if extraFeesCents > 0 { row("br.extra", extraFeesCents) }
@@ -25,7 +28,7 @@ struct BreakdownView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
                 .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
 
-                Text(String(localized: "br.taxNote", table: "Hybrid"))
+                Text(L("br.taxNote", table: "Hybrid", language: appLanguage))
                     .font(Brand.font(16))
                     .foregroundStyle(Brand.mutedInk)
                     .fixedSize(horizontal: false, vertical: true)
@@ -43,9 +46,9 @@ struct BreakdownView: View {
                         .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(hoursFocused ? Brand.hotPink : Brand.line, lineWidth: hoursFocused ? 3 : 2))
                     if let hourly = hourlyCents {
                         HStack {
-                            Text(String(localized: "br.effectiveHourly", table: "Hybrid")).font(Brand.font(17))
+                            Text(L("br.effectiveHourly", table: "Hybrid", language: appLanguage)).font(Brand.font(17))
                             Spacer()
-                            Text("\(formatCurrency(hourly))/hr").font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                            Text("\(formatCurrency(hourly, language: appLanguage))/hr").font(Brand.font(22, weight: .heavy)).monospacedDigit()
                         }
                     }
                 }
@@ -64,7 +67,11 @@ struct BreakdownView: View {
     }
 
     private func row(_ key: LocalizedStringKey, _ cents: Int, strong: Bool = false) -> some View {
-        HStack { Text(key); Spacer(); Text(formatCurrency(cents)).monospacedDigit() }
+        namedRow(String(localized: key, locale: Locale(identifier: appLanguage)), cents, strong: strong)
+    }
+
+    private func namedRow(_ label: String, _ cents: Int, strong: Bool = false) -> some View {
+        HStack { Text(label); Spacer(); Text(formatCurrency(cents, language: appLanguage)).monospacedDigit() }
             .font(Brand.font(strong ? 20 : 18, weight: .heavy))
             .padding(.horizontal, 18)
             .frame(minHeight: 58)
@@ -75,6 +82,7 @@ struct BreakdownView: View {
 
 struct CompareView: View {
     let boothCents: Int, commissionCents: Int, hybridCents: Int, commissionPercent: Int
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 
     private var winner: Int { max(boothCents, commissionCents, hybridCents) }
 
@@ -82,9 +90,9 @@ struct CompareView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 Text("compare.title").font(Brand.font(28, weight: .heavy))
-                comparison(label: String(localized: "compare.onBooth"), amount: boothCents, selected: boothCents == winner)
-                comparison(label: String(format: String(localized: "compare.onCommission"), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
-                comparison(label: String(localized: "compare.onHybrid", table: "Hybrid"), amount: hybridCents, selected: hybridCents == winner)
+                comparison(label: L("compare.onBooth", language: appLanguage), amount: boothCents, selected: boothCents == winner)
+                comparison(label: String(format: L("compare.onCommission", language: appLanguage), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
+                comparison(label: L("compare.onHybrid", table: "Hybrid", language: appLanguage), amount: hybridCents, selected: hybridCents == winner)
                 Text("compare.note").font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
             }
             .padding(Brand.screenPadding)
@@ -98,7 +106,7 @@ struct CompareView: View {
         HStack {
             VStack(alignment: .leading, spacing: 6) {
                 Text(label).font(Brand.font(18))
-                Text(formatCurrency(amount)).font(Brand.font(42, weight: .heavy)).monospacedDigit()
+                Text(formatCurrency(amount, language: appLanguage)).font(Brand.font(42, weight: .heavy)).monospacedDigit()
             }
             Spacer()
             if selected {
@@ -118,6 +126,7 @@ struct CompareView: View {
 struct HistoryView: View {
     @ObservedObject var store: WeekStore
     let onSelect: (WeekRecord) -> Void
+    @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 
     private var recentWeeks: [WeekRecord] { Array(store.weeks.prefix(4)) }
     private var fourWeekTotal: Int { recentWeeks.reduce(0) { $0 + $1.takeHomeCents } }
@@ -139,13 +148,13 @@ struct HistoryView: View {
                     Button { onSelect(week) } label: {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(weekRange(week.weekStart)).font(Brand.font(18))
+                                Text(formatWeekRange(week.weekStart, language: appLanguage)).font(Brand.font(18))
                                 if let hours = week.hours, hours > 0 {
-                                    Text("\(hours.formatted(.number.precision(.fractionLength(0...1)))) \(String(localized: "history.hours"))").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
+                                    Text("\(hours.formatted(.number.precision(.fractionLength(0...1)))) \(L("history.hours", language: appLanguage))").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                                 }
                             }
                             Spacer()
-                            Text(formatCurrency(week.takeHomeCents)).font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                            Text(formatCurrency(week.takeHomeCents, language: appLanguage)).font(Brand.font(22, weight: .heavy)).monospacedDigit()
                         }
                         .foregroundStyle(Brand.ink)
                         .padding(.horizontal, 18)
@@ -167,11 +176,11 @@ struct HistoryView: View {
     private var metrics: some View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
-                metricCard(label: String(localized: "history.lastFour"), value: formatCurrency(fourWeekTotal))
-                metricCard(label: String(localized: "history.averageWeek"), value: formatCurrency(averageWeek))
+                metricCard(label: L("history.lastFour", language: appLanguage), value: formatCurrency(fourWeekTotal, language: appLanguage))
+                metricCard(label: L("history.averageWeek", language: appLanguage), value: formatCurrency(averageWeek, language: appLanguage))
             }
             if let averageHourlyCents {
-                metricCard(label: String(localized: "history.averageHourly"), value: "\(formatCurrency(averageHourlyCents))/hr")
+                metricCard(label: L("history.averageHourly", language: appLanguage), value: "\(formatCurrency(averageHourlyCents, language: appLanguage))/hr")
             }
         }
     }
@@ -187,15 +196,4 @@ struct HistoryView: View {
         .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
         .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 1.5))
     }
-
-    private func weekRange(_ start: Date) -> String {
-        let end = Calendar.current.date(byAdding: .day, value: 6, to: start) ?? start
-        return "\(start.formatted(.dateTime.month(.abbreviated).day()))–\(end.formatted(.dateTime.month(.abbreviated).day()))"
-    }
 }
-
-func formatCurrency(_ cents: Int) -> String {
-    let amount = Decimal(cents) / 100
-    return amount.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD").precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
-}
-func inputCurrencyCents(_ cents: Int) -> String { NSDecimalNumber(decimal: Decimal(cents) / 100).stringValue }

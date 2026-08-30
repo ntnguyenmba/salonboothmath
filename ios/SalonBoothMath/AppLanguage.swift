@@ -16,17 +16,9 @@ enum AppLanguage: String, CaseIterable, Identifiable {
         }
     }
 
-    var backTitle: String { L("nav.back", language: rawValue) }
-    var cancelTitle: String { L("paywall.continueFree", language: rawValue) == "Continue free" ? fallbackCancel : L("nav.cancel", language: rawValue) }
-    var languageTitle: String { L("settings.language", language: rawValue) }
-
-    private var fallbackCancel: String {
-        switch self {
-        case .english: "Cancel"
-        case .vietnamese: "Hủy"
-        case .spanish: "Cancelar"
-        }
-    }
+    var backTitle: String { L("nav.back", table: "Hybrid", language: rawValue) }
+    var cancelTitle: String { L("nav.cancel", table: "Hybrid", language: rawValue) }
+    var languageTitle: String { L("settings.language", table: "Hybrid", language: rawValue) }
 
     static func current(_ rawValue: String) -> AppLanguage {
         AppLanguage(rawValue: rawValue) ?? .english
@@ -47,12 +39,8 @@ func L(_ key: String.LocalizationValue, table: String? = nil, language: String =
 func formatCurrency(_ cents: Int, language: String = AppLanguage.stored.rawValue) -> String {
     let locale = Locale(identifier: language)
     let amount = Decimal(cents) / 100
-    let code = locale.currency?.identifier ?? Locale.current.currency?.identifier ?? "USD"
-    var formatted = amount.formatted(.currency(code: code).locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
-    if language == "vi" && formatted.contains("$" ) == false && code == "USD" {
-        formatted = amount.formatted(.currency(code: "USD").locale(Locale(identifier: "en_US")).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
-    }
-    return formatted
+    let code = Locale.current.currency?.identifier ?? "USD"
+    return amount.formatted(.currency(code: code).locale(locale).precision(.fractionLength(cents % 100 == 0 ? 0 : 2)))
 }
 
 func inputCurrencyCents(_ cents: Int) -> String {
@@ -106,7 +94,7 @@ private struct StandardNavigationControls: ViewModifier {
             .environment(\.locale, Locale(identifier: appLanguage))
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(L("nav.back", language: appLanguage)) { dismiss() }
+                    Button(L("nav.back", table: "Hybrid", language: appLanguage)) { dismiss() }
                         .font(Brand.font(16))
                         .foregroundStyle(Brand.hotPink)
                 }

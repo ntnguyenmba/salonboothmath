@@ -78,7 +78,11 @@ struct HomeView: View {
     private var payContext: String {
         switch payModel {
         case .booth:
-            return "\(L(\"br.rent\", language: appLanguage)) · \(formatCurrency(weeklyRentCents, language: appLanguage))/\(L(\"rent.week\", language: appLanguage))"
+            return L("br.rent", language: appLanguage)
+                + " · "
+                + formatCurrency(weeklyRentCents, language: appLanguage)
+                + "/"
+                + L("rent.week", language: appLanguage)
         case .commission:
             return String(format: L("home.payContextSplit", table: "Hybrid", language: appLanguage), commissionCutBasisPoints / 100, max(0, 100 - commissionCutBasisPoints / 100))
         case .hybrid:
@@ -354,7 +358,7 @@ struct HomeView: View {
     private func shareCurrentWeek() {
         let amount = formatCurrency(takeHomeCents, language: appLanguage)
         let week = formatWeekRange(activeWeekStart, language: appLanguage)
-        let text = "\(L(\"home.youTookHome\", language: appLanguage)) \(amount) · \(week)"
+        let text = L("home.youTookHome", language: appLanguage) + " " + amount + " · " + week
         if let image = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart) {
             sharePayload = SharePayload(items: [image, text])
         } else {

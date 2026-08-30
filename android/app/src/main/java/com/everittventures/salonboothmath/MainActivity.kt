@@ -5,6 +5,8 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.ui.graphics.Color
 import androidx.core.os.LocaleListCompat
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +20,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         billing = BillingManager(this).also { it.start() }
         setContent {
-            MaterialTheme {
+            MaterialTheme(
+                colorScheme = darkColorScheme(
+                    primary = Pink,
+                    onPrimary = Color.White,
+                    background = Page,
+                    onBackground = Color.White,
+                    surface = BerryDeep,
+                    onSurface = Color.White,
+                    surfaceVariant = Surface,
+                    onSurfaceVariant = Color.White,
+                    outline = Color.White.copy(alpha = 0.28f)
+                )
+            ) {
                 SalonBoothApp(billing)
             }
         }

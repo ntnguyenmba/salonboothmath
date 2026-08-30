@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct BreakdownView: View {
-    let grossCents: Int, rentCents: Int, houseCutCents: Int, yourShareCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
+    let grossCents: Int, rentCents: Int, houseCutCents: Int, cardFeesCents: Int, suppliesCents: Int, extraFeesCents: Int, takeHomeCents: Int
+    var yourShareCents: Int = 0
     let taxReserveCents: Int
     let payModel: PayModel
     @Binding var hoursText: String
@@ -16,7 +17,7 @@ struct BreakdownView: View {
                     row("br.gross", grossCents)
                     if payModel != .commission { row("br.rent", rentCents) }
                     if payModel != .booth {
-                        namedRow(L("br.yourShare", table: "Hybrid", language: appLanguage), yourShareCents)
+                        namedRow(L("br.yourShare", table: "Hybrid", language: appLanguage), yourShareCents > 0 ? yourShareCents : max(0, (payModel == .booth ? 0 : (grossCents - houseCutCents))))
                         namedRow(L("br.houseShare", table: "Hybrid", language: appLanguage), houseCutCents)
                     }
                     if cardFeesCents > 0 { row("br.cardFeesEst", cardFeesCents) }
@@ -83,7 +84,6 @@ struct BreakdownView: View {
 struct CompareView: View {
     let boothCents: Int, commissionCents: Int, hybridCents: Int, commissionPercent: Int
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
-
     private var winner: Int { max(boothCents, commissionCents, hybridCents) }
 
     var body: some View {
@@ -110,10 +110,7 @@ struct CompareView: View {
             }
             Spacer()
             if selected {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(Brand.hotPink)
-                    .accessibilityLabel(Text("a11y.selected"))
+                Image(systemName: "checkmark.circle.fill").font(.system(size: 34, weight: .bold)).foregroundStyle(Brand.hotPink).accessibilityLabel(Text("a11y.selected"))
             }
         }
         .padding(20)
@@ -127,7 +124,6 @@ struct HistoryView: View {
     @ObservedObject var store: WeekStore
     let onSelect: (WeekRecord) -> Void
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
-
     private var recentWeeks: [WeekRecord] { Array(store.weeks.prefix(4)) }
     private var fourWeekTotal: Int { recentWeeks.reduce(0) { $0 + $1.takeHomeCents } }
     private var averageWeek: Int { recentWeeks.isEmpty ? 0 : fourWeekTotal / recentWeeks.count }
@@ -135,8 +131,7 @@ struct HistoryView: View {
     private var averageHourlyCents: Int? {
         let totalHours = hourlyWeeks.compactMap(\.hours).reduce(0, +)
         guard totalHours > 0 else { return nil }
-        let totalTakeHome = hourlyWeeks.reduce(0) { $0 + $1.takeHomeCents }
-        return Int((Double(totalTakeHome) / totalHours).rounded())
+        return Int((Double(hourlyWeeks.reduce(0) { $0 + $1.takeHomeCents }) / totalHours).rounded())
     }
 
     var body: some View {

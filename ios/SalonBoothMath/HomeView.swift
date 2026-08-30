@@ -88,7 +88,7 @@ struct HomeView: View {
         }
     }
 
-    private var lifetimePrice: String { purchases.product?.displayPrice ?? "$4.99" }
+    private var lifetimePrice: String { purchases.product?.displayPrice ?? "$9.99" }
 
     var body: some View {
         NavigationStack {
@@ -316,7 +316,7 @@ struct PaywallView: View {
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 
     private var unlockTitle: String {
-        String(format: String(localized: "paywall.unlockLifetime"), purchases.product?.displayPrice ?? "$4.99")
+        String(format: String(localized: "paywall.unlockLifetime"), purchases.product?.displayPrice ?? "$9.99")
     }
 
     var body: some View {

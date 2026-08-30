@@ -1,0 +1,142 @@
+name: Final Localization Cleanup
+
+on:
+  push:
+    paths:
+      - ".github/workflows/final-localization-cleanup.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Clean and audit EN ES VI localization
+        shell: python
+        run: |
+          import json
+          import pathlib
+          import re
+          import xml.etree.ElementTree as ET
+
+          root = pathlib.Path('.')
+
+          # iOS main string catalog: remove English-feeling Vietnamese labels.
+          ios_path = root / 'ios/SalonBoothMath/Localizable.xcstrings'
+          data = json.loads(ios_path.read_text(encoding='utf-8'))
+          vi_updates = {
+              'trade.nail': 'Làm móng',
+              'trade.barber': 'Cắt tóc nam',
+              'pay.booth': 'Thuê chỗ',
+              'rent.weekly': 'Tiền thuê chỗ mỗi tuần',
+              'br.rent': 'Tiền thuê chỗ',
+              'field.tipsCash': 'Tiền boa bằng tiền mặt',
+              'field.tipsCard': 'Tiền boa qua thẻ',
+              'commission.tipsWho': 'Ai giữ tiền boa?',
+              'home.keepCut': 'Bạn giữ %d%% + tiền boa',
+          }
+          for key, value in vi_updates.items():
+              if key in data.get('strings', {}):
+                  data['strings'][key]['localizations']['vi']['stringUnit']['value'] = value
+
+          # Every user-facing catalog key must have EN, ES and VI.
+          missing = []
+          for key, entry in data.get('strings', {}).items():
+              locs = entry.get('localizations', {})
+              for lang in ('en', 'es', 'vi'):
+                  unit = locs.get(lang, {}).get('stringUnit', {})
+                  if not unit.get('value'):
+                      missing.append(f'{key}:{lang}')
+          if missing:
+              raise SystemExit('Missing iOS Localizable translations: ' + ', '.join(missing))
+          ios_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # iOS Hybrid catalog: make Vietnamese copy fully native and audit completeness.
+          hybrid_path = root / 'ios/SalonBoothMath/Hybrid.xcstrings'
+          hybrid = json.loads(hybrid_path.read_text(encoding='utf-8'))
+          hybrid_vi = {
+              'home.hybridContext': '%@/tuần + giữ %d%% + tiền boa',
+              'settings.houseKeeps': 'Tiệm/chủ giữ %d%%',
+              'br.houseShare': 'Phần dịch vụ của tiệm',
+          }
+          for key, value in hybrid_vi.items():
+              if key in hybrid.get('strings', {}):
+                  hybrid['strings'][key]['localizations']['vi']['stringUnit']['value'] = value
+          missing = []
+          for key, entry in hybrid.get('strings', {}).items():
+              locs = entry.get('localizations', {})
+              for lang in ('en', 'es', 'vi'):
+                  unit = locs.get(lang, {}).get('stringUnit', {})
+                  if not unit.get('value'):
+                      missing.append(f'{key}:{lang}')
+          if missing:
+              raise SystemExit('Missing iOS Hybrid translations: ' + ', '.join(missing))
+          hybrid_path.write_text(json.dumps(hybrid, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # Android Vietnamese: fix diacritics and remaining English-feeling salon labels.
+          vi_path = root / 'android/app/src/main/res/values-vi/strings.xml'
+          tree = ET.parse(vi_path)
+          r = tree.getroot()
+          vi_map = {
+              'trade_nail': 'Làm móng',
+              'trade_barber': 'Cắt tóc nam',
+              'booth_rent': 'Thuê chỗ',
+              'commission': 'Chia phần',
+              'hybrid': 'Kết hợp',
+              'keep_cut': 'Bạn giữ %1$d%% · tiệm giữ %2$d%%',
+              'hybrid_context': 'Tiền thuê chỗ + bạn giữ %1$d%%',
+              'weekly_rent': 'Tiền thuê chỗ',
+              'house_keeps': 'Tiệm/chủ giữ %1$d%%',
+              'tips_house': 'Tiệm',
+              'house_cut': 'Phần dịch vụ của tiệm/chủ',
+              'paywall_body': 'Giữ lại từng ngày bạn đã thêm. Xem lại lịch sử và so sánh thuê chỗ, chia phần và kiểu kết hợp. Mua một lần. Không đăng ký tháng.',
+              'cash_tips': 'Tiền boa bằng tiền mặt',
+              'card_tips': 'Tiền boa qua thẻ',
+              'who_keeps_tips': 'Ai giữ tiền boa?',
+          }
+          for node in r.findall('string'):
+              name = node.attrib.get('name')
+              if name in vi_map:
+                  node.text = vi_map[name]
+          ET.indent(tree, space='    ')
+          tree.write(vi_path, encoding='utf-8', xml_declaration=True)
+
+          # Android resource parity: all English resource names must exist in ES and VI.
+          def resource_names(path):
+              t = ET.parse(path)
+              return {n.attrib['name'] for n in t.getroot().findall('string')}
+          en_names = resource_names(root / 'android/app/src/main/res/values/strings.xml')
+          for lang in ('es', 'vi'):
+              p = root / f'android/app/src/main/res/values-{lang}/strings.xml'
+              names = resource_names(p)
+              missing = sorted(en_names - names)
+              if missing:
+                  raise SystemExit(f'Missing Android {lang} strings: ' + ', '.join(missing))
+
+          # Guard against the known accidental Vietnamese leftovers.
+          forbidden_vi = [r'>Nail<', r'>Barber<', r'>Commission<', r'>Hybrid<', r'Tiem', r'tiem/']
+          vi_text = vi_path.read_text(encoding='utf-8')
+          for pattern in forbidden_vi:
+              if re.search(pattern, vi_text):
+                  raise SystemExit(f'Vietnamese Android leftover: {pattern}')
+          ios_text = ios_path.read_text(encoding='utf-8')
+          for literal in ('"vi"',):
+              assert literal in ios_text
+
+      - name: Commit localization cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios/SalonBoothMath/Localizable.xcstrings ios/SalonBoothMath/Hybrid.xcstrings android/app/src/main/res/values-vi/strings.xml
+          if git diff --cached --quiet; then
+            echo "Localization already clean."
+          else
+            git commit -m "Finish EN ES VI localization cleanup"
+            git push origin HEAD:main
+          fi

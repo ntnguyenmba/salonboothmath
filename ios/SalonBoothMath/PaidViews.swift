@@ -12,7 +12,7 @@ struct BreakdownView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 28) {
-                Text("home.breakdown").font(Brand.font(28, weight: .heavy))
+                Text(L("home.breakdown", language: appLanguage)).font(Brand.font(28, weight: .heavy))
                 VStack(spacing: 0) {
                     row("br.gross", grossCents)
                     if payModel != .commission { row("br.rent", rentCents) }
@@ -35,7 +35,7 @@ struct BreakdownView: View {
                     .fixedSize(horizontal: false, vertical: true)
 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("settings.hours").font(Brand.font(17))
+                    Text(L("settings.hours", language: appLanguage)).font(Brand.font(17))
                     TextField("0", text: $hoursText)
                         .keyboardType(.decimalPad)
                         .focused($hoursFocused)
@@ -89,11 +89,11 @@ struct CompareView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                Text("compare.title").font(Brand.font(28, weight: .heavy))
+                Text(L("compare.title", language: appLanguage)).font(Brand.font(28, weight: .heavy))
                 comparison(label: L("compare.onBooth", language: appLanguage), amount: boothCents, selected: boothCents == winner)
                 comparison(label: String(format: L("compare.onCommission", language: appLanguage), "\(commissionPercent)%"), amount: commissionCents, selected: commissionCents == winner)
                 comparison(label: L("compare.onHybrid", table: "Hybrid", language: appLanguage), amount: hybridCents, selected: hybridCents == winner)
-                Text("compare.note").font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
+                Text(L("compare.note", language: appLanguage)).font(Brand.font(18)).foregroundStyle(Brand.mutedInk)
             }
             .padding(Brand.screenPadding)
         }
@@ -110,7 +110,7 @@ struct CompareView: View {
             }
             Spacer()
             if selected {
-                Image(systemName: "checkmark.circle.fill").font(.system(size: 34, weight: .bold)).foregroundStyle(Brand.hotPink).accessibilityLabel(Text("a11y.selected"))
+                Image(systemName: "checkmark.circle.fill").font(.system(size: 34, weight: .bold)).foregroundStyle(Brand.hotPink).accessibilityLabel(Text(L("a11y.selected", language: appLanguage)))
             }
         }
         .padding(20)
@@ -137,7 +137,7 @@ struct HistoryView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
-                Text("history.title").font(Brand.font(28, weight: .heavy))
+                Text(L("history.title", language: appLanguage)).font(Brand.font(28, weight: .heavy))
                 if !store.weeks.isEmpty { metrics }
                 ForEach(store.weeks.prefix(12)) { week in
                     Button { onSelect(week) } label: {

@@ -11,7 +11,7 @@ struct TakeHomeShareCard: View {
                 .frame(height: 8)
 
             VStack(alignment: .leading, spacing: 18) {
-                Text("home.youTookHome")
+                Text(L("home.youTookHome", language: appLanguage))
                     .font(Brand.font(22, weight: .heavy))
                     .foregroundStyle(.white)
 

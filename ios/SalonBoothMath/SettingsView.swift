@@ -49,16 +49,16 @@ struct SettingsView: View {
 
                 sectionTitle(String(localized: "settings.payModel"))
                 Picker("settings.payModel", selection: $savedPayModel) {
-                    Text("pay.booth").tag(PayModel.booth.rawValue)
-                    Text("pay.commission").tag(PayModel.commission.rawValue)
-                    Text("pay.hybrid").tag(PayModel.hybrid.rawValue)
+                    Text(L("pay.booth", language: appLanguage)).tag(PayModel.booth.rawValue)
+                    Text(L("pay.commission", language: appLanguage)).tag(PayModel.commission.rawValue)
+                    Text(L("pay.hybrid", language: appLanguage)).tag(PayModel.hybrid.rawValue)
                 }.pickerStyle(.segmented)
 
                 if model != .commission {
                     settingField("rent.weekly", text: $rentText, prefix: "$", suffix: nil)
                     Picker("", selection: $savedRentPeriod) {
-                        Text("rent.week").tag(RentPeriod.week.rawValue)
-                        Text("rent.month").tag(RentPeriod.month.rawValue)
+                        Text(L("rent.week", language: appLanguage)).tag(RentPeriod.week.rawValue)
+                        Text(L("rent.month", language: appLanguage)).tag(RentPeriod.month.rawValue)
                     }.pickerStyle(.segmented)
                 }
 
@@ -72,8 +72,8 @@ struct SettingsView: View {
                     }
                     sectionTitle(String(localized: "commission.tipsWho"))
                     Picker("commission.tipsWho", selection: $tipOwner) {
-                        Text("tips.you").tag(TipOwner.you.rawValue)
-                        Text("tips.house").tag(TipOwner.house.rawValue)
+                        Text(L("tips.you", language: appLanguage)).tag(TipOwner.you.rawValue)
+                        Text(L("tips.house", language: appLanguage)).tag(TipOwner.house.rawValue)
                         Text(L("tips.split5050", table: "Hybrid", language: appLanguage)).tag(TipOwner.split.rawValue)
                     }.pickerStyle(.segmented)
                     Toggle("settings.workerCardFees", isOn: $workerPaysCardFees).font(Brand.font(18)).tint(Brand.hotPink)
@@ -85,13 +85,13 @@ struct SettingsView: View {
                 Text(L("settings.taxNote", table: "Hybrid", language: appLanguage)).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                 settingField("settings.extraFees", text: $extraFeesText, prefix: "$", suffix: nil)
 
-                Text("settings.disclaimer").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
+                Text(L("settings.disclaimer", language: appLanguage)).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                 PrimaryButton(title: String(localized: "settings.save")) { save() }
                 legalSupportSection
             }.padding(Brand.screenPadding)
         }
         .background(Brand.page.ignoresSafeArea()).foregroundStyle(Brand.ink)
-        .navigationTitle(Text("settings.title")).navigationBarTitleDisplayMode(.inline).standardNavigationControls().onAppear(perform: load)
+        .navigationTitle(Text(L("settings.title", language: appLanguage))).navigationBarTitleDisplayMode(.inline).standardNavigationControls().onAppear(perform: load)
     }
 
     private var legalSupportSection: some View {

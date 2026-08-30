@@ -64,5 +64,15 @@ internal fun OnboardingScreen(store: AppStore, done: () -> Unit) {
 }
 
 @Composable private fun OnboardingChoice(label: String, selected: Boolean, onClick: () -> Unit) {
-    Button(onClick = onClick, colors = ButtonDefaults.buttonColors(containerColor = if (selected) Berry else Color.White, contentColor = if (selected) Color.White else Ink), border = if (selected) null else ButtonDefaults.outlinedButtonBorder, modifier = Modifier.fillMaxWidth().height(68.dp).padding(bottom = 10.dp), shape = RoundedCornerShape(18.dp)) { Text(label, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold) }
+    val background = if (selected) Berry else Color.White
+    val foreground = if (selected) Color.White else BerryDeep
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(containerColor = background, contentColor = foreground),
+        border = if (selected) null else ButtonDefaults.outlinedButtonBorder,
+        modifier = Modifier.fillMaxWidth().height(68.dp).padding(bottom = 10.dp),
+        shape = RoundedCornerShape(18.dp)
+    ) {
+        Text(label, color = foreground, fontSize = 19.sp, fontWeight = FontWeight.ExtraBold)
+    }
 }

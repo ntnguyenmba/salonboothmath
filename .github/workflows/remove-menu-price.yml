@@ -1,0 +1,53 @@
+name: Remove Menu Price
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-menu-price.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Remove purchase pitch from Home overflow menus
+        shell: python
+        run: |
+          from pathlib import Path
+
+          ios = Path('ios/SalonBoothMath/HomeView.swift')
+          s = ios.read_text(encoding='utf-8')
+          block = '''                    if !purchases.isUnlocked {
+                        Button(String(format: L("paywall.unlockLifetime", language: appLanguage), lifetimePrice)) {
+                            pendingAction = nil
+                            showPaywall = true
+                        }
+                    }
+'''
+          if block not in s:
+              raise SystemExit('Expected iOS menu purchase block not found')
+          s = s.replace(block, '')
+          ios.write_text(s, encoding='utf-8')
+
+          android = Path('android/app/src/main/java/com/everittventures/salonboothmath/AppUi.kt')
+          s = android.read_text(encoding='utf-8')
+          old = '''DropdownMenu(expanded=menuOpen,onDismissRequest={menuOpen=false}){if(!unlocked)DropdownMenuItem(text={Text(stringResource(R.string.unlock_price,displayPrice))},onClick={menuOpen=false;pendingAction=null;showPaywall=true});DropdownMenuItem'''
+          new = '''DropdownMenu(expanded=menuOpen,onDismissRequest={menuOpen=false}){DropdownMenuItem'''
+          if old not in s:
+              raise SystemExit('Expected Android menu purchase item not found')
+          s = s.replace(old, new)
+          android.write_text(s, encoding='utf-8')
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios/SalonBoothMath/HomeView.swift android/app/src/main/java/com/everittventures/salonboothmath/AppUi.kt
+          git commit -m "Remove price from Home menu"
+          git push origin HEAD:main

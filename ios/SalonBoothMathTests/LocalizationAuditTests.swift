@@ -41,7 +41,8 @@ final class LocalizationAuditTests: XCTestCase {
         }
         let hybrid = [
             "home.addToday", "home.addToWeek", "home.payContextSplit",
-            "tips.split5050", "nav.back", "nav.cancel"
+            "tips.split5050", "nav.back", "nav.cancel",
+            "settings.serviceSplit", "settings.houseKeeps"
         ]
         let hybridData = try Data(contentsOf: iosRoot().appendingPathComponent("SalonBoothMath/Hybrid.xcstrings"))
         let hybridJSON = try XCTUnwrap(JSONSerialization.jsonObject(with: hybridData) as? [String: Any])
@@ -82,6 +83,26 @@ final class LocalizationAuditTests: XCTestCase {
         XCTAssertTrue(boothEN.contains("more"), boothEN)
         XCTAssertTrue(boothES.contains("más"), boothES)
         XCTAssertTrue(boothVI.contains("nhiều hơn") || boothVI.contains("tuần"), boothVI)
+    }
+
+    func testSettingsPaySetupCopyInAllLanguages() {
+        XCTAssertEqual(L("settings.payModel", language: "en"), "Pay setup")
+        XCTAssertEqual(L("settings.payModel", language: "es"), "Configuración de pago")
+        XCTAssertEqual(L("settings.payModel", language: "vi"), "Cài đặt cách nhận tiền")
+        XCTAssertEqual(L("rent.weekly", language: "en"), "Booth rent")
+        XCTAssertEqual(L("settings.rentPeriod", language: "en"), "Rent period")
+        XCTAssertEqual(L("settings.serviceSplit", table: "Hybrid", language: "en"), "Your service split")
+        XCTAssertEqual(String(format: L("settings.houseKeeps", table: "Hybrid", language: "en"), 45), "House/owner keeps 45%")
+        XCTAssertEqual(String(format: L("settings.houseKeeps", table: "Hybrid", language: "es"), 45), "El salón/dueño conserva 45%")
+        XCTAssertEqual(String(format: L("settings.houseKeeps", table: "Hybrid", language: "vi"), 45), "Tiệm/chủ giữ 45%")
+        XCTAssertEqual(L("settings.tipYou", language: "en"), "You keep 100% of cash and card tips.")
+        XCTAssertEqual(L("settings.tipHouse", language: "en"), "The house/owner keeps 100% of cash and card tips.")
+        XCTAssertEqual(L("settings.tipSplit", language: "en"), "Cash and card tips are split 50-50 between you and the house.")
+        XCTAssertEqual(L("settings.tipYou", language: "es"), "Tú te quedas el 100% de las propinas en efectivo y con tarjeta.")
+        XCTAssertEqual(L("settings.tipYou", language: "vi"), "Bạn giữ 100% tiền boa tiền mặt và qua thẻ.")
+        XCTAssertEqual(L("tips.you", language: "en"), "You")
+        XCTAssertEqual(L("tips.house", language: "en"), "House/Owner")
+        XCTAssertEqual(L("tips.split5050", table: "Hybrid", language: "en"), "50-50")
     }
 
     func testNoInlineCopyHelpersOrHardcodedEnglishUI() throws {

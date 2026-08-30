@@ -298,7 +298,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El salón/dueño se queda con %d%%"
+            "value": "El salón/dueño conserva %d%%"
           }
         },
         "vi": {
@@ -534,19 +534,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth rent period"
+            "value": "Rent period"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Periodo de renta del puesto"
+            "value": "Periodo de renta"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chu kỳ tiền thuê chỗ"
+            "value": "Chu kỳ thuê"
           }
         }
       }

@@ -8,7 +8,7 @@
     <string name="supplies">Supplies</string>
     <string name="extra_shop_fees">Extra fees</string>
     <string name="hours_this_week">Hours this week</string>
-    <string name="tax_set_aside">Tax set-aside %</string>
+    <string name="tax_set_aside">Tax set-aside estimate</string>
     <string name="card_fee_percent">Card fee %</string>
     <string name="services_on_card">Services paid by card %</string>
     <string name="you_took_home">You take home</string>
@@ -43,7 +43,7 @@
     <string name="trade_barber">Barber</string>
     <string name="trade_esthetician">Esthetician</string>
     <string name="pay_question">How do you get paid?</string>
-    <string name="pay_model">How you get paid</string>
+    <string name="pay_model">Pay setup</string>
     <string name="trade">What you do</string>
     <string name="booth_rent">Booth rent</string>
     <string name="commission">Commission</string>
@@ -51,7 +51,7 @@
     <string name="keep_cut">You keep %1$d%% · house keeps %2$d%%</string>
     <string name="hybrid_context">%1$s/%2$s · you keep %3$d%%</string>
     <string name="weekly_rent">Booth rent</string>
-    <string name="booth_rent_period">Booth rent period</string>
+    <string name="booth_rent_period">Rent period</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="your_cut">Your service split</string>
@@ -60,10 +60,10 @@
     <string name="tips_you">You</string>
     <string name="tips_house">House/Owner</string>
     <string name="tips_split">50-50</string>
-    <string name="tips_explain_you">You keep all tips</string>
-    <string name="tips_explain_house">House keeps all tips</string>
-    <string name="tips_explain_split">Tips are split equally</string>
-    <string name="worker_card_fees">I pay the card processing fees</string>
+    <string name="tips_explain_you">You keep 100% of cash and card tips.</string>
+    <string name="tips_explain_house">The house/owner keeps 100% of cash and card tips.</string>
+    <string name="tips_explain_split">Cash and card tips are split 50-50 between you and the house.</string>
+    <string name="worker_card_fees">Worker pays card fees</string>
     <string name="widget_description">See what you take home this week without opening the app.</string>
     <string name="gross">Total in</string>
     <string name="your_share">Your service share</string>

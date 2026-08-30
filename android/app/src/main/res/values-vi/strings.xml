@@ -8,7 +8,7 @@
     <string name="supplies">Đồ nghề / sản phẩm</string>
     <string name="extra_shop_fees">Phí thêm</string>
     <string name="hours_this_week">Số giờ tuần này</string>
-    <string name="tax_set_aside">% để dành thuế</string>
+    <string name="tax_set_aside">Ước tính để dành thuế</string>
     <string name="card_fee_percent">% phí thẻ</string>
     <string name="services_on_card">% dịch vụ thanh toán bằng thẻ</string>
     <string name="you_took_home">Bạn còn lại</string>
@@ -43,7 +43,7 @@
     <string name="trade_barber">Cắt tóc nam</string>
     <string name="trade_esthetician">Chăm sóc da</string>
     <string name="pay_question">Bạn nhận tiền theo kiểu nào?</string>
-    <string name="pay_model">Cách nhận tiền</string>
+    <string name="pay_model">Cài đặt cách nhận tiền</string>
     <string name="trade">Nghề của bạn</string>
     <string name="booth_rent">Thuê chỗ</string>
     <string name="commission">Chia phần</string>
@@ -51,7 +51,7 @@
     <string name="keep_cut">Bạn giữ %1$d%% · tiệm giữ %2$d%%</string>
     <string name="hybrid_context">%1$s/%2$s · bạn giữ %3$d%%</string>
     <string name="weekly_rent">Tiền thuê chỗ</string>
-    <string name="booth_rent_period">Chu kỳ tiền thuê chỗ</string>
+    <string name="booth_rent_period">Chu kỳ thuê</string>
     <string name="week">Tuần</string>
     <string name="month">Tháng</string>
     <string name="your_cut">Phần dịch vụ của bạn</string>
@@ -60,10 +60,10 @@
     <string name="tips_you">Bạn</string>
     <string name="tips_house">Tiệm/chủ</string>
     <string name="tips_split">Chia 50-50</string>
-    <string name="tips_explain_you">Bạn giữ hết tiền boa</string>
-    <string name="tips_explain_house">Tiệm giữ hết tiền boa</string>
-    <string name="tips_explain_split">Tiền boa chia đều</string>
-    <string name="worker_card_fees">Tôi trả phí xử lý thẻ</string>
+    <string name="tips_explain_you">Bạn giữ 100% tiền boa tiền mặt và qua thẻ.</string>
+    <string name="tips_explain_house">Tiệm/chủ giữ 100% tiền boa tiền mặt và qua thẻ.</string>
+    <string name="tips_explain_split">Tiền boa tiền mặt và qua thẻ chia 50-50 giữa bạn và tiệm.</string>
+    <string name="worker_card_fees">Thợ trả phí thẻ</string>
     <string name="widget_description">Xem bạn còn lại bao nhiêu tuần này mà không cần mở ứng dụng.</string>
     <string name="gross">Tổng thu</string>
     <string name="your_share">Phần dịch vụ của bạn</string>

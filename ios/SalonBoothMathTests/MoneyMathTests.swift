@@ -17,6 +17,11 @@ final class MoneyMathTests: XCTestCase {
 
     func testNegativeTakeHomeStaysNegative() { XCTAssertEqual(MoneyMath.boothTakeHome(services: 10_000, cashTips: 0, cardTips: 0, supplies: 5_000, weeklyRent: 25_000, cardFeeRate: 0, percentServicesOnCard: 0), -20_000) }
     func testMonthlyRentConversion() { XCTAssertEqual(MoneyMath.weeklyRent(cents: 100_000, period: .month), 23_077) }
+    func testWeeklyRentPeriodLeavesAmountUnchanged() { XCTAssertEqual(MoneyMath.weeklyRent(cents: 25_000, period: .week), 25_000) }
+    func testHouseKeepPercentIsTheRemainderOfServiceSplit() {
+        XCTAssertEqual(100 - MoneyMath.basisPoints(fromPercentText: "55", fallback: 0) / 100, 45)
+        XCTAssertEqual(100 - MoneyMath.basisPoints(fromPercentText: "60", fallback: 0) / 100, 40)
+    }
     func testUSCurrencyInput() { XCTAssertEqual(MoneyMath.cents(from: "$1,240.50"), 124_050) }
     func testEuropeanCurrencyInput() { XCTAssertEqual(MoneyMath.cents(from: "1.240,50"), 124_050) }
     func testSpacedCurrencyInput() { XCTAssertEqual(MoneyMath.cents(from: "1 240"), 124_000) }

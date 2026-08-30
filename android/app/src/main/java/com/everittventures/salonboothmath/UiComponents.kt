@@ -65,6 +65,11 @@ internal fun appCurrencySymbol(language: String = selectedAppLanguage()): String
     return format.currency?.symbol ?: "$"
 }
 internal fun inputMoney(cents:Long):String=BigDecimal.valueOf(cents,2).stripTrailingZeros().toPlainString(); internal fun cleanDecimal(value:Double):String=BigDecimal.valueOf(value).stripTrailingZeros().toPlainString(); internal fun percentText(basisPoints:Int):String=BigDecimal(basisPoints).movePointLeft(2).stripTrailingZeros().toPlainString()
+internal fun settingsShowsBoothRent(payModel: String) = payModel != "commission"
+internal fun settingsShowsServiceSplit(payModel: String) = payModel != "booth"
+internal fun houseKeepPercent(userKeepText: String, fallbackPercent: String = "55"): Int {
+    return (100 - percentBasisPoints(userKeepText, fallbackPercent) / 100).coerceIn(0, 100)
+}
 internal fun percentBasisPoints(text:String,fallback:String):Int{val normalized=text.trim().replace(',','.');val percent=normalized.toBigDecimalOrNull()?:BigDecimal(fallback);return percent.multiply(BigDecimal("100")).setScale(0,RoundingMode.HALF_UP).toInt()}
 internal fun startOfWeek():Long{val c=Calendar.getInstance();c.set(Calendar.DAY_OF_WEEK,c.firstDayOfWeek);c.set(Calendar.HOUR_OF_DAY,0);c.set(Calendar.MINUTE,0);c.set(Calendar.SECOND,0);c.set(Calendar.MILLISECOND,0);return c.timeInMillis}
 internal fun weekRange(startMillis:Long, language: String = selectedAppLanguage()):String{val locale=localeFor(language);val start=Calendar.getInstance().apply{timeInMillis=startMillis};val end=(start.clone() as Calendar).apply{add(Calendar.DAY_OF_MONTH,6)};val sf=SimpleDateFormat("MMM d",locale);val ef=if(start.get(Calendar.MONTH)==end.get(Calendar.MONTH))SimpleDateFormat("d",locale)else SimpleDateFormat("MMM d",locale);return "${sf.format(Date(startMillis))}–${ef.format(Date(end.timeInMillis))}"}

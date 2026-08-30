@@ -68,6 +68,24 @@ class MoneyMathTest {
         assertEquals(23_077L, MoneyMath.weeklyRent(100_000, monthly = true))
     }
 
+    @Test fun weeklyRentPeriodLeavesAmountUnchanged() {
+        assertEquals(25_000L, MoneyMath.weeklyRent(25_000, monthly = false))
+    }
+
+    @Test fun houseKeepPercentIsTheRemainderOfServiceSplit() {
+        assertEquals(45, houseKeepPercent("55"))
+        assertEquals(40, houseKeepPercent("60"))
+    }
+
+    @Test fun settingsFieldVisibilityMatchesPayModel() {
+        assertEquals(true, settingsShowsBoothRent("booth"))
+        assertEquals(false, settingsShowsServiceSplit("booth"))
+        assertEquals(false, settingsShowsBoothRent("commission"))
+        assertEquals(true, settingsShowsServiceSplit("commission"))
+        assertEquals(true, settingsShowsBoothRent("hybrid"))
+        assertEquals(true, settingsShowsServiceSplit("hybrid"))
+    }
+
     @Test fun halfCentRoundsUp() {
         assertEquals(
             1L,

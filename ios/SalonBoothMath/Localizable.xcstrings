@@ -1084,19 +1084,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "How you get paid"
+            "value": "Pay setup"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cómo te pagan"
+            "value": "Configuración de pago"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cách nhận tiền"
+            "value": "Cài đặt cách nhận tiền"
           }
         }
       }
@@ -1172,19 +1172,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tax set-aside %"
+            "value": "Tax set-aside estimate"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reserva para impuestos %"
+            "value": "Reserva estimada para impuestos"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "% để dành thuế"
+            "value": "Ước tính để dành thuế"
           }
         }
       }
@@ -1216,19 +1216,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "I pay the card processing fees"
+            "value": "Worker pays card fees"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yo pago las comisiones de tarjeta"
+            "value": "El trabajador paga las comisiones de tarjeta"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tôi trả phí xử lý thẻ"
+            "value": "Thợ trả phí thẻ"
           }
         }
       }
@@ -1766,19 +1766,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Booth rent period"
+            "value": "Rent period"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Periodo de renta del puesto"
+            "value": "Periodo de renta"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chu kỳ tiền thuê chỗ"
+            "value": "Chu kỳ thuê"
           }
         }
       }
@@ -1788,19 +1788,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You keep all tips"
+            "value": "You keep 100% of cash and card tips."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tú te quedas todas las propinas"
+            "value": "Tú te quedas el 100% de las propinas en efectivo y con tarjeta."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bạn giữ hết tiền boa"
+            "value": "Bạn giữ 100% tiền boa tiền mặt và qua thẻ."
           }
         }
       }
@@ -1810,19 +1810,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "House keeps all tips"
+            "value": "The house/owner keeps 100% of cash and card tips."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El salón se queda todas las propinas"
+            "value": "El salón/dueño se queda el 100% de las propinas en efectivo y con tarjeta."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiệm giữ hết tiền boa"
+            "value": "Tiệm/chủ giữ 100% tiền boa tiền mặt và qua thẻ."
           }
         }
       }
@@ -1832,19 +1832,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tips are split equally"
+            "value": "Cash and card tips are split 50-50 between you and the house."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las propinas se parten a la mitad"
+            "value": "Las propinas en efectivo y con tarjeta se parten 50-50 entre tú y el salón."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiền boa chia đều"
+            "value": "Tiền boa tiền mặt và qua thẻ chia 50-50 giữa bạn và tiệm."
           }
         }
       }

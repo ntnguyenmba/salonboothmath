@@ -26,7 +26,12 @@ struct SettingsView: View {
     private var language: AppLanguage { AppLanguage.current(appLanguage) }
     private var model: PayModel { PayModel(rawValue: savedPayModel) ?? .booth }
     private var selectedTipOwner: TipOwner { TipOwner(rawValue: tipOwner) ?? .you }
-    private var houseKeepPercent: Int { max(0, 100 - commissionCutBasisPoints / 100) }
+    private var houseKeepPercent: Int {
+        let typed = commissionText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let source = typed.isEmpty ? MoneyMath.percentText(fromBasisPoints: commissionCutBasisPoints) : typed
+        let keep = MoneyMath.basisPoints(fromPercentText: source, fallback: commissionCutBasisPoints) / 100
+        return max(0, 100 - keep)
+    }
 
     var body: some View {
         ScrollView {

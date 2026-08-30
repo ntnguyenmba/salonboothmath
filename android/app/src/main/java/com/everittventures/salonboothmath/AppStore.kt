@@ -10,6 +10,9 @@ data class CurrentWeekDraft(val weekStartMillis: Long, val services: String, val
 
 class AppStore(context: Context) {
     private val prefs = context.getSharedPreferences("salon_booth_math", Context.MODE_PRIVATE)
+    var didUseFreeCompare: Boolean
+        get() = prefs.getBoolean("did_use_free_compare", false)
+        set(value) { prefs.edit().putBoolean("did_use_free_compare", value).apply() }
     var onboardingDone: Boolean get() = prefs.getBoolean("onboardingDone", false); set(value) = prefs.edit().putBoolean("onboardingDone", value).apply()
     var trade: String get() = prefs.getString("trade", "nail") ?: "nail"; set(value) = prefs.edit().putString("trade", value).apply()
     var payModel: String get() = prefs.getString("payModel", "booth") ?: "booth"; set(value) = prefs.edit().putString("payModel", value).apply()

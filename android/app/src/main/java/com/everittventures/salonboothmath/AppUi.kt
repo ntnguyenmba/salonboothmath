@@ -1,6 +1,7 @@
 package com.everittventures.salonboothmath
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.LocaleListCompat
 import androidx.glance.appwidget.updateAll
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -48,6 +51,12 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE }
     fun openCompare() { if (unlocked || !didUseFreeCompare) { didUseFreeCompare=true; store.didUseFreeCompare=true; screen=Screen.Compare } else requireUnlock(LockedAction.COMPARE) }
     fun loadWeek(week: SavedWeek){ editingWeekStart=week.startMillis; services=inputMoney(week.servicesCents); cashTips=inputMoney(week.cashTipsCents); cardTips=inputMoney(week.cardTipsCents); supplies=inputMoney(week.suppliesCents); hours=week.hours?.let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}?:""; days=week.days; store.payModel=week.payModel; screen=Screen.Home }
     fun returnToCurrentWeek(){ editingWeekStart=currentWeekStart; val d=store.loadCurrentWeekDraft(currentWeekStart); services=d.services;cashTips=d.cashTips;cardTips=d.cardTips;supplies=d.supplies;hours=d.hours;days=d.days }
+    fun setLanguage(tag: String) {
+        if (tag == store.appLanguage) return
+        store.appLanguage = tag
+        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
+        activity?.recreate()
+    }
     if(isCurrentWeek){ LaunchedEffect(services,cashTips,cardTips,supplies,hours,days){store.saveCurrentWeekDraft(CurrentWeekDraft(currentWeekStart,services,cashTips,cardTips,supplies,hours,days))}; LaunchedEffect(takeHomeCents){store.updateWidgetTakeHomeCents(takeHomeCents);TakeHomeWidget().updateAll(context)} }
     LaunchedEffect(unlocked){if(unlocked&&showPaywall){showPaywall=false;pendingAction?.let{runLockedAction(it)};pendingAction=null}}
 
@@ -57,14 +66,26 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE }
         Screen.Compare->CompareScreen(store,serviceCents,cashTipsCents,cardTipsCents,supplyCents){screen=Screen.Home}
         Screen.Settings->SettingsScreen(store,billing){screen=Screen.Home}
         Screen.Home->Column(Modifier.fillMaxSize().background(Page)){
-            Column(Modifier.fillMaxWidth().background(BerryDeep)){Box(Modifier.fillMaxWidth().height(4.dp).background(Pink));Box(Modifier.fillMaxWidth().padding(horizontal=14.dp,vertical=12.dp)){
+            Column(Modifier.fillMaxWidth().background(BerryDeep)){Box(Modifier.fillMaxWidth().height(4.dp).background(Pink));Box(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=8.dp)){
                 Column(Modifier.align(Alignment.Center).clickable{screen=Screen.Settings},horizontalAlignment=Alignment.CenterHorizontally){Text(if(isCurrentWeek)stringResource(R.string.this_week) else weekRange(editingWeekStart, store.appLanguage),color=Color.White,fontSize=20.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);Text(payContext(store),color=Color.White,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
                 if(!isCurrentWeek)IconButton(onClick={returnToCurrentWeek()},modifier=Modifier.align(Alignment.CenterStart).size(48.dp)){Icon(Icons.Default.ArrowBack,contentDescription=stringResource(R.string.this_week),tint=Color.White)}
-                Box(Modifier.align(Alignment.CenterEnd)){IconButton(onClick={menuOpen=true}){Icon(Icons.Default.MoreVert,contentDescription=stringResource(R.string.more_options),tint=Color.White)};DropdownMenu(expanded=menuOpen,onDismissRequest={menuOpen=false}){DropdownMenuItem(text={Text(stringResource(R.string.share))},onClick={menuOpen=false;ShareCard.share(context,takeHomeCents,editingWeekStart)});DropdownMenuItem(text={Text(stringResource(R.string.history))},onClick={menuOpen=false;requireUnlock(LockedAction.HISTORY)});DropdownMenuItem(text={Text(stringResource(R.string.compare))},onClick={menuOpen=false;openCompare()});DropdownMenuItem(text={Text(stringResource(R.string.settings))},onClick={menuOpen=false;screen=Screen.Settings})}}
+                Row(Modifier.align(Alignment.CenterEnd), verticalAlignment=Alignment.CenterVertically){
+                    IconButton(onClick={screen=Screen.Settings}){Icon(Icons.Default.Settings,contentDescription=stringResource(R.string.settings),tint=Color.White)}
+                    Box{IconButton(onClick={menuOpen=true}){Icon(Icons.Default.MoreVert,contentDescription=stringResource(R.string.more_options),tint=Color.White)};DropdownMenu(expanded=menuOpen,onDismissRequest={menuOpen=false}){
+                        DropdownMenuItem(text={Text("English")},onClick={menuOpen=false;setLanguage("en")})
+                        DropdownMenuItem(text={Text("Español")},onClick={menuOpen=false;setLanguage("es")})
+                        DropdownMenuItem(text={Text("Tiếng Việt")},onClick={menuOpen=false;setLanguage("vi")})
+                        HorizontalDivider()
+                        DropdownMenuItem(text={Text(stringResource(R.string.share))},onClick={menuOpen=false;ShareCard.share(context,takeHomeCents,editingWeekStart)})
+                        DropdownMenuItem(text={Text(stringResource(R.string.history))},onClick={menuOpen=false;requireUnlock(LockedAction.HISTORY)})
+                        DropdownMenuItem(text={Text(stringResource(R.string.compare))},onClick={menuOpen=false;openCompare()})
+                        DropdownMenuItem(text={Text(stringResource(R.string.settings))},onClick={menuOpen=false;screen=Screen.Settings})
+                    }}
+                }
             }}
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal=22.dp,vertical=20.dp)){Column(verticalArrangement=Arrangement.spacedBy(20.dp)){MoneyField(stringResource(R.string.services),services){services=it};MoneyField(stringResource(R.string.cash_tips),cashTips){cashTips=it};MoneyField(stringResource(R.string.card_tips),cardTips){cardTips=it};MoneyField(stringResource(R.string.supplies),supplies){supplies=it}}
                 Column(Modifier.fillMaxWidth().padding(top=30.dp),horizontalAlignment=Alignment.CenterHorizontally,verticalArrangement=Arrangement.spacedBy(8.dp)){Text(stringResource(R.string.you_took_home),color=Pink,fontWeight=FontWeight.Bold,fontSize=17.sp,fontFamily=AppFontFamily);Text(formatCents(takeHomeCents),color=Ink,fontWeight=FontWeight.ExtraBold,fontSize=52.sp,fontFamily=AppFontFamily);if(highRent)Text(stringResource(R.string.rent_warning),color=Warning,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);addedTodayGross?.let{Text(stringResource(R.string.added_today,formatCents(it)),color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}}
-                Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){if(isCurrentWeek)TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)};TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
+                Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){if(isCurrentWeek)TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)};TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
             }
         }
     }

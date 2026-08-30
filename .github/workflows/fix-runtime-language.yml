@@ -1,0 +1,132 @@
+name: Fix Runtime Language
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-runtime-language.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch runtime locale handling
+        shell: python
+        run: |
+          from pathlib import Path
+
+          # iOS: selected app language owns UI locale, dates and USD formatting.
+          p = Path('ios/SalonBoothMath/AppLanguage.swift')
+          s = p.read_text()
+          s = s.replace('var locale: Locale { Locale(identifier: rawValue) }', '''var locale: Locale {
+        switch self {
+        case .english: Locale(identifier: "en_US")
+        case .spanish: Locale(identifier: "es_US")
+        case .vietnamese: Locale(identifier: "vi_US")
+        }
+    }''')
+          s = s.replace('return String(localized: key, table: table, locale: Locale(identifier: language))', 'return String(localized: key, table: table, locale: AppLanguage.current(language).locale)')
+          s = s.replace('return String(localized: key, locale: Locale(identifier: language))', 'return String(localized: key, locale: AppLanguage.current(language).locale)')
+          s = s.replace('''    let locale = Locale(identifier: language)
+    let amount = Decimal(cents) / 100
+    let code = Locale.current.currency?.identifier ?? "USD"''', '''    let locale = AppLanguage.current(language).locale
+    let amount = Decimal(cents) / 100
+    let code = "USD"''')
+          s = s.replace('let locale = Locale(identifier: language)', 'let locale = AppLanguage.current(language).locale')
+          s = s.replace('date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(Locale(identifier: language)))', 'date.formatted(Date.FormatStyle.dateTime.weekday(.wide).month(.abbreviated).day().locale(AppLanguage.current(language).locale))')
+          if 'func appCurrencySymbol' not in s:
+              marker = 'func inputCurrencyCents(_ cents: Int) -> String {'
+              helper = '''func appCurrencySymbol(_ language: String = AppLanguage.stored.rawValue) -> String {
+    AppLanguage.current(language).locale.currencySymbol ?? "$"
+}
+
+'''
+              s = s.replace(marker, helper + marker)
+          p.write_text(s)
+
+          # iOS Add Today: do not use device Locale.current for the money prefix.
+          p = Path('ios/SalonBoothMath/AddTodaySheet.swift')
+          s = p.read_text()
+          s = s.replace('TodayMoneyField(title: L("field.services", language: appLanguage), text: $services)', 'TodayMoneyField(title: L("field.services", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $services)')
+          s = s.replace('TodayMoneyField(title: L("field.tipsCash", language: appLanguage), text: $cashTips)', 'TodayMoneyField(title: L("field.tipsCash", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cashTips)')
+          s = s.replace('TodayMoneyField(title: L("field.tipsCard", language: appLanguage), text: $cardTips)', 'TodayMoneyField(title: L("field.tipsCard", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $cardTips)')
+          s = s.replace('TodayMoneyField(title: L("field.supplies", language: appLanguage), text: $supplies)', 'TodayMoneyField(title: L("field.supplies", language: appLanguage), currencySymbol: appCurrencySymbol(appLanguage), text: $supplies)')
+          s = s.replace('''private struct TodayMoneyField: View {
+    let title: String
+    @Binding var text: String''', '''private struct TodayMoneyField: View {
+    let title: String
+    let currencySymbol: String
+    @Binding var text: String''')
+          s = s.replace('Text(Locale.current.currencySymbol ?? "$")', 'Text(currencySymbol)')
+          s = s.replace('.environment(\\.locale, Locale(identifier: appLanguage))', '.environment(\\.locale, AppLanguage.current(appLanguage).locale)')
+          p.write_text(s)
+
+          # iOS Home: route remaining explicitly resolved strings and currency prefix through appLanguage.
+          p = Path('ios/SalonBoothMath/HomeView.swift')
+          s = p.read_text()
+          reps = {
+            'String(localized:"pay.booth")': 'L("pay.booth", language: appLanguage)',
+            'String(localized:"rent.week")': 'L("rent.week", language: appLanguage)',
+            'String(localized:"home.keepCut")': 'L("home.keepCut", language: appLanguage)',
+            'String(localized:"home.hybridContext",table:"Hybrid")': 'L("home.hybridContext", table: "Hybrid", language: appLanguage)',
+            'String(localized:"home.thisWeek")': 'L("home.thisWeek", language: appLanguage)',
+            'String(localized:"paywall.unlockLifetime")': 'L("paywall.unlockLifetime", language: appLanguage)',
+            'String(localized:"br.rentHigh")': 'L("br.rentHigh", language: appLanguage)',
+            'String(localized:"home.save")': 'L("home.save", language: appLanguage)',
+            'String(localized:"home.compareDeal",table:"Hybrid")': 'L("home.compareDeal", table: "Hybrid", language: appLanguage)',
+          }
+          for a,b in reps.items(): s=s.replace(a,b)
+          s=s.replace('HomeMoneyField(title:String(localized:"field.services"),text:$services)', 'HomeMoneyField(title:L("field.services", language: appLanguage),currencySymbol:appCurrencySymbol(appLanguage),text:$services)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.tipsCash"),text:$cashTips)', 'HomeMoneyField(title:L("field.tipsCash", language: appLanguage),currencySymbol:appCurrencySymbol(appLanguage),text:$cashTips)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.tipsCard"),text:$cardTips)', 'HomeMoneyField(title:L("field.tipsCard", language: appLanguage),currencySymbol:appCurrencySymbol(appLanguage),text:$cardTips)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.supplies"),text:$supplies)', 'HomeMoneyField(title:L("field.supplies", language: appLanguage),currencySymbol:appCurrencySymbol(appLanguage),text:$supplies)')
+          s=s.replace('private struct HomeMoneyField: View { let title:String;@Binding var text:String;', 'private struct HomeMoneyField: View { let title:String;let currencySymbol:String;@Binding var text:String;')
+          s=s.replace('Text(Locale.current.currencySymbol ?? "$")', 'Text(currencySymbol)')
+          p.write_text(s)
+
+          # iOS Settings: environment locale follows selected app language explicitly.
+          p = Path('ios/SalonBoothMath/SettingsView.swift')
+          s = p.read_text()
+          if '.environment(\\.locale, AppLanguage.current(appLanguage).locale)' not in s:
+              s = s.replace('.background(Brand.page.ignoresSafeArea())\n        .foregroundStyle(Brand.ink)', '.background(Brand.page.ignoresSafeArea())\n        .foregroundStyle(Brand.ink)\n        .environment(\\.locale, AppLanguage.current(appLanguage).locale)', 1)
+          p.write_text(s)
+
+          # Android: persist app locale, apply it, then recreate Activity immediately.
+          p = Path('android/app/src/main/java/com/everittventures/salonboothmath/SecondaryScreens.kt')
+          s = p.read_text()
+          if 'import android.app.Activity' not in s:
+              s = s.replace('package com.everittventures.salonboothmath\n\n', 'package com.everittventures.salonboothmath\n\nimport android.app.Activity\n')
+          old = 'fun setLanguage(tag:String){language=tag;prefs.edit().putString("app_language",tag).apply();AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))}'
+          new = 'fun setLanguage(tag:String){if(tag==language)return;language=tag;prefs.edit().putString("app_language",tag).apply();AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag));(context as? Activity)?.recreate()}'
+          if old in s:
+              s = s.replace(old,new)
+          p.write_text(s)
+
+          # Guard against device-locale money symbols and unresolved device-locale String(localized:) in key screens.
+          bad=[]
+          for fp in [Path('ios/SalonBoothMath/HomeView.swift'), Path('ios/SalonBoothMath/AddTodaySheet.swift'), Path('ios/SalonBoothMath/SettingsView.swift'), Path('ios/SalonBoothMath/PaidViews.swift'), Path('ios/SalonBoothMath/OnboardingView.swift')]:
+              text=fp.read_text()
+              if 'Locale.current.currency' in text:
+                  bad.append(f'{fp}: Locale.current currency')
+              if 'String(localized:' in text and fp.name != 'AppLanguage.swift':
+                  bad.append(f'{fp}: direct String(localized:)')
+          if bad:
+              raise SystemExit('\n'.join(bad))
+
+      - name: Commit runtime language fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios/SalonBoothMath/AppLanguage.swift ios/SalonBoothMath/HomeView.swift ios/SalonBoothMath/AddTodaySheet.swift ios/SalonBoothMath/SettingsView.swift android/app/src/main/java/com/everittventures/salonboothmath/SecondaryScreens.kt
+          if git diff --cached --quiet; then
+            echo "Runtime language handling already clean."
+          else
+            git commit -m "Fix selected app language at runtime"
+            git push origin HEAD:main
+          fi

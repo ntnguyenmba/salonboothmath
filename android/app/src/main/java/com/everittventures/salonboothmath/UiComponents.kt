@@ -1,25 +1,17 @@
 package com.everittventures.salonboothmath
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,33 +32,40 @@ internal val Berry=Color(0xFF4B0728); internal val BerryDeep=Color(0xFF2D0418); 
 @Composable internal fun SimpleScreen(title:String,back:()->Unit,content:@Composable ColumnScope.()->Unit){Column(Modifier.fillMaxSize().background(Page).padding(22.dp).verticalScroll(rememberScrollState()),verticalArrangement=Arrangement.spacedBy(20.dp)){TextButton(onClick=back){Text("‹ ${stringResource(R.string.back)}",color=Color.White,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)};Text(title,color=Ink,fontSize=32.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);content()}}
 @Composable internal fun Metric(label:String,value:Long){Column(verticalArrangement=Arrangement.spacedBy(4.dp)){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text(formatCents(value),color=Ink,fontSize=40.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun CostRow(label:String,value:Long){Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);Text("−${formatCents(value)}",color=Ink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable internal fun MoneyField(label:String,value:String,showCurrency:Boolean=true,onValue:(String)->Unit){
-    val interactionSource=remember{MutableInteractionSource()}
-    val focused by interactionSource.collectIsFocusedAsState()
-    val shape=RoundedCornerShape(18.dp)
     Column(verticalArrangement=Arrangement.spacedBy(9.dp)){
         Text(label,color=Ink,fontSize=19.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-        BasicTextField(
+        OutlinedTextField(
             value=value,
-            onValueChange=onValue,
+            onValueChange={raw->
+                val normalized=raw.replace(',','.')
+                if(normalized.isEmpty() || normalized.matches(Regex("\\d*(\\.\\d{0,2})?"))) onValue(normalized)
+            },
+            modifier=Modifier.fillMaxWidth().height(68.dp),
             singleLine=true,
             keyboardOptions=KeyboardOptions(keyboardType=KeyboardType.Decimal),
-            textStyle=TextStyle(color=Color.White,fontSize=29.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
-            cursorBrush=SolidColor(Pink),
-            interactionSource=interactionSource,
-            modifier=Modifier.fillMaxWidth().height(68.dp).background(Surface,shape).border(if(focused)3.dp else 2.dp,if(focused)Pink else Color.White.copy(alpha=.26f),shape).padding(horizontal=16.dp),
-            decorationBox={innerTextField->
-                Row(Modifier.fillMaxSize(),verticalAlignment=Alignment.CenterVertically){
-                    if(showCurrency){Text(appCurrencySymbol(),color=Color.White,fontSize=29.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);Spacer(Modifier.width(8.dp))}
-                    Box(Modifier.weight(1f)){innerTextField()}
-                }
-            }
+            prefix=if(showCurrency){{Text(appCurrencySymbol(),color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}else null,
+            textStyle=LocalTextStyle.current.copy(color=Color.White,fontSize=24.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily),
+            shape=RoundedCornerShape(18.dp),
+            colors=OutlinedTextFieldDefaults.colors(
+                focusedTextColor=Color.White,
+                unfocusedTextColor=Color.White,
+                cursorColor=Pink,
+                focusedBorderColor=Pink,
+                unfocusedBorderColor=Color.White.copy(alpha=.32f),
+                focusedContainerColor=Surface,
+                unfocusedContainerColor=Surface,
+                focusedPrefixColor=Color.White,
+                unfocusedPrefixColor=Color.White,
+                selectionColors=TextSelectionColors(handleColor=Pink,backgroundColor=Pink.copy(alpha=.35f))
+            )
         )
     }
 }
 @Composable internal fun PrimaryButton(label:String,action:()->Unit){Button(onClick=action,colors=ButtonDefaults.buttonColors(containerColor=Pink,contentColor=Color.White),modifier=Modifier.fillMaxWidth().height(62.dp),shape=RoundedCornerShape(18.dp)){Text(label,fontSize=19.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
 @Composable internal fun SingleChoiceSegment(options:List<Pair<String,String>>,selected:String,onSelect:(String)->Unit){Row(horizontalArrangement=Arrangement.spacedBy(8.dp)){options.forEach{(id,label)->Button(onClick={onSelect(id)},modifier=Modifier.weight(1f).height(56.dp),colors=ButtonDefaults.buttonColors(containerColor=if(selected==id)Pink else Surface,contentColor=Color.White),shape=RoundedCornerShape(16.dp)){Text(label,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily,maxLines=1)}}}}
-@Composable internal fun SettingToggle(label:String,checked:Boolean,onChecked:(Boolean)->Unit){Row(Modifier.fillMaxWidth(),verticalAlignment=androidx.compose.ui.Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily,modifier=Modifier.weight(1f));Switch(checked=checked,onCheckedChange=onChecked,colors=SwitchDefaults.colors(checkedThumbColor=Color.White,checkedTrackColor=Pink))}}
+@Composable internal fun SettingToggle(label:String,checked:Boolean,onChecked:(Boolean)->Unit){Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween){Text(label,color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily,modifier=Modifier.weight(1f));Switch(checked=checked,onCheckedChange=onChecked,colors=SwitchDefaults.colors(checkedThumbColor=Color.White,checkedTrackColor=Pink))}}
 @Composable internal fun payContext(store:AppStore):String {
     val keep = store.commissionCutBasisPoints/100
     val house = 100 - keep

@@ -1,52 +1,47 @@
-# Salon Booth Math v1
+# Salon Booth Math
 
 ## Product rule
 
 One job: **what did I take home this week?**
 
-Do not add features outside this spec before first store submission.
+The week is the book. Today is only a fast way to add money into the current week.
 
 ## Free
 
 - Onboarding
 - Optional trade greeting: Nail / Hair / Barber / Esthetician (no math change)
-- Pick Booth rent / Commission
-- Set weekly or monthly booth rent, or commission cut
+- Pick Booth rent / Commission / Hybrid
+- Set weekly or monthly booth rent, commission cut, or hybrid terms
 - One current week
 - Services
 - Cash tips
 - Card tips
 - Supplies
-- Live `YOU TOOK HOME` hero
+- Add today into the current week
+- Live `YOU TOOK HOME` weekly hero
 - Free Breakdown
 - Native Share take-home card
 
-## $4.99 lifetime unlock
+## $9.99 lifetime unlock
 
 One non-consumable purchase. No subscription.
 
 - Save weeks
 - History notebook with compact last-4-weeks total and average
-- Booth vs commission
-- Both pay models saved
-- Extra booth fees
+- Open saved weeks and their recorded day lines when available
+- Booth vs Commission vs Hybrid comparison
+- Extra fees
 - Hours and per-hour result
 - Tax set-aside line
+- Restore Purchase
 
-Paywall triggers on Save week, week navigation into saved weeks, Compare, or History.
+Paywall triggers on Save week, opening History, Compare, or paid saved-week detail. Add today and Breakdown remain free.
 
-Breakdown is free.
+Paywall promise:
 
-## Onboarding
+`Keep every day you just added. Look back later. Compare booth vs commission. $9.99 once. No subscription.`
 
-1. `What do you do?`
-2. `How do you get paid?`
-3. Weekly booth rent OR commission cut written into the same settings keys Home uses
-4. `Let’s see this week.`
-
-One question per screen. No setup dump.
-
-Commission onboarding must write `commissionCutBasisPoints`, not a leftover Double key.
+The purchase button must use the localized StoreKit / Play Billing price when available. `$9.99` is the offline fallback and US base-price target.
 
 ## Home
 
@@ -54,7 +49,7 @@ Wine page. White reading text. Hot-pink 4pt crown.
 
 Berry/wine top bar with `This week` and pay context.
 
-Stack four large fields vertically:
+Stack four large weekly fields vertically:
 
 1. Services
 2. Cash tips
@@ -65,13 +60,15 @@ Always-visible result:
 
 `YOU TOOK HOME`
 
-Large locale-formatted amount in white.
+Large locale-formatted weekly amount in white.
 
-Primary: `Save week`
+Actions:
 
-Secondary: `See breakdown`
+1. `Add today` secondary/free
+2. `Save week` primary/paid
+3. `See breakdown` secondary/free
 
-No grid. No dashboard. No chart.
+Add today opens a sheet. It is not a daily Home, calendar, or daily take-home screen. The entered cents add to the current weekly totals and the sheet clears after adding.
 
 ## Calculations
 
@@ -91,6 +88,8 @@ Booth take-home = gross - weekly rent - card fees - supplies - extra fees
 
 Commission take-home = services × user cut + user tips - user card fees - supplies - extra fees
 
+Hybrid take-home = commission-style earnings minus weekly booth rent and applicable costs.
+
 Tips rules: user keeps all, house keeps all, or split; default split is 50/50.
 
 Per hour = take-home / hours when hours > 0.
@@ -100,10 +99,6 @@ Tax set-aside = take-home × tax percent. Display only. Never subtract it from t
 High-rent warning when weekly rent / gross >= 40% and gross > 0.
 
 If take-home is negative, keep the signed amount and make the breakdown available to explain it.
-
-## Sample week
-
-Ship a preloaded sample week so Store Review never lands on an empty product.
 
 ## Accessibility
 
@@ -116,7 +111,7 @@ Ship a preloaded sample week so Store Review never lands on an empty product.
 
 ## Localization
 
-Ship English, Vietnamese, and Spanish together in v1. Device language selects localization. Currency uses locale formatting.
+Ship English, Vietnamese, and Spanish together. The selected app language persists. Currency uses locale/store formatting. No user-facing English-only strings may ship.
 
 ## Widget
 
@@ -139,4 +134,4 @@ Subtitle: `Take-home for nail & hair`
 
 Business category.
 
-Review note should explain booth/commission niche, offline saved weeks, sample week, native share, widget, one-time StoreKit purchase, and no account.
+Review note should explain the booth/commission/hybrid niche, offline weekly notebook, free calculator and Breakdown, one-time $9.99 non-consumable, native share, widget, Restore Purchase, and no account.

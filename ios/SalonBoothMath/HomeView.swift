@@ -56,11 +56,21 @@ struct HomeView: View {
     private var estimatedCardFees: Int { MoneyMath.cardFees(services: serviceCents, cardTips: cardTipCents, cardFeeRate: cardFeeRate, percentServicesOnCard: servicesOnCardRate) }
     private var boothTakeHome: Int { MoneyMath.boothTakeHome(services: serviceCents, cashTips: cashTipCents, cardTips: cardTipCents, supplies: supplyCents, weeklyRent: weeklyRentCents, extraFees: extraFeesCents, cardFeeRate: cardFeeRate, percentServicesOnCard: servicesOnCardRate) }
     private var commissionTakeHome: Int { MoneyMath.commissionTakeHome(services: serviceCents, cashTips: cashTipCents, cardTips: cardTipCents, supplies: supplyCents, cut: commissionCut, tipOwner: tipOwner, workerPaysCardFees: workerPaysCardFees, extraFees: extraFeesCents, cardFeeRate: cardFeeRate, percentServicesOnCard: servicesOnCardRate) }
-    private var takeHomeCents: Int { payModel == .booth ? boothTakeHome : commissionTakeHome }
+    private var hybridTakeHome: Int { MoneyMath.hybridTakeHome(services: serviceCents, cashTips: cashTipCents, cardTips: cardTipCents, supplies: supplyCents, weeklyRent: weeklyRentCents, cut: commissionCut, tipOwner: tipOwner, workerPaysCardFees: workerPaysCardFees, extraFees: extraFeesCents, cardFeeRate: cardFeeRate, percentServicesOnCard: servicesOnCardRate) }
+    private var takeHomeCents: Int {
+        switch payModel {
+        case .booth: boothTakeHome
+        case .commission: commissionTakeHome
+        case .hybrid: hybridTakeHome
+        }
+    }
     private var currentWeekStart: Date { Calendar.current.startOfWeek(for: Date()) }
     private var activeWeekStart: Date { editingWeekStart ?? currentWeekStart }
     private var isCurrentWeek: Bool { Calendar.current.isDate(activeWeekStart, equalTo: currentWeekStart, toGranularity: .weekOfYear) }
-    private var highRentRatio: Decimal? { guard payModel == .booth, grossCents > 0 else { return nil }; return Decimal(weeklyRentCents) / Decimal(grossCents) }
+    private var highRentRatio: Decimal? {
+        guard payModel != .commission, grossCents > 0 else { return nil }
+        return Decimal(weeklyRentCents) / Decimal(grossCents)
+    }
     private var hoursValue: Double? {
         let normalized = hours.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
         guard let value = Double(normalized), value > 0 else { return nil }
@@ -68,8 +78,14 @@ struct HomeView: View {
     }
 
     private var payContext: String {
-        if payModel == .booth { return "\(String(localized: "pay.booth")) · \(formatCurrency(weeklyRentCents))/\(String(localized: "rent.week"))" }
-        return String(format: String(localized: "home.keepCut"), commissionCutBasisPoints / 100)
+        switch payModel {
+        case .booth:
+            return "\(String(localized: "pay.booth")) · \(formatCurrency(weeklyRentCents))/\(String(localized: "rent.week"))"
+        case .commission:
+            return String(format: String(localized: "home.keepCut"), commissionCutBasisPoints / 100)
+        case .hybrid:
+            return String(format: String(localized: "home.hybridContext"), formatCurrency(weeklyRentCents), commissionCutBasisPoints / 100)
+        }
     }
 
     private var lifetimePrice: String { purchases.product?.displayPrice ?? "$4.99" }
@@ -86,7 +102,8 @@ struct HomeView: View {
                             result.padding(.top, 30)
                             actions.padding(.top, 24).padding(.bottom, 32)
                         }
-                    }.scrollDismissesKeyboard(.interactively)
+                    }
+                    .scrollDismissesKeyboard(.interactively)
                 }
             }
             .foregroundStyle(Brand.ink)
@@ -104,12 +121,30 @@ struct HomeView: View {
                     hoursText: $hours
                 )
             }
-            .navigationDestination(isPresented: $showCompare) { CompareView(boothCents: boothTakeHome, commissionCents: commissionTakeHome, commissionPercent: commissionCutBasisPoints / 100) }
+            .navigationDestination(isPresented: $showCompare) {
+                CompareView(
+                    boothCents: boothTakeHome,
+                    commissionCents: commissionTakeHome,
+                    hybridCents: hybridTakeHome,
+                    commissionPercent: commissionCutBasisPoints / 100
+                )
+            }
             .navigationDestination(isPresented: $showHistory) { HistoryView(store: weekStore) { week in load(week); showHistory = false } }
             .navigationDestination(isPresented: $showSettings) { SettingsView() }
         }
-        .sheet(isPresented: $showPaywall) { PaywallView(purchases: purchases) { unlocked in showPaywall = false; if unlocked { runPendingAction() } }.presentationDetents([.medium, .large]).presentationDragIndicator(.visible) }
-        .sheet(isPresented: $showShare) { if let shareImage { ActivityShareView(items: [shareImage, formatCurrency(takeHomeCents), activeWeekStart.formatted(date: .abbreviated, time: .omitted)]) } }
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(purchases: purchases) { unlocked in
+                showPaywall = false
+                if unlocked { runPendingAction() }
+            }
+            .presentationDetents([.medium, .large])
+            .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showShare) {
+            if let shareImage {
+                ActivityShareView(items: [shareImage, formatCurrency(takeHomeCents), activeWeekStart.formatted(date: .abbreviated, time: .omitted)])
+            }
+        }
         .onAppear { restoreCurrentWeekDraft(); if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents) } }
         .onChange(of: services) { _, _ in persistCurrentWeekDraft() }
         .onChange(of: cashTips) { _, _ in persistCurrentWeekDraft() }
@@ -126,20 +161,31 @@ struct HomeView: View {
                 Text(payContext).font(Brand.font(16)).foregroundStyle(.white)
             }
             HStack {
-                if !isCurrentWeek { Button { returnToCurrentWeek() } label: { Image(systemName: "chevron.left").frame(width: 48, height: 48) } }
+                if !isCurrentWeek {
+                    Button { returnToCurrentWeek() } label: { Image(systemName: "chevron.left").frame(width: 48, height: 48) }
+                }
                 Spacer()
                 Menu {
-                    Picker(AppLanguage.current(appLanguage).languageTitle, selection: $appLanguage) { ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language.rawValue) } }
+                    Picker(AppLanguage.current(appLanguage).languageTitle, selection: $appLanguage) {
+                        ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language.rawValue) }
+                    }
                     Divider()
-                    if !purchases.isUnlocked { Button(String(format: String(localized: "paywall.unlockLifetime"), lifetimePrice)) { pendingAction = nil; showPaywall = true } }
+                    if !purchases.isUnlocked {
+                        Button(String(format: String(localized: "paywall.unlockLifetime"), lifetimePrice)) { pendingAction = nil; showPaywall = true }
+                    }
                     Button("home.share") { shareCurrentWeek() }
                     Button("history.title") { requireUnlock(.history) }
                     Button("compare.title") { requireUnlock(.compare) }
                     Button("settings.title") { showSettings = true }
-                } label: { Image(systemName: "ellipsis.circle.fill").font(.system(size: 23, weight: .bold)).frame(width: 48, height: 48) }
+                } label: {
+                    Image(systemName: "ellipsis.circle.fill").font(.system(size: 23, weight: .bold)).frame(width: 48, height: 48)
+                }
             }
         }
-        .foregroundStyle(.white).padding(.horizontal, 10).padding(.vertical, 12).background(Brand.berry)
+        .foregroundStyle(.white)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 12)
+        .background(Brand.berry)
         .overlay(alignment: .top) { Rectangle().fill(Brand.hotPink).frame(height: 4) }
     }
 
@@ -149,22 +195,38 @@ struct HomeView: View {
             HomeMoneyField(title: String(localized: "field.tipsCash"), text: $cashTips)
             HomeMoneyField(title: String(localized: "field.tipsCard"), text: $cardTips)
             HomeMoneyField(title: String(localized: "field.supplies"), text: $supplies)
-        }.padding(.horizontal, Brand.screenPadding)
+        }
+        .padding(.horizontal, Brand.screenPadding)
     }
 
     private var result: some View {
         VStack(spacing: 8) {
             Text("home.youTookHome").font(Brand.font(17)).foregroundStyle(Brand.hotPink)
             Text(formatCurrency(takeHomeCents)).font(Brand.font(52, weight: .heavy)).monospacedDigit().minimumScaleFactor(0.82).lineLimit(1)
-            if let ratio = highRentRatio, ratio >= Decimal(string: "0.40")! { Text(String(format: String(localized: "br.rentHigh"), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0))))).font(Brand.font(16)).foregroundStyle(Brand.warning).multilineTextAlignment(.center) }
-        }.frame(maxWidth: .infinity).padding(.horizontal, Brand.screenPadding)
+            if let ratio = highRentRatio, ratio >= Decimal(string: "0.40")! {
+                Text(String(format: String(localized: "br.rentHigh"), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0)))))
+                    .font(Brand.font(16))
+                    .foregroundStyle(Brand.warning)
+                    .multilineTextAlignment(.center)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, Brand.screenPadding)
     }
 
     private var actions: some View {
         VStack(spacing: 14) {
             PrimaryButton(title: String(localized: "home.save")) { requireUnlock(.save) }
-            Button { showBreakdown = true } label: { Text("home.breakdown").font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 58).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius)) }
-        }.padding(.horizontal, Brand.screenPadding)
+            Button { showBreakdown = true } label: {
+                Text("home.breakdown")
+                    .font(Brand.font(18))
+                    .foregroundStyle(Brand.ink)
+                    .frame(maxWidth: .infinity, minHeight: 58)
+                    .background(Brand.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+            }
+        }
+        .padding(.horizontal, Brand.screenPadding)
     }
 
     private func restoreCurrentWeekDraft() {
@@ -216,8 +278,10 @@ struct HomeView: View {
         case .save:
             weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: hoursValue, payModel: payModel, takeHomeCents: takeHomeCents))
             if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents) }
-        case .compare: showCompare = true
-        case .history: showHistory = true
+        case .compare:
+            showCompare = true
+        case .history:
+            showHistory = true
         }
         pendingAction = nil
     }
@@ -227,13 +291,22 @@ private struct HomeMoneyField: View {
     let title: String
     @Binding var text: String
     @FocusState private var focused: Bool
+
     var body: some View {
         VStack(alignment: .leading, spacing: 11) {
             Text(title).font(Brand.font(18)).foregroundStyle(Brand.ink)
-            HStack(spacing: 8) { Text(Locale.current.currencySymbol ?? "$"); TextField("0", text: $text).keyboardType(.decimalPad).focused($focused) }
-                .font(Brand.font(29, weight: .heavy)).padding(.horizontal, 16).frame(minHeight: 64).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
-                .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.line, lineWidth: focused ? 3 : 2))
-        }.frame(maxWidth: .infinity)
+            HStack(spacing: 8) {
+                Text(Locale.current.currencySymbol ?? "$")
+                TextField("0", text: $text).keyboardType(.decimalPad).focused($focused)
+            }
+            .font(Brand.font(29, weight: .heavy))
+            .padding(.horizontal, 16)
+            .frame(minHeight: 64)
+            .background(Brand.surface)
+            .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+            .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(focused ? Brand.hotPink : Brand.line, lineWidth: focused ? 3 : 2))
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
@@ -241,17 +314,45 @@ struct PaywallView: View {
     @ObservedObject var purchases: PurchaseManager
     let completion: (Bool) -> Void
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
+
     private var unlockTitle: String {
         String(format: String(localized: "paywall.unlockLifetime"), purchases.product?.displayPrice ?? "$4.99")
     }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack { Capsule().fill(Brand.hotPink).frame(width: 54, height: 6); Spacer(); Button(AppLanguage.current(appLanguage).cancelTitle) { completion(false) }.font(Brand.font(16)).foregroundStyle(Brand.ink) }
-            Text("paywall.lifetimeTitle").font(Brand.font(30, weight: .heavy))
-            Text("paywall.body").font(Brand.font(18)).foregroundStyle(Brand.mutedInk).fixedSize(horizontal: false, vertical: true)
-            PrimaryButton(title: unlockTitle) { Task { let ok = await purchases.purchase(); if ok { completion(true) } } }
-            Button { Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } } } label: { Text("paywall.restore").font(Brand.font(17)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 54) }
-            Button { completion(false) } label: { Text("paywall.notNow").font(Brand.font(17)).foregroundStyle(Brand.muted).frame(maxWidth: .infinity, minHeight: 54) }
+        VStack(alignment: .leading, spacing: 18) {
+            HStack {
+                Capsule().fill(Brand.hotPink).frame(width: 54, height: 6)
+                Spacer()
+                Button(String(localized: "paywall.continueFree")) { completion(false) }
+                    .font(Brand.font(16))
+                    .foregroundStyle(Brand.ink)
+            }
+            Text("paywall.lifetimeTitle")
+                .font(Brand.font(27, weight: .heavy))
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+            Text("paywall.lifetimeBody")
+                .font(Brand.font(18))
+                .foregroundStyle(Brand.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
+            PrimaryButton(title: unlockTitle) {
+                Task {
+                    let ok = await purchases.purchase()
+                    if ok { completion(true) }
+                }
+            }
+            Button {
+                Task {
+                    await purchases.restore()
+                    if purchases.isUnlocked { completion(true) }
+                }
+            } label: {
+                Text("paywall.restore").font(Brand.font(17)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 54)
+            }
+            Button { completion(false) } label: {
+                Text("paywall.continueFree").font(Brand.font(17)).foregroundStyle(Brand.muted).frame(maxWidth: .infinity, minHeight: 54)
+            }
         }
         .padding(24)
         .background(Brand.page)

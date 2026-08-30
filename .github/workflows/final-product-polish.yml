@@ -1,0 +1,56 @@
+name: Final Product Polish
+on:
+  push:
+    paths:
+      - '.github/workflows/final-product-polish.yml'
+permissions:
+  contents: write
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply final product polish
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          p=Path('ios/SalonBoothMath/HomeView.swift'); s=p.read_text()
+          s=s.replace('@AppStorage("currentWeekDaysJSON") private var currentWeekDaysJSON = "[]"', '@AppStorage("currentWeekDaysJSON") private var currentWeekDaysJSON = "[]"\n    @AppStorage("didUseFreeCompare") private var didUseFreeCompare = false')
+          s=s.replace('case .booth: return "\\(String(localized:"pay.booth")) · \\(formatCurrency(weeklyRentCents))/\\(String(localized:"rent.week"))"', 'case .booth: return "\\(L("pay.booth", language: appLanguage)) · \\(formatCurrency(weeklyRentCents, language: appLanguage))/\\(L("rent.week", language: appLanguage))"')
+          s=s.replace('case .commission: return String(format:String(localized:"home.keepCut"),commissionCutBasisPoints/100)', 'case .commission: return String(format: L("home.payContextSplit", table: "Hybrid", language: appLanguage), commissionCutBasisPoints/100, max(0, 100-commissionCutBasisPoints/100))')
+          s=s.replace('case .hybrid: return String(format:String(localized:"home.hybridContext",table:"Hybrid"),formatCurrency(weeklyRentCents),commissionCutBasisPoints/100)', 'case .hybrid: return String(format: L("home.hybridContext", table: "Hybrid", language: appLanguage), formatCurrency(weeklyRentCents, language: appLanguage), commissionCutBasisPoints/100)')
+          s=s.replace('Text(isCurrentWeek ? String(localized:"home.thisWeek") : weekRange(activeWeekStart))', 'Text(isCurrentWeek ? L("home.thisWeek", language: appLanguage) : weekRange(activeWeekStart))')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.services")', 'HomeMoneyField(title:L("field.services", language: appLanguage)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.tipsCash")', 'HomeMoneyField(title:L("field.tipsCash", language: appLanguage)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.tipsCard")', 'HomeMoneyField(title:L("field.tipsCard", language: appLanguage)')
+          s=s.replace('HomeMoneyField(title:String(localized:"field.supplies")', 'HomeMoneyField(title:L("field.supplies", language: appLanguage)')
+          s=s.replace('PrimaryButton(title:String(localized:"home.save"))', 'PrimaryButton(title:L("home.save", language: appLanguage))')
+          s=s.replace('Text(String(localized:"home.compareDeal",table:"Hybrid"))', 'Text(L("home.compareDeal", table: "Hybrid", language: appLanguage))')
+          s=s.replace('Button{requireUnlock(.compare)}label:{Text(L("home.compareDeal", table: "Hybrid", language: appLanguage))', 'Button{openCompare()}label:{Text(L("home.compareDeal", table: "Hybrid", language: appLanguage))')
+          s=s.replace('private func requireUnlock(_ action:LockedAction){', 'private func openCompare(){ if purchases.isUnlocked || !didUseFreeCompare { didUseFreeCompare=true; showCompare=true } else { requireUnlock(.compare) } }\n    private func requireUnlock(_ action:LockedAction){')
+          p.write_text(s)
+
+          p=Path('android/app/src/main/java/com/everittventures/salonboothmath/AppUi.kt'); s=p.read_text()
+          s=s.replace('var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var addedTodayGross', 'var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var addedTodayGross')
+          s=s.replace('fun requireUnlock(action: LockedAction) { if(unlocked) runLockedAction(action) else { pendingAction=action; showPaywall=true } }', 'fun requireUnlock(action: LockedAction) { if(unlocked) runLockedAction(action) else { pendingAction=action; showPaywall=true } }\n    fun openCompare() { if (unlocked || !didUseFreeCompare) { didUseFreeCompare=true; store.didUseFreeCompare=true; screen=Screen.Compare } else requireUnlock(LockedAction.COMPARE) }')
+          s=s.replace('TextButton(onClick={requireUnlock(LockedAction.COMPARE)},modifier=Modifier.fillMaxWidth().height(58.dp))', 'TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(58.dp))')
+          p.write_text(s)
+
+          p=Path('android/app/src/main/java/com/everittventures/salonboothmath/AppStore.kt'); s=p.read_text()
+          marker='var onboardingDone: Boolean'
+          if 'didUseFreeCompare' not in s:
+              idx=s.find(marker)
+              if idx>=0:
+                  # Insert a SharedPreferences-backed property before onboardingDone, matching AppStore's existing prefs member.
+                  prop='var didUseFreeCompare: Boolean\n        get() = prefs.getBoolean("did_use_free_compare", false)\n        set(value) { prefs.edit().putBoolean("did_use_free_compare", value).apply() }\n    '
+                  s=s[:idx]+prop+s[idx:]
+          p.write_text(s)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add ios/SalonBoothMath/HomeView.swift android/app/src/main/java/com/everittventures/salonboothmath/AppUi.kt android/app/src/main/java/com/everittventures/salonboothmath/AppStore.kt
+          if ! git diff --cached --quiet; then git commit -m 'Give users a free Compare before lifetime paywall'; git push origin HEAD:main; fi

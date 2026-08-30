@@ -46,7 +46,7 @@ struct SettingsView: View {
                 sectionTitle(L("settings.trade", language: appLanguage))
                 Picker(L("settings.trade", language: appLanguage), selection: $savedTrade) {
                     ForEach(Trade.allCases) { trade in
-                        Text(L(String.LocalizationValue(trade.titleKey), language: appLanguage)).tag(trade.rawValue)
+                        Text(L(trade.titleKey, language: appLanguage)).tag(trade.rawValue)
                     }
                 }.pickerStyle(.segmented)
 
@@ -151,7 +151,7 @@ struct SettingsView: View {
 
     private func sectionTitle(_ title: String) -> some View { Text(title).font(Brand.font(22, weight: .heavy)) }
 
-    private func settingField(_ key: String.LocalizationValue, text: Binding<String>, prefix: String?, suffix: String?) -> some View {
+    private func settingField(_ key: String, text: Binding<String>, prefix: String?, suffix: String?) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(L(key, language: appLanguage)).font(Brand.font(18))
             MoneyEntryField(text: text, prefix: prefix, suffix: suffix)

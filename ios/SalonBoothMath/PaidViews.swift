@@ -59,7 +59,7 @@ struct BreakdownView: View {
                         HStack {
                             Text(L("br.effectiveHourly", table: "Hybrid", language: appLanguage)).font(Brand.font(17))
                             Spacer()
-                            Text("\(formatCurrency(hourly, language: appLanguage))\(L("unit.perHour", language: appLanguage))").font(Brand.font(22, weight: .heavy)).monospacedDigit()
+                            Text(formatCurrency(hourly, language: appLanguage) + L("unit.perHour", language: appLanguage)).font(Brand.font(22, weight: .heavy)).monospacedDigit()
                         }
                     }
                 }
@@ -77,7 +77,7 @@ struct BreakdownView: View {
         return MoneyMath.hourlyTakeHome(takeHomeCents: takeHomeCents, hours: hours)
     }
 
-    private func row(_ key: String.LocalizationValue, _ cents: Int, strong: Bool = false) -> some View {
+    private func row(_ key: String, _ cents: Int, strong: Bool = false) -> some View {
         namedRow(L(key, language: appLanguage), cents, strong: strong)
     }
 
@@ -159,7 +159,7 @@ struct HistoryView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(formatWeekRange(week.weekStart, language: appLanguage)).font(Brand.font(18))
                                 if let hours = week.hours, hours > 0 {
-                                    Text("\(formatHoursLabel(hours, language: appLanguage)) \(L("history.hours", language: appLanguage))").font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
+                                    Text(formatHoursLabel(hours, language: appLanguage) + " " + L("history.hours", language: appLanguage)).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
                                 }
                             }
                             Spacer()

@@ -39,12 +39,33 @@ func appLocale(_ language: String = AppLanguage.stored.rawValue) -> Locale {
     AppLanguage.current(language).locale
 }
 
-func L(_ key: String.LocalizationValue, table: String? = nil, language: String = AppLanguage.stored.rawValue) -> String {
-    let locale = appLocale(language)
-    if let table {
-        return String(localized: key, table: table, locale: locale)
+func L(_ key: String, table: String? = nil, language: String = AppLanguage.stored.rawValue) -> String {
+    let lang = AppLanguage.current(language).rawValue
+    if let catalog = catalogString(key: key, table: table, language: lang) {
+        return catalog
     }
-    return String(localized: key, locale: locale)
+    let locale = Locale(identifier: lang)
+    if let table {
+        return String(localized: String.LocalizationValue(stringLiteral: key), table: table, locale: locale)
+    }
+    return String(localized: String.LocalizationValue(stringLiteral: key), locale: locale)
+}
+
+private func catalogString(key: String, table: String?, language: String) -> String? {
+    let name = table ?? "Localizable"
+    let nearby = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("\(name).xcstrings")
+    guard FileManager.default.fileExists(atPath: nearby.path),
+          let data = try? Data(contentsOf: nearby),
+          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+          let strings = json["strings"] as? [String: Any],
+          let entry = strings[key] as? [String: Any],
+          let locs = entry["localizations"] as? [String: Any],
+          let lang = locs[language] as? [String: Any],
+          let unit = lang["stringUnit"] as? [String: Any],
+          let value = unit["value"] as? String,
+          !value.isEmpty
+    else { return nil }
+    return value
 }
 
 func formatCurrency(_ cents: Int, language: String = AppLanguage.stored.rawValue) -> String {
@@ -60,7 +81,7 @@ func compareVerdict(boothCents: Int, commissionCents: Int, hybridCents: Int, lan
     let second = scores.filter { $0.0 != winners[0].0 }.map(\.1).max() ?? best
     let extra = best - second
     guard extra > 0 else { return L("compare.verdictTie", language: language) }
-    let key: String.LocalizationValue
+    let key: String
     switch winners[0].0 {
     case "booth": key = "compare.verdictBooth"
     case "commission": key = "compare.verdictCommission"

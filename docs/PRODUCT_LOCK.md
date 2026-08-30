@@ -1,113 +1,59 @@
 # Salon Booth Math — Product Lock
 
-## Product
+## The product
 
-**Know What You Keep** is the product.
+**Know What You Keep** is the whole product.
 
-Salon Booth Math is a focused weekly take-home calculator for booth renters, commission professionals, and hybrid pay arrangements.
+Salon Booth Math is a focused weekly take-home calculator for booth renters and commission salon professionals.
 
-**Rule: day is how money enters. Week is what the user keeps.**
+The free app answers tonight: **what did I keep?**
 
-Home remains **This week**. Add Today is an input shortcut, not a daily dashboard, calendar, or daily take-home product.
+The paid product is memory and comparison: **$9.99 once to keep weeks, look back later, and compare booth vs commission vs hybrid.**
 
-## Business model
+$9.99 is for the second week, not the first.
 
-### Free
-- Current-week calculator
-- Services, Cash tips, Card tips, Supplies
-- **Add today** into the current week
-- Booth, Commission, and Hybrid math
-- Live weekly take-home
+## Locked business model
+
+### Free forever
+- Weekly calculator
+- Add today into the current week
 - Breakdown
-- Share
-- Current-week widget
-- Optional tax set-aside estimate, informational only
+- Booth rent math
+- Commission math
+- Hybrid math
+- Cash tips and card tips
+- Card fees
+- Supplies
+- Optional tax reserve estimate
 
 ### Lifetime — $9.99 once
-- Save week
+- Save Week
 - History
-- Open saved weeks and retained day lines when available
 - Booth vs Commission vs Hybrid Compare
 - Restore Purchase
 
 No subscription. No account. No cloud requirement.
 
-Paid triggers are Save week, History, Compare, and paid saved-week detail. Home, Add Today, take-home, Breakdown, and Share remain free.
+The price appears only when the user asks to Save, open History, or open Compare. Home never sells Lifetime. Add today stays free.
 
-Paywall promise:
+Paywall copy:
 
-> **Keep every day you added. Look back later. Compare booth vs commission. $9.99 once. No subscription.**
+> **Keep this week. Look back later. Compare booth vs commission. $9.99 once. No subscription.**
 
-The purchase button uses the localized StoreKit / Google Play price when available. `$9.99` is the offline fallback and US base-price target.
+Legal pages:
 
-Product ID on both stores:
+- Privacy: https://sites.google.com/everittventures.com/salon-booth-math/privacy
+- Terms: https://sites.google.com/everittventures.com/salon-booth-math/terms
+- Support: https://sites.google.com/everittventures.com/salon-booth-math/support
 
-`com.everittventures.salonboothmath.lifetime`
+Those pages must load signed-out.
 
-## Home
+## Do not reopen
 
-Order:
-1. This week
-2. Pay context
-3. Services
-4. Cash tips
-5. Card tips
-6. Supplies
-7. Weekly TAKE-HOME
-8. Add today
-9. Save week
-10. See breakdown
-
-Add Today opens a sheet with Services, Cash tips, Card tips, Supplies, and optional hours. Tapping **Add to this week** adds cents to the existing weekly fields, records a local DayLine, clears the sheet, and updates the weekly hero/widget.
-
-Manual weekly entry remains supported. Never force users to create day lines.
-
-Do not show a day Home, seven-day strip, calendar, per-day take-home hero, or per-day rent deduction.
-
-## Math
-
-Money math remains weekly. Add Today only changes weekly inputs.
-
-- Booth rent is normalized to a weekly amount and deducted once from the week.
-- Commission is calculated against weekly services/tips/costs.
-- Hybrid is commission-style earnings minus weekly booth rent and applicable costs.
-- Card fees use integer cents and the configured services-on-card percentage.
-- Tax set-aside is optional planning and never reduces the take-home hero.
-- Hours do not affect take-home.
-
-Both platforms must continue to match `docs/MATH_PARITY.md`.
-
-## History
-
-History is a weekly notebook, not analytics software.
-
-Allowed summary:
-- Last 4 weeks total
-- Average week
-- Average hourly only when hours exist
-
-Saved weeks may retain their DayLines. Do not turn History into a calendar or chart dashboard.
-
-## Languages
-
-English, Español, and Tiếng Việt ship together on iOS and Android. New user-facing strings must be localized across all three before release.
-
-## Visual lock
-
-- Wine `#4B0728`
-- Hot pink `#FF3D6E`
-- White `#FFFFFF`
-- Native system rounded typography
-- Minimum visible text 16px
-- Primary controls 56–64px
-- No beige, gold, orange, blue, blush, gradients, dashboards, or sparklines
-
-Wine is the surface. White is the reading color. Pink is the tap/accent.
-
-## Do not add
-
+Do not add:
 - Booking
-- Clients / CRM
+- Clients
+- CRM
 - Calendar
 - Inventory
 - SMS
@@ -116,44 +62,178 @@ Wine is the surface. White is the reading color. Pink is the tap/accent.
 - Team management
 - Invoices
 - Marketplace
-- Subscription
+- Subscriptions
 - Blog
-- Daily take-home product
-- Day/month analytics dashboard
-- Fourth brand color
+- A bigger website
+- A fourth brand color
+- A Free badge on Home
+- “Lifetime” on the Save button
+- Charts or sparklines
 
-## Privacy / legal
+The website is a storefront, not a second product.
 
-Public destinations used by both apps:
-- Privacy: `https://sites.google.com/everittventures.com/salon-booth-math/privacy`
-- Terms: `https://sites.google.com/everittventures.com/salon-booth-math/terms`
-- Support: `https://sites.google.com/everittventures.com/salon-booth-math/support`
+Trade (Nail / Hair / Barber / Esthetician) may stay in onboarding only as a greeting. It must not change math in v1. Do not build trade-specific themes.
 
-They must load signed-out/incognito before submission.
+## Home — iOS and Android
 
-The app stores calculator/history data locally. Store purchases are processed by Apple or Google. Tax calculations are estimates and not tax, accounting, financial, or legal advice.
+Home is calculator-only.
 
-## Store screenshots
+Order:
+1. This week
+2. Pay context
+3. Services
+4. Cash tips
+5. Card tips
+6. Supplies
+7. YOU TOOK HOME
+8. Take-home amount
+9. Add today
+10. Save week
+11. See breakdown
 
-Never lead with `$0`.
+No membership banner. No price card. No large logo lockup. No purchase copy before the user tries a paid action.
 
-Recommended sequence:
-1. Home with a realistic weekly take-home such as **$818.25**, with Add Today visible
-2. Breakdown
-3. Compare
-4. History
-5. Language/privacy if useful
+### Pay context
 
-## Release gate
+Booth example:
 
-Do not call the app store-ready until all are true:
-1. iOS and Android CI green at current `main`.
-2. Public Privacy, Terms, and Support URLs work signed-out.
-3. `$9.99` lifetime non-consumable exists on both stores with the exact product ID.
-4. Sandbox purchase and Restore succeed on physical devices.
-5. Signed iOS archive and Android AAB are uploaded.
-6. Store privacy/data-safety/content-rating metadata is complete.
-7. Real screenshots are uploaded.
-8. EN/ES/VI smoke test shows no raw keys or English-only release UI.
+`Booth rent · $350/week`
 
-**Calculator first. Weekly memory second. Once. No subscription.**
+Commission example:
+
+`You keep 55% + tips`
+
+Do not use shorthand such as `55% · You`.
+
+### Field names
+
+Use exactly:
+- Services
+- Cash tips
+- Card tips
+- Supplies
+
+Do not shorten Cash tips / Card tips to Cash / Card.
+
+### Take-home
+
+The take-home amount is the dominant number.
+
+Tax reserve is informational only and does not reduce the main take-home hero.
+
+Add today adds cents into the current week. It is not a daily Home or calendar.
+
+## Free Breakdown
+
+Breakdown stays free.
+
+Show only applicable rows:
+- Gross
+- Booth rent or owner cut
+- Card fees
+- Supplies
+- Extra fees / tip-out if applicable
+- Take-home
+- Tax reserve estimate if enabled
+- Optional hours field
+
+The user should be able to understand why the take-home number is the number before being asked to pay.
+
+## Paid features
+
+### Save Week
+
+The button always says **Save week**.
+
+If the user is not unlocked, tapping it opens the lifetime purchase sheet.
+
+### History
+
+History is lifetime-only.
+
+History is a weekly notebook, not analytics software.
+
+Allowed compact summary at the top:
+- Last 4 weeks total
+- Average week
+- Average hourly only when hours exist
+
+Then a simple list: week/date and take-home. Tapping a saved week reopens it.
+
+Do not add charts, sparklines, month dashboards, or comparison graphs on History.
+
+### Compare
+
+Compare is lifetime-only and may be the strongest day-one purchase trigger.
+
+Show the user's actual week under:
+- On booth
+- On commission
+- On hybrid
+- Difference where useful
+
+Keep it simple. It exists to answer a pay-model decision, not to become a financial dashboard.
+
+### Restore
+
+Restore Purchase must work on both stores. It is not a selling point. It makes the one-time purchase feel safe.
+
+## Languages
+
+English, Spanish, and Vietnamese are release requirements on both iOS and Android.
+
+- English
+- Español
+- Tiếng Việt
+
+The selected language must persist.
+
+Every user-facing string must be audited before release. No new English-only strings may ship.
+
+## Visual system
+
+Locked palette:
+- Wine: `#4B0728` — app page / salon dark
+- Hot pink: `#FF3D6E` — tap only
+- White: `#FFFFFF` — reading text on wine
+
+Do not introduce blush, gold, orange, blue, beige, or another neon.
+
+The calculator Home stays wine. Do not revert to a white spreadsheet Home.
+
+Use native system rounded typography. Minimum visible text size is 16px.
+
+## Privacy, Terms, and Support
+
+These must be live and public before store submission.
+
+## Store positioning
+
+Free download.
+
+One-time non-consumable lifetime purchase: `$9.99`.
+
+The paid boundary is:
+- Save
+- History
+- Compare
+
+The number itself, Add today, and Breakdown remain free forever.
+
+## Product test
+
+Every new idea must pass this question:
+
+**Does this help a booth renter or commission professional know what they kept this week, remember a week, or compare booth vs commission?**
+
+If not, it does not belong in Salon Booth Math v1.
+
+## Why $9.99 works
+
+The free screen earns trust first.
+
+A user enters a real week and sees a number that matters. If they return next week, they may want to keep the previous week instead of treating the calculator as disposable. Save + History turns the calculator into their simple weekly notebook.
+
+Compare can justify the purchase immediately for someone choosing between booth rent and commission because the decision can be worth far more than $9.99.
+
+**Calculator first. Memory second. Once. No subscription.**

@@ -22,6 +22,16 @@ jobs:
         with:
           gradle-version: '8.10.2'
       - name: Unit tests
-        run: gradle testDebugUnitTest --stacktrace
+        run: |
+          if [ -x ./gradlew ]; then
+            ./gradlew testDebugUnitTest --stacktrace
+          else
+            gradle testDebugUnitTest --stacktrace
+          fi
       - name: Assemble debug
-        run: gradle assembleDebug --stacktrace
+        run: |
+          if [ -x ./gradlew ]; then
+            ./gradlew assembleDebug --stacktrace
+          else
+            gradle assembleDebug --stacktrace
+          fi

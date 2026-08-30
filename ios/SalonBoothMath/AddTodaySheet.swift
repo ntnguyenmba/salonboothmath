@@ -8,36 +8,30 @@ struct AddTodaySheet: View {
     @State private var cardTips = ""
     @State private var supplies = ""
     @State private var hours = ""
-
     let onAdd: (DayLine) -> Void
-
-    private var language: AppLanguage { AppLanguage.current(appLanguage) }
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(copy(en: "Add today", es: "Agregar hoy", vi: "Thêm hôm nay"))
+                        Text(L("home.addToday", table: "Hybrid", language: appLanguage))
                             .font(Brand.font(28, weight: .heavy))
-                        Text(Date.now.formatted(.dateTime.weekday(.wide).month(.abbreviated).day()))
+                        Text(formatDay(Date(), language: appLanguage))
                             .font(Brand.font(16))
                             .foregroundStyle(Brand.mutedInk)
                     }
                     Spacer()
-                    Button(language.cancelTitle) { dismiss() }
+                    Button(L("nav.cancel", table: "Hybrid", language: appLanguage)) { dismiss() }
                         .font(Brand.font(16))
                         .foregroundStyle(Brand.hotPink)
                 }
-
-                TodayMoneyField(title: copy(en: "Services", es: "Servicios", vi: "Dịch vụ"), text: $services)
-                TodayMoneyField(title: copy(en: "Cash tips", es: "Propinas en efectivo", vi: "Tip tiền mặt"), text: $cashTips)
-                TodayMoneyField(title: copy(en: "Card tips", es: "Propinas con tarjeta", vi: "Tip qua thẻ"), text: $cardTips)
-                TodayMoneyField(title: copy(en: "Supplies", es: "Insumos", vi: "Đồ nghề / sản phẩm"), text: $supplies)
-
+                TodayMoneyField(title: L("field.services", language: appLanguage), text: $services)
+                TodayMoneyField(title: L("field.tipsCash", language: appLanguage), text: $cashTips)
+                TodayMoneyField(title: L("field.tipsCard", language: appLanguage), text: $cardTips)
+                TodayMoneyField(title: L("field.supplies", language: appLanguage), text: $supplies)
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(copy(en: "Hours today · optional", es: "Horas de hoy · opcional", vi: "Số giờ hôm nay · tùy chọn"))
-                        .font(Brand.font(17))
+                    Text(L("settings.hoursToday", table: "Hybrid", language: appLanguage)).font(Brand.font(17))
                     TextField("0", text: $hours)
                         .keyboardType(.decimalPad)
                         .font(Brand.font(22, weight: .heavy))
@@ -47,18 +41,16 @@ struct AddTodaySheet: View {
                         .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
                         .overlay(RoundedRectangle(cornerRadius: Brand.controlRadius).stroke(Brand.line, lineWidth: 2))
                 }
-
-                PrimaryButton(title: copy(en: "Add to this week", es: "Agregar a esta semana", vi: "Thêm vào tuần này")) {
+                PrimaryButton(title: L("home.addToWeek", table: "Hybrid", language: appLanguage)) {
                     let normalizedHours = hours.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: ",", with: ".")
-                    let line = DayLine(
+                    onAdd(DayLine(
                         dateStart: Date(),
                         servicesCents: MoneyMath.cents(from: services),
                         cashTipsCents: MoneyMath.cents(from: cashTips),
                         cardTipsCents: MoneyMath.cents(from: cardTips),
                         suppliesCents: MoneyMath.cents(from: supplies),
                         hours: Double(normalizedHours).flatMap { $0 > 0 ? $0 : nil }
-                    )
-                    onAdd(line)
+                    ))
                     dismiss()
                 }
             }
@@ -66,14 +58,7 @@ struct AddTodaySheet: View {
         }
         .background(Brand.page.ignoresSafeArea())
         .foregroundStyle(Brand.ink)
-    }
-
-    private func copy(en: String, es: String, vi: String) -> String {
-        switch language {
-        case .english: en
-        case .spanish: es
-        case .vietnamese: vi
-        }
+        .environment(\.locale, Locale(identifier: appLanguage))
     }
 }
 
@@ -81,7 +66,6 @@ private struct TodayMoneyField: View {
     let title: String
     @Binding var text: String
     @FocusState private var focused: Bool
-
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(title).font(Brand.font(17))

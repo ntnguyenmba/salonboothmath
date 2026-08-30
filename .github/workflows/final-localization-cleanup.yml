@@ -63,7 +63,7 @@ jobs:
           hybrid_vi = {
               'home.hybridContext': '%@/%@ · bạn giữ %d%%',
               'settings.houseKeeps': 'Tiệm/chủ giữ %d%%',
-              'br.houseShare': 'Phần dịch vụ của tiệm',
+              'br.houseShare': 'Phần dịch vụ của tiệm/chủ',
           }
           for key, value in hybrid_vi.items():
               if key in hybrid.get('strings', {}):

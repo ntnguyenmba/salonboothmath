@@ -1,0 +1,44 @@
+name: Purchase Regression
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/app/src/main/java/com/everittventures/salonboothmath/BillingManager.kt'
+      - 'ios/SalonBoothMath/PurchaseManager.swift'
+      - '.github/workflows/purchase-regression.yml'
+  pull_request:
+    branches: [main]
+
+jobs:
+  purchase-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify store purchase wiring
+        shell: bash
+        run: |
+          set -euo pipefail
+          ANDROID='android/app/src/main/java/com/everittventures/salonboothmath/BillingManager.kt'
+          IOS='ios/SalonBoothMath/PurchaseManager.swift'
+          PRODUCT='com.everittventures.salonboothmath.lifetime'
+
+          grep -Fq "$PRODUCT" "$ANDROID"
+          grep -Fq "$PRODUCT" "$IOS"
+
+          grep -Fq 'BillingClient.ProductType.INAPP' "$ANDROID"
+          grep -Fq 'queryProduct { loaded ->' "$ANDROID"
+          grep -Fq 'launchBillingFlow' "$ANDROID"
+          grep -Fq 'Purchase.PurchaseState.PURCHASED' "$ANDROID"
+          grep -Fq 'acknowledgePurchase' "$ANDROID"
+          grep -Fq 'queryPurchasesAsync' "$ANDROID"
+
+          grep -Fq 'Product.products(for:' "$IOS"
+          grep -Fq 'product.purchase()' "$IOS"
+          grep -Fq 'Transaction.currentEntitlements' "$IOS"
+          grep -Fq 'Transaction.updates' "$IOS"
+          grep -Fq 'AppStore.sync()' "$IOS"
+          grep -Fq 'transaction.finish()' "$IOS"
+          grep -Fq 'case .unverified' "$IOS"
+
+          echo 'Salon Booth Math purchase regression checks passed'

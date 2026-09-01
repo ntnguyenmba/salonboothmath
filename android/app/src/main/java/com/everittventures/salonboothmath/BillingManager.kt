@@ -29,6 +29,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     val displayPrice: StateFlow<String> = _displayPrice
 
     private var productDetails: ProductDetails? = null
+    private var purchaseInFlight = false
 
     fun start() {
         billingClient.startConnection(object : BillingClientStateListener {
@@ -42,7 +43,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
         })
     }
 
-    private fun queryProduct() {
+    private fun queryProduct(onLoaded: ((ProductDetails?) -> Unit)? = null) {
         val product = QueryProductDetailsParams.Product.newBuilder()
             .setProductId(PRODUCT_ID)
             .setProductType(BillingClient.ProductType.INAPP)
@@ -53,26 +54,52 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
 
         billingClient.queryProductDetailsAsync(params) { result, response ->
             if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                productDetails = response.productDetailsList.firstOrNull()
-                _displayPrice.value = productDetails
-                    ?.oneTimePurchaseOfferDetails
-                    ?.formattedPrice
-                    ?: _displayPrice.value
+                val loaded = response.productDetailsList.firstOrNull()
+                if (loaded != null) {
+                    productDetails = loaded
+                    _displayPrice.value = loaded.oneTimePurchaseOfferDetails?.formattedPrice ?: _displayPrice.value
+                }
+                onLoaded?.invoke(loaded)
+            } else {
+                onLoaded?.invoke(null)
             }
         }
     }
 
     fun launchPurchase(activity: Activity) {
-        val details = productDetails ?: return
-        val flow = BillingFlowParams.ProductDetailsParams.newBuilder()
+        if (purchaseInFlight) return
+        purchaseInFlight = true
+
+        val cached = productDetails
+        if (cached != null) {
+            launchLoadedPurchase(activity, cached)
+            return
+        }
+
+        // A customer can tap Buy before the initial Play product query finishes.
+        // Load the exact product on demand instead of silently doing nothing.
+        queryProduct { loaded ->
+            if (loaded == null) {
+                purchaseInFlight = false
+                return@queryProduct
+            }
+            launchLoadedPurchase(activity, loaded)
+        }
+    }
+
+    private fun launchLoadedPurchase(activity: Activity, details: ProductDetails) {
+        val productParams = BillingFlowParams.ProductDetailsParams.newBuilder()
             .setProductDetails(details)
             .build()
-        billingClient.launchBillingFlow(
+        val result = billingClient.launchBillingFlow(
             activity,
             BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(listOf(flow))
+                .setProductDetailsParamsList(listOf(productParams))
                 .build()
         )
+        if (result.responseCode != BillingClient.BillingResponseCode.OK) {
+            purchaseInFlight = false
+        }
     }
 
     fun restore() = queryPurchases()
@@ -89,6 +116,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     }
 
     override fun onPurchasesUpdated(result: BillingResult, purchases: MutableList<Purchase>?) {
+        purchaseInFlight = false
         if (result.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
             handlePurchases(purchases)
         }

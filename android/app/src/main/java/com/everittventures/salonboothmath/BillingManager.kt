@@ -117,8 +117,9 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
 
     override fun onPurchasesUpdated(result: BillingResult, purchases: MutableList<Purchase>?) {
         purchaseInFlight = false
-        if (result.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
-            handlePurchases(purchases)
+        when (result.responseCode) {
+            BillingClient.BillingResponseCode.OK -> if (purchases != null) handlePurchases(purchases)
+            BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> queryPurchases()
         }
     }
 

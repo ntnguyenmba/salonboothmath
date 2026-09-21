@@ -105,6 +105,12 @@ struct HomeView: View {
                         }
                     }
                     .scrollDismissesKeyboard(.interactively)
+                    if !purchases.isUnlocked {
+                        FreeBannerAdView()
+                            .frame(height: 50)
+                            .frame(maxWidth: .infinity)
+                            .background(Brand.page)
+                    }
                 }
             }
             .navigationBarHidden(true)

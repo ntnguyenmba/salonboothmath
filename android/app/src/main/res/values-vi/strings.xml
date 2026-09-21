@@ -30,8 +30,14 @@
     <string name="hours_today_optional">Số giờ hôm nay · tùy chọn</string>
     <string name="cancel">Hủy</string>
     <string name="back">Quay lại</string>
-    <string name="unlock">Giữ số tuần này</string>
-    <string name="paywall_body">Lưu tuần, xem lại sau và so sánh thuê chỗ với chia phần. Mua một lần. Không đăng ký tháng.</string>
+    <string name="unlock">Chọn cách trả đáng tiền hơn</string>
+    <string name="paywall_body">So sánh thuê chỗ, chia phần và kết hợp bất cứ lúc nào. Xem chênh lệch tiền cụ thể. Theo dõi số còn lại thật và theo giờ. Lưu tuần là thêm.</string>
+    <string name="paywall_take_home_lead">Bạn còn lại %1$s. Xem kiểu nào có thể để bạn còn nhiều hơn.</string>
+    <string name="paywall_benefit_compare">So sánh thuê chỗ, chia phần và kết hợp bất cứ lúc nào</string>
+    <string name="paywall_benefit_difference">Xem chênh lệch tiền chính xác giữa các kiểu trả</string>
+    <string name="paywall_benefit_track">Theo dõi số còn lại thật và thu nhập theo giờ</string>
+    <string name="paywall_benefit_history">Lưu tuần và xem tổng + trung bình 4 tuần</string>
+    <string name="paywall_once">Mua một lần · không đăng ký tháng</string>
     <string name="unlock_price">Mở trọn đời · %1$s</string>
     <string name="restore_purchase">Khôi phục mua hàng</string>
     <string name="not_now">Để sau</string>

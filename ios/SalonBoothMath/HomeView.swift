@@ -143,7 +143,7 @@ struct HomeView: View {
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showPaywall) {
-            PaywallView(purchases: purchases) { unlocked in
+            PaywallView(purchases: purchases, takeHomeCents: takeHomeCents) { unlocked in
                 showPaywall = false
                 if unlocked { runPendingAction() }
             }
@@ -425,6 +425,7 @@ private struct HomeMoneyField: View {
 
 struct PaywallView: View {
     @ObservedObject var purchases: PurchaseManager
+    let takeHomeCents: Int
     let completion: (Bool) -> Void
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 
@@ -441,14 +442,25 @@ struct PaywallView: View {
                     .font(Brand.font(16))
                     .foregroundStyle(Brand.ink)
             }
-            Text(L("paywall.lifetimeTitle", language: appLanguage))
+            Text("Keep this week forever")
                 .font(Brand.font(27, weight: .heavy))
                 .lineLimit(2)
                 .minimumScaleFactor(0.85)
-            Text(L("paywall.lifetimeBody", language: appLanguage))
-                .font(Brand.font(18))
-                .foregroundStyle(Brand.mutedInk)
-                .fixedSize(horizontal: false, vertical: true)
+            if takeHomeCents > 0 {
+                Text("You take home \(formatCurrency(takeHomeCents, language: appLanguage)). Save it and look back later.")
+                    .font(Brand.font(18, weight: .heavy))
+                    .foregroundStyle(Brand.hotPink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                Text("• Save this week and reopen it later")
+                Text("• History: last 4 weeks total + average week")
+                Text("• Compare booth vs commission vs hybrid anytime")
+                Text("• One purchase · no subscription · stays on this device")
+            }
+            .font(Brand.font(17))
+            .foregroundStyle(Brand.mutedInk)
+            .fixedSize(horizontal: false, vertical: true)
             PrimaryButton(title: unlockTitle) {
                 Task {
                     let ok = await purchases.purchase()

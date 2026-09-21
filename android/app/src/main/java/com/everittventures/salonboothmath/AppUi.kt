@@ -85,7 +85,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                     }}
                 }
             }}
-            Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal=22.dp)){
+            Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).padding(horizontal=22.dp)){
                 Spacer(Modifier.height(26.dp))
                 MoneyField(stringResource(R.string.services),services){services=it}
                 Spacer(Modifier.height(20.dp))
@@ -100,6 +100,9 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                 if(highRent)Text(stringResource(R.string.high_rent_warning),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
                 if(addedTodayGross!=null)Text(stringResource(R.string.added_today,formatCents(addedTodayGross!!)),color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
                 Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){if(isCurrentWeek)TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)};TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
+            }
+            if(!unlocked) {
+                FreeBannerAd(Modifier.fillMaxWidth().height(50.dp))
             }
         }
     }

@@ -417,6 +417,7 @@ struct PaywallView: View {
                 Text("• " + L("paywall.benefitDecisions", table: "Hybrid", language: appLanguage))
                 Text("• " + L("paywall.benefitTrack", table: "Hybrid", language: appLanguage))
                 Text("• " + L("paywall.benefitHistory", table: "Hybrid", language: appLanguage))
+                Text("• " + L("paywall.benefitNoAds", table: "Hybrid", language: appLanguage))
                 Text("• " + L("paywall.once", table: "Hybrid", language: appLanguage))
             }
             .font(Brand.font(17))

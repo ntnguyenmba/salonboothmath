@@ -732,19 +732,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Decisions"
+            "value": "Compare Your Pay"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Decisiones"
+            "value": "Compara tu forma de pago"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quyết định"
+            "value": "So sánh cách nhận tiền"
           }
         }
       }
@@ -754,19 +754,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use this week's numbers to see which pay setup puts more in your pocket."
+            "value": "Use this week's numbers to see how your pay setup compares and what could leave you with more."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Usa los números de esta semana para ver qué pago te deja más."
+            "value": "Usa los números de esta semana para comparar tu forma de pago y ver cuál podría dejarte más."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dùng số tuần này để xem kiểu trả nào để bạn còn nhiều hơn."
+            "value": "Dùng số liệu tuần này để so sánh cách nhận tiền và xem cách nào có thể giúp bạn giữ lại nhiều hơn."
           }
         }
       }
@@ -974,19 +974,19 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "See the sales you need, the most rent you should pay, and your break-even commission"
+            "value": "Compare your pay, see the sales you need, the most rent you should pay, and your break-even commission"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mira las ventas que necesitas, la renta máxima que deberías pagar y tu comisión de equilibrio"
+            "value": "Compara tu pago, mira las ventas que necesitas, la renta máxima que deberías pagar y tu comisión de equilibrio"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xem doanh thu cần đạt, tiền thuê tối đa nên trả và tỷ lệ chia hòa vốn"
+            "value": "So sánh cách nhận tiền, xem doanh thu cần đạt, tiền thuê tối đa nên trả và tỷ lệ chia hòa vốn"
           }
         }
       }

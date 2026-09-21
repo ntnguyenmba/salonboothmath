@@ -78,7 +78,7 @@ struct HomeView: View {
         return v
     }
     private var isCurrentWeek: Bool { editingWeekStart == nil }
-    private var activeWeekStart: Date { editingWeekStart ?? WeekStore.startOfCurrentWeek() }
+    private var activeWeekStart: Date { editingWeekStart ?? Calendar.current.startOfWeek(for: Date()) }
 
     private var payContext: String {
         switch payModel {
@@ -325,7 +325,7 @@ struct HomeView: View {
     }
 
     private func shareCurrentWeek() {
-        if let image = ShareCard.render(takeHomeCents: takeHomeCents, weekStart: activeWeekStart, language: appLanguage) {
+        if let image = ShareCardRenderer.image(takeHomeCents: takeHomeCents, weekStart: activeWeekStart) {
             sharePayload = SharePayload(items: [image])
         }
     }

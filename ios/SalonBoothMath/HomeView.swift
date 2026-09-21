@@ -78,11 +78,7 @@ struct HomeView: View {
     private var payContext: String {
         switch payModel {
         case .booth:
-            return L("br.rent", language: appLanguage)
-                + " · "
-                + formatCurrency(weeklyRentCents, language: appLanguage)
-                + "/"
-                + L("rent.week", language: appLanguage)
+            return L("br.rent", language: appLanguage) + " · " + formatCurrency(weeklyRentCents, language: appLanguage) + "/" + L("rent.week", language: appLanguage)
         case .commission:
             return String(format: L("home.payContextSplit", table: "Hybrid", language: appLanguage), commissionCutBasisPoints / 100, max(0, 100 - commissionCutBasisPoints / 100))
         case .hybrid:
@@ -109,30 +105,13 @@ struct HomeView: View {
             .foregroundStyle(Brand.ink)
             .environment(\.locale, language.locale)
             .navigationDestination(isPresented: $showBreakdown) {
-                BreakdownView(
-                    grossCents: grossCents,
-                    rentCents: weeklyRentCents,
-                    yourShareCents: MoneyMath.servicePay(services: serviceCents, cut: commissionCut),
-                    houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut),
-                    yourTipsCents: MoneyMath.workerTips(cashTips: cashTipCents, cardTips: cardTipCents, tipOwner: tipOwner),
-                    houseTipsCents: MoneyMath.houseTips(cashTips: cashTipCents, cardTips: cardTipCents, tipOwner: tipOwner),
-                    cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0,
-                    suppliesCents: supplyCents,
-                    extraFeesCents: extraFeesCents,
-                    takeHomeCents: takeHomeCents,
-                    taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate),
-                    payModel: payModel,
-                    hoursText: $hours
-                )
+                BreakdownView(grossCents: grossCents, rentCents: weeklyRentCents, yourShareCents: MoneyMath.servicePay(services: serviceCents, cut: commissionCut), houseCutCents: MoneyMath.houseCut(services: serviceCents, workerCut: commissionCut), yourTipsCents: MoneyMath.workerTips(cashTips: cashTipCents, cardTips: cardTipCents, tipOwner: tipOwner), houseTipsCents: MoneyMath.houseTips(cashTips: cashTipCents, cardTips: cardTipCents, tipOwner: tipOwner), cardFeesCents: payModel == .booth || workerPaysCardFees ? estimatedCardFees : 0, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, takeHomeCents: takeHomeCents, taxReserveCents: MoneyMath.taxReserve(takeHomeCents: takeHomeCents, rate: taxRate), payModel: payModel, hoursText: $hours)
             }
             .navigationDestination(isPresented: $showCompare) {
                 CompareView(boothCents: boothTakeHome, commissionCents: commissionTakeHome, hybridCents: hybridTakeHome)
             }
             .navigationDestination(isPresented: $showHistory) {
-                HistoryView(store: weekStore) { week in
-                    load(week)
-                    showHistory = false
-                }
+                HistoryView(store: weekStore) { week in load(week); showHistory = false }
             }
             .navigationDestination(isPresented: $showSettings) { SettingsView() }
         }
@@ -152,8 +131,7 @@ struct HomeView: View {
             .presentationDragIndicator(.visible)
         }
         .sheet(item: $sharePayload) { payload in
-            ActivityShareView(items: payload.items)
-                .ignoresSafeArea()
+            ActivityShareView(items: payload.items).ignoresSafeArea()
         }
         .onAppear {
             restoreCurrentWeekDraft()
@@ -177,26 +155,19 @@ struct HomeView: View {
         ZStack {
             Button { showSettings = true } label: {
                 VStack(spacing: 3) {
-                    Text(isCurrentWeek ? L("home.thisWeek", language: appLanguage) : formatWeekRange(activeWeekStart, language: appLanguage))
-                        .font(Brand.font(19))
-                    Text(payContext)
-                        .font(Brand.font(16))
-                        .foregroundStyle(.white)
+                    Text(isCurrentWeek ? L("home.thisWeek", language: appLanguage) : formatWeekRange(activeWeekStart, language: appLanguage)).font(Brand.font(19))
+                    Text(payContext).font(Brand.font(16)).foregroundStyle(.white)
                 }
             }
             .buttonStyle(.plain)
             HStack {
                 if !isCurrentWeek {
-                    Button { returnToCurrentWeek() } label: {
-                        Image(systemName: "chevron.left").frame(width: 48, height: 48)
-                    }
+                    Button { returnToCurrentWeek() } label: { Image(systemName: "chevron.left").frame(width: 48, height: 48) }
                 }
                 Spacer()
                 Menu {
                     Picker(language.languageTitle, selection: $appLanguage) {
-                        ForEach(AppLanguage.allCases) { language in
-                            Text(language.displayName).tag(language.rawValue)
-                        }
+                        ForEach(AppLanguage.allCases) { language in Text(language.displayName).tag(language.rawValue) }
                     }
                     Divider()
                     Button(L("home.share", language: appLanguage)) { shareCurrentWeek() }
@@ -204,10 +175,7 @@ struct HomeView: View {
                     Button(L("compare.title", language: appLanguage)) { openCompare() }
                     Button(L("settings.title", language: appLanguage)) { showSettings = true }
                 } label: {
-                    Image(systemName: "ellipsis.circle.fill")
-                        .font(.system(size: 23, weight: .bold))
-                        .frame(width: 48, height: 48)
-                        .accessibilityLabel(L("nav.menu", language: appLanguage))
+                    Image(systemName: "ellipsis.circle.fill").font(.system(size: 23, weight: .bold)).frame(width: 48, height: 48).accessibilityLabel(L("nav.menu", language: appLanguage))
                 }
             }
         }
@@ -230,24 +198,13 @@ struct HomeView: View {
 
     private var result: some View {
         VStack(spacing: 8) {
-            Text(L("home.youTookHome", language: appLanguage))
-                .font(Brand.font(17))
-                .foregroundStyle(Brand.hotPink)
-            Text(formatCurrency(takeHomeCents, language: appLanguage))
-                .font(Brand.font(52, weight: .heavy))
-                .monospacedDigit()
-                .minimumScaleFactor(0.82)
-                .lineLimit(1)
+            Text(L("home.youTookHome", language: appLanguage)).font(Brand.font(17)).foregroundStyle(Brand.hotPink)
+            Text(formatCurrency(takeHomeCents, language: appLanguage)).font(Brand.font(52, weight: .heavy)).monospacedDigit().minimumScaleFactor(0.82).lineLimit(1)
             if let ratio = highRentRatio, ratio >= Decimal(string: "0.40")! {
-                Text(String(format: L("br.rentHigh", language: appLanguage), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0)).locale(language.locale))))
-                    .font(Brand.font(16))
-                    .foregroundStyle(Brand.warning)
-                    .multilineTextAlignment(.center)
+                Text(String(format: L("br.rentHigh", language: appLanguage), NSDecimalNumber(decimal: ratio).doubleValue.formatted(.percent.precision(.fractionLength(0)).locale(language.locale)))).font(Brand.font(16)).foregroundStyle(Brand.warning).multilineTextAlignment(.center)
             }
             if let addedTodayGross {
-                Text(String(format: L("home.addedToday", table: "Hybrid", language: appLanguage), formatCurrency(addedTodayGross, language: appLanguage)))
-                    .font(Brand.font(16))
-                    .foregroundStyle(Brand.mutedInk)
+                Text(String(format: L("home.addedToday", table: "Hybrid", language: appLanguage), formatCurrency(addedTodayGross, language: appLanguage))).font(Brand.font(16)).foregroundStyle(Brand.mutedInk)
             }
         }
         .frame(maxWidth: .infinity)
@@ -258,30 +215,15 @@ struct HomeView: View {
         VStack(spacing: 14) {
             if isCurrentWeek {
                 Button { showAddToday = true } label: {
-                    Text(L("home.addToday", table: "Hybrid", language: appLanguage))
-                        .font(Brand.font(18, weight: .heavy))
-                        .foregroundStyle(Brand.hotPink)
-                        .frame(maxWidth: .infinity, minHeight: 58)
-                        .background(Brand.surface)
-                        .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                    Text(L("home.addToday", table: "Hybrid", language: appLanguage)).font(Brand.font(18, weight: .heavy)).foregroundStyle(Brand.hotPink).frame(maxWidth: .infinity, minHeight: 58).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
                 }
             }
             PrimaryButton(title: L("home.save", language: appLanguage)) { requireUnlock(.save) }
             Button { showBreakdown = true } label: {
-                Text(L("home.breakdown", language: appLanguage))
-                    .font(Brand.font(18))
-                    .foregroundStyle(Brand.ink)
-                    .frame(maxWidth: .infinity, minHeight: 58)
-                    .background(Brand.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                Text(L("home.breakdown", language: appLanguage)).font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 58).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
             }
             Button { openCompare() } label: {
-                Text(L("compare.title", language: appLanguage))
-                    .font(Brand.font(18))
-                    .foregroundStyle(Brand.ink)
-                    .frame(maxWidth: .infinity, minHeight: 58)
-                    .background(Brand.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+                Text(L("compare.title", language: appLanguage)).font(Brand.font(18)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 58).background(Brand.surface).clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
             }
         }
         .padding(.horizontal, Brand.screenPadding)
@@ -306,37 +248,18 @@ struct HomeView: View {
         let start = currentWeekStart.timeIntervalSince1970
         if abs(currentWeekDraftStart - start) > 1 {
             currentWeekDraftStart = start
-            currentWeekServices = ""
-            currentWeekCashTips = ""
-            currentWeekCardTips = ""
-            currentWeekSupplies = ""
-            currentWeekHours = ""
-            currentWeekDaysJSON = "[]"
+            currentWeekServices = ""; currentWeekCashTips = ""; currentWeekCardTips = ""; currentWeekSupplies = ""; currentWeekHours = ""; currentWeekDaysJSON = "[]"
         }
         guard isCurrentWeek else { return }
-        services = currentWeekServices
-        cashTips = currentWeekCashTips
-        cardTips = currentWeekCardTips
-        supplies = currentWeekSupplies
-        hours = currentWeekHours
-        if let data = currentWeekDaysJSON.data(using: .utf8), let decoded = try? JSONDecoder().decode([DayLine].self, from: data) {
-            days = decoded
-        } else {
-            days = []
-        }
+        services = currentWeekServices; cashTips = currentWeekCashTips; cardTips = currentWeekCardTips; supplies = currentWeekSupplies; hours = currentWeekHours
+        if let data = currentWeekDaysJSON.data(using: .utf8), let decoded = try? JSONDecoder().decode([DayLine].self, from: data) { days = decoded } else { days = [] }
     }
 
     private func persistCurrentWeekDraft() {
         guard isCurrentWeek else { return }
         currentWeekDraftStart = currentWeekStart.timeIntervalSince1970
-        currentWeekServices = services
-        currentWeekCashTips = cashTips
-        currentWeekCardTips = cardTips
-        currentWeekSupplies = supplies
-        currentWeekHours = hours
-        if let data = try? JSONEncoder().encode(days), let json = String(data: data, encoding: .utf8) {
-            currentWeekDaysJSON = json
-        }
+        currentWeekServices = services; currentWeekCashTips = cashTips; currentWeekCardTips = cardTips; currentWeekSupplies = supplies; currentWeekHours = hours
+        if let data = try? JSONEncoder().encode(days), let json = String(data: data, encoding: .utf8) { currentWeekDaysJSON = json }
     }
 
     private func load(_ week: WeekRecord) {
@@ -350,10 +273,7 @@ struct HomeView: View {
         savedPayModel = week.payModel.rawValue
     }
 
-    private func returnToCurrentWeek() {
-        editingWeekStart = nil
-        restoreCurrentWeekDraft()
-    }
+    private func returnToCurrentWeek() { editingWeekStart = nil; restoreCurrentWeekDraft() }
 
     private func shareCurrentWeek() {
         let amount = formatCurrency(takeHomeCents, language: appLanguage)
@@ -367,22 +287,13 @@ struct HomeView: View {
     }
 
     private func requireUnlock(_ action: LockedAction) {
-        if purchases.isUnlocked {
-            pendingAction = action
-            runPendingAction()
-        } else {
-            pendingAction = action
-            showPaywall = true
-        }
+        if purchases.isUnlocked { pendingAction = action; runPendingAction() }
+        else { pendingAction = action; showPaywall = true }
     }
 
     private func openCompare() {
-        if purchases.isUnlocked || !didUseFreeCompare {
-            didUseFreeCompare = true
-            showCompare = true
-        } else {
-            requireUnlock(.compare)
-        }
+        if purchases.isUnlocked || !didUseFreeCompare { didUseFreeCompare = true; showCompare = true }
+        else { requireUnlock(.compare) }
     }
 
     private func runPendingAction() {
@@ -391,10 +302,8 @@ struct HomeView: View {
         case .save:
             weekStore.save(WeekRecord(weekStart: activeWeekStart, servicesCents: serviceCents, cashTipsCents: cashTipCents, cardTipsCents: cardTipCents, suppliesCents: supplyCents, extraFeesCents: extraFeesCents, hours: hoursValue, payModel: payModel, takeHomeCents: takeHomeCents, days: days))
             if isCurrentWeek { WidgetBridge.updateCurrentWeek(takeHomeCents: takeHomeCents) }
-        case .compare:
-            showCompare = true
-        case .history:
-            showHistory = true
+        case .compare: showCompare = true
+        case .history: showHistory = true
         }
         pendingAction = nil
     }
@@ -405,7 +314,6 @@ private struct HomeMoneyField: View {
     let currencySymbol: String
     @Binding var text: String
     @FocusState private var focused: Bool
-
     var body: some View {
         VStack(alignment: .leading, spacing: 11) {
             Text(title).font(Brand.font(18)).foregroundStyle(Brand.ink)
@@ -429,62 +337,41 @@ struct PaywallView: View {
     let takeHomeCents: Int
     let completion: (Bool) -> Void
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
-
     private var unlockTitle: String {
         String(format: L("paywall.unlockLifetime", language: appLanguage), purchases.product?.displayPrice ?? "$9.99")
     }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             HStack {
                 Capsule().fill(Brand.hotPink).frame(width: 54, height: 6)
                 Spacer()
                 Button(L("paywall.continueFree", language: appLanguage)) { completion(false) }
-                    .font(Brand.font(16))
-                    .foregroundStyle(Brand.ink)
+                    .font(Brand.font(16)).foregroundStyle(Brand.ink)
             }
-            Text(L("paywall.lifetimeTitle", language: appLanguage))
-                .font(Brand.font(27, weight: .heavy))
-                .lineLimit(2)
-                .minimumScaleFactor(0.85)
+            Text(L("paywall.lifetimeTitle", table: "Hybrid", language: appLanguage))
+                .font(Brand.font(27, weight: .heavy)).lineLimit(2).minimumScaleFactor(0.85)
             if takeHomeCents > 0 {
-                Text(String(format: L("paywall.takeHomeLead", language: appLanguage), formatCurrency(takeHomeCents, language: appLanguage)))
-                    .font(Brand.font(18, weight: .heavy))
-                    .foregroundStyle(Brand.hotPink)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(String(format: L("paywall.takeHomeLead", table: "Hybrid", language: appLanguage), formatCurrency(takeHomeCents, language: appLanguage)))
+                    .font(Brand.font(18, weight: .heavy)).foregroundStyle(Brand.hotPink).fixedSize(horizontal: false, vertical: true)
             }
             VStack(alignment: .leading, spacing: 10) {
-                Text("• " + L("paywall.benefitCompare", language: appLanguage))
-                Text("• " + L("paywall.benefitDifference", language: appLanguage))
-                Text("• " + L("paywall.benefitTrack", language: appLanguage))
-                Text("• " + L("paywall.benefitHistory", language: appLanguage))
-                Text("• " + L("paywall.once", language: appLanguage))
+                Text("• " + L("paywall.benefitCompare", table: "Hybrid", language: appLanguage))
+                Text("• " + L("paywall.benefitDifference", table: "Hybrid", language: appLanguage))
+                Text("• " + L("paywall.benefitTrack", table: "Hybrid", language: appLanguage))
+                Text("• " + L("paywall.benefitHistory", table: "Hybrid", language: appLanguage))
+                Text("• " + L("paywall.once", table: "Hybrid", language: appLanguage))
             }
-            .font(Brand.font(17))
-            .foregroundStyle(Brand.mutedInk)
-            .fixedSize(horizontal: false, vertical: true)
+            .font(Brand.font(17)).foregroundStyle(Brand.mutedInk).fixedSize(horizontal: false, vertical: true)
             PrimaryButton(title: unlockTitle) {
-                Task {
-                    let ok = await purchases.purchase()
-                    if ok { completion(true) }
-                }
+                Task { let ok = await purchases.purchase(); if ok { completion(true) } }
             }
             Button {
-                Task {
-                    await purchases.restore()
-                    if purchases.isUnlocked { completion(true) }
-                }
+                Task { await purchases.restore(); if purchases.isUnlocked { completion(true) } }
             } label: {
-                Text(L("paywall.restore", language: appLanguage))
-                    .font(Brand.font(17))
-                    .foregroundStyle(Brand.ink)
-                    .frame(maxWidth: .infinity, minHeight: 54)
+                Text(L("paywall.restore", language: appLanguage)).font(Brand.font(17)).foregroundStyle(Brand.ink).frame(maxWidth: .infinity, minHeight: 54)
             }
             Button { completion(false) } label: {
-                Text(L("paywall.continueFree", language: appLanguage))
-                    .font(Brand.font(17))
-                    .foregroundStyle(Brand.muted)
-                    .frame(maxWidth: .infinity, minHeight: 54)
+                Text(L("paywall.continueFree", language: appLanguage)).font(Brand.font(17)).foregroundStyle(Brand.muted).frame(maxWidth: .infinity, minHeight: 54)
             }
         }
         .padding(24)
@@ -496,10 +383,8 @@ struct PaywallView: View {
 
 struct ActivityShareView: UIViewControllerRepresentable {
     let items: [Any]
-
     func makeUIViewController(context: Context) -> UIActivityViewController {
         UIActivityViewController(activityItems: items, applicationActivities: nil)
     }
-
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

@@ -442,21 +442,22 @@ struct PaywallView: View {
                     .font(Brand.font(16))
                     .foregroundStyle(Brand.ink)
             }
-            Text("Keep this week forever")
+            Text("Make the pay setup worth it")
                 .font(Brand.font(27, weight: .heavy))
                 .lineLimit(2)
                 .minimumScaleFactor(0.85)
             if takeHomeCents > 0 {
-                Text("You take home \(formatCurrency(takeHomeCents, language: appLanguage)). Save it and look back later.")
+                Text("You take home \(formatCurrency(takeHomeCents, language: appLanguage)). See which setup could leave you with more.")
                     .font(Brand.font(18, weight: .heavy))
                     .foregroundStyle(Brand.hotPink)
                     .fixedSize(horizontal: false, vertical: true)
             }
             VStack(alignment: .leading, spacing: 10) {
-                Text("• Save this week and reopen it later")
-                Text("• History: last 4 weeks total + average week")
                 Text("• Compare booth vs commission vs hybrid anytime")
-                Text("• One purchase · no subscription · stays on this device")
+                Text("• See the exact dollar difference between pay setups")
+                Text("• Track your real take-home and hourly earnings")
+                Text("• Save weeks and see your 4-week total + average")
+                Text("• One purchase · no subscription")
             }
             .font(Brand.font(17))
             .foregroundStyle(Brand.mutedInk)

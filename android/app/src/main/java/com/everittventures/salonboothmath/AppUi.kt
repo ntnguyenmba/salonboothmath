@@ -91,7 +91,19 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE }
     }
     if(showAddToday)AddTodaySheet(onDismiss={showAddToday=false}) { line -> services=inputMoney(serviceCents+line.servicesCents);cashTips=inputMoney(cashTipsCents+line.cashTipsCents);cardTips=inputMoney(cardTipsCents+line.cardTipsCents);supplies=inputMoney(supplyCents+line.suppliesCents);line.hours?.let{h->hours=((hoursValue?:0.0)+h).let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}};days=days+line;addedTodayGross=line.servicesCents+line.cashTipsCents+line.cardTipsCents;showAddToday=false }
     if(showPaywall)ModalBottomSheet(onDismissRequest={showPaywall=false;pendingAction=null},containerColor=BerryDeep,contentColor=Ink,dragHandle={Box(Modifier.padding(top=10.dp,bottom=8.dp).width(54.dp).height(6.dp).background(Pink,RoundedCornerShape(99.dp)))}){
-        Column(Modifier.fillMaxWidth().padding(horizontal=22.dp,vertical=12.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){Text("Make the pay setup worth it",color=Ink,fontSize=26.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily,maxLines=2);if(takeHomeCents>0)Text("You take home ${formatCents(takeHomeCents)}. See which setup could leave you with more.",color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);Text("• Compare booth vs commission vs hybrid anytime\n• See the exact dollar difference between pay setups\n• Track your real take-home and hourly earnings\n• Save weeks and see your 4-week total + average\n• One purchase · no subscription",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily);PrimaryButton(stringResource(R.string.unlock_price,displayPrice)){activity?.let{billing.launchPurchase(it)}};TextButton(onClick={billing.restore()},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.restore_purchase),color=Pink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)};TextButton(onClick={showPaywall=false;pendingAction=null},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.not_now),color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)};Spacer(Modifier.height(12.dp))}
+        Column(Modifier.fillMaxWidth().padding(horizontal=22.dp,vertical=12.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){
+            Text(stringResource(R.string.unlock),color=Ink,fontSize=26.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily,maxLines=2)
+            if(takeHomeCents>0)Text(stringResource(R.string.paywall_take_home_lead,formatCents(takeHomeCents)),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_benefit_compare)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_benefit_difference)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_benefit_track)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_benefit_history)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_once)}",color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            PrimaryButton(stringResource(R.string.unlock_price,displayPrice)){activity?.let{billing.launchPurchase(it)}}
+            TextButton(onClick={billing.restore()},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.restore_purchase),color=Pink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
+            TextButton(onClick={showPaywall=false;pendingAction=null},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.not_now),color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
+            Spacer(Modifier.height(12.dp))
+        }
     }
 }
 

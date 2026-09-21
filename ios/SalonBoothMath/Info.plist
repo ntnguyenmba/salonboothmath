@@ -26,6 +26,8 @@
     <string>1</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-1237434632796366~9757490921</string>
     <key>CFBundleURLTypes</key>
     <array>
         <dict>

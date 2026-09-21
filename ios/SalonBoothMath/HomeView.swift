@@ -26,6 +26,7 @@ struct HomeView: View {
     @AppStorage("currentWeekHours") private var currentWeekHours = ""
     @AppStorage("currentWeekDaysJSON") private var currentWeekDaysJSON = "[]"
     @AppStorage("didUseFreeCompare") private var didUseFreeCompare = false
+    @AppStorage("didUseFreePayCheckup") private var didUseFreePayCheckup = false
 
     @StateObject private var purchases = PurchaseManager()
     @StateObject private var weekStore = WeekStore()
@@ -204,7 +205,7 @@ struct HomeView: View {
                     }
                     Button(L("home.share", language: appLanguage)) { shareCurrentWeek() }
                     Button(L("history.title", language: appLanguage)) { requireUnlock(.history) }
-                    Button(L("decisions.title", table: "Hybrid", language: appLanguage)) { requireUnlock(.decisions) }
+                    Button(L("decisions.title", table: "Hybrid", language: appLanguage)) { openPayCheckup() }
                     Button(L("compare.title", language: appLanguage)) { openCompare() }
                     Button(L("settings.title", language: appLanguage)) { showSettings = true }
                 } label: {
@@ -338,6 +339,11 @@ struct HomeView: View {
     private func openCompare() {
         if purchases.isUnlocked || !didUseFreeCompare { didUseFreeCompare = true; showCompare = true }
         else { requireUnlock(.compare) }
+    }
+
+    private func openPayCheckup() {
+        if purchases.isUnlocked || !didUseFreePayCheckup { didUseFreePayCheckup = true; showDecisions = true }
+        else { requireUnlock(.decisions) }
     }
 
     private func runPendingAction() {

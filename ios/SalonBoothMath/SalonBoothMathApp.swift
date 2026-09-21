@@ -1,7 +1,12 @@
 import SwiftUI
+import GoogleMobileAds
 
 @main
 struct SalonBoothMathApp: App {
+    init() {
+        MobileAds.shared.start()
+    }
+
     @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
     @AppStorage("appLanguage") private var appLanguage = AppLanguage.english.rawValue
 

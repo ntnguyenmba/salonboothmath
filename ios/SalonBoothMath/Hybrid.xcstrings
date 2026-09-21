@@ -990,6 +990,28 @@
           }
         }
       }
+    },
+    "paywall.benefitNoAds": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove ads permanently"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elimina los anuncios para siempre"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa quảng cáo vĩnh viễn"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -1,1 +1,996 @@
-{"sourceLanguage":"en","strings":{"pay.hybrid":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Hybrid"}},"es":{"stringUnit":{"state":"translated","value":"Híbrido"}},"vi":{"stringUnit":{"state":"translated","value":"Kết hợp"}}}},"home.hybridContext":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"%@/%@ · you keep %d%%"}},"es":{"stringUnit":{"state":"translated","value":"%@/%@ · conservas %d%%"}},"vi":{"stringUnit":{"state":"translated","value":"%@/%@ · bạn giữ %d%%"}}}},"home.payContextSplit":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"You keep %d%% · house keeps %d%%"}},"es":{"stringUnit":{"state":"translated","value":"Tú conservas %d%% · el salón conserva %d%%"}},"vi":{"stringUnit":{"state":"translated","value":"Bạn giữ %d%% · tiệm giữ %d%%"}}}},"compare.onHybrid":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Hybrid"}},"es":{"stringUnit":{"state":"translated","value":"Híbrido"}},"vi":{"stringUnit":{"state":"translated","value":"Kết hợp"}}}},"br.taxNote":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Tax set-aside is an optional estimate. It is not taken out of what you take home."}},"es":{"stringUnit":{"state":"translated","value":"La reserva para impuestos es una estimación opcional. No se descuenta de lo que te llevas."}},"vi":{"stringUnit":{"state":"translated","value":"Khoản để dành thuế là ước tính tùy chọn. Khoản này không bị trừ khỏi tiền còn lại."}}}},"settings.taxNote":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Optional estimate only. This does not reduce what you take home."}},"es":{"stringUnit":{"state":"translated","value":"Solo una estimación opcional. No reduce lo que te llevas."}},"vi":{"stringUnit":{"state":"translated","value":"Chỉ là ước tính tùy chọn. Không làm giảm số tiền còn lại hiển thị."}}}},"br.effectiveHourly":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Per hour"}},"es":{"stringUnit":{"state":"translated","value":"Por hora"}},"vi":{"stringUnit":{"state":"translated","value":"Mỗi giờ"}}}},"home.takeHome":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"You take home"}},"es":{"stringUnit":{"state":"translated","value":"Te llevas"}},"vi":{"stringUnit":{"state":"translated","value":"Bạn còn lại"}}}},"paywall.shortTitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Lifetime Access"}},"es":{"stringUnit":{"state":"translated","value":"Acceso de por vida"}},"vi":{"stringUnit":{"state":"translated","value":"Truy cập trọn đời"}}}},"nav.back":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Back"}},"es":{"stringUnit":{"state":"translated","value":"Atrás"}},"vi":{"stringUnit":{"state":"translated","value":"Quay lại"}}}},"nav.cancel":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Cancel"}},"es":{"stringUnit":{"state":"translated","value":"Cancelar"}},"vi":{"stringUnit":{"state":"translated","value":"Hủy"}}}},"settings.language":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Language"}},"es":{"stringUnit":{"state":"translated","value":"Idioma"}},"vi":{"stringUnit":{"state":"translated","value":"Ngôn ngữ"}}}},"settings.serviceSplit":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your service split"}},"es":{"stringUnit":{"state":"translated","value":"Tu parte de servicios"}},"vi":{"stringUnit":{"state":"translated","value":"Phần dịch vụ của bạn"}}}},"settings.houseKeeps":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"House/owner keeps %d%%"}},"es":{"stringUnit":{"state":"translated","value":"El salón/dueño conserva %d%%"}},"vi":{"stringUnit":{"state":"translated","value":"Tiệm/chủ giữ %d%%"}}}},"tips.split5050":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"50-50"}},"es":{"stringUnit":{"state":"translated","value":"50-50"}},"vi":{"stringUnit":{"state":"translated","value":"Chia 50-50"}}}},"br.yourShare":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your service share"}},"es":{"stringUnit":{"state":"translated","value":"Tu parte de servicios"}},"vi":{"stringUnit":{"state":"translated","value":"Phần dịch vụ của bạn"}}}},"br.houseShare":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"House/owner service share"}},"es":{"stringUnit":{"state":"translated","value":"Parte de servicios del salón/dueño"}},"vi":{"stringUnit":{"state":"translated","value":"Phần dịch vụ của tiệm/chủ"}}}},"home.compareDeal":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Compare"}},"es":{"stringUnit":{"state":"translated","value":"Comparar"}},"vi":{"stringUnit":{"state":"translated","value":"So sánh"}}}},"home.addToday":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Add today"}},"es":{"stringUnit":{"state":"translated","value":"Agregar hoy"}},"vi":{"stringUnit":{"state":"translated","value":"Thêm hôm nay"}}}},"home.addToWeek":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Add to this week"}},"es":{"stringUnit":{"state":"translated","value":"Agregar a esta semana"}},"vi":{"stringUnit":{"state":"translated","value":"Thêm vào tuần này"}}}},"home.addedToday":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Added today · %@"}},"es":{"stringUnit":{"state":"translated","value":"Agregado hoy · %@"}},"vi":{"stringUnit":{"state":"translated","value":"Đã thêm hôm nay · %@"}}}},"settings.hoursToday":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Hours today · optional"}},"es":{"stringUnit":{"state":"translated","value":"Horas de hoy · opcional"}},"vi":{"stringUnit":{"state":"translated","value":"Số giờ hôm nay · tùy chọn"}}}},"br.yourTips":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Your tips"}},"es":{"stringUnit":{"state":"translated","value":"Tus propinas"}},"vi":{"stringUnit":{"state":"translated","value":"Tiền boa của bạn"}}}},"br.houseTips":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"House/owner tips"}},"es":{"stringUnit":{"state":"translated","value":"Propinas del salón/dueño"}},"vi":{"stringUnit":{"state":"translated","value":"Tiền boa của tiệm/chủ"}}}},"settings.rentPeriod":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Rent period"}},"es":{"stringUnit":{"state":"translated","value":"Periodo de renta"}},"vi":{"stringUnit":{"state":"translated","value":"Chu kỳ thuê"}}}},"unit.perHour":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"/hr"}},"es":{"stringUnit":{"state":"translated","value":"/h"}},"vi":{"stringUnit":{"state":"translated","value":"/giờ"}}}},"paywall.lifetimeTitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Make the pay setup worth it"}},"es":{"stringUnit":{"state":"translated","value":"Que el pago te convenga"}},"vi":{"stringUnit":{"state":"translated","value":"Chọn cách trả đáng tiền hơn"}}}},"paywall.takeHomeLead":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"You take home %@. See which setup could leave you with more."}},"es":{"stringUnit":{"state":"translated","value":"Te llevas %@. Mira qué opción podría dejarte más."}},"vi":{"stringUnit":{"state":"translated","value":"Bạn còn lại %@. Xem kiểu nào có thể để bạn còn nhiều hơn."}}}},"paywall.benefitCompare":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Compare booth vs commission vs hybrid anytime"}},"es":{"stringUnit":{"state":"translated","value":"Compara puesto, comisión e híbrido cuando quieras"}},"vi":{"stringUnit":{"state":"translated","value":"So sánh thuê chỗ, chia phần và kết hợp bất cứ lúc nào"}}}},"paywall.benefitDifference":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"See the exact dollar difference between pay setups"}},"es":{"stringUnit":{"state":"translated","value":"Mira la diferencia exacta entre formas de pago"}},"vi":{"stringUnit":{"state":"translated","value":"Xem chênh lệch tiền chính xác giữa các kiểu trả"}}}},"paywall.benefitTrack":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Track your real take-home and hourly earnings"}},"es":{"stringUnit":{"state":"translated","value":"Sigue tu neto real y lo que ganas por hora"}},"vi":{"stringUnit":{"state":"translated","value":"Theo dõi số còn lại thật và thu nhập theo giờ"}}}},"paywall.benefitHistory":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Save weeks and see your 4-week total + average"}},"es":{"stringUnit":{"state":"translated","value":"Guarda semanas y mira el total y promedio de 4 semanas"}},"vi":{"stringUnit":{"state":"translated","value":"Lưu tuần và xem tổng + trung bình 4 tuần"}}}},"paywall.once":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"One purchase · no subscription"}},"es":{"stringUnit":{"state":"translated","value":"Una compra · sin suscripción"}},"vi":{"stringUnit":{"state":"translated","value":"Mua một lần · không đăng ký tháng"}}}},"decisions.title":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Decisions"}},"es":{"stringUnit":{"state":"translated","value":"Decisiones"}},"vi":{"stringUnit":{"state":"translated","value":"Quyết định"}}}},"decisions.subtitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Use this week's numbers to see which pay setup puts more in your pocket."}},"es":{"stringUnit":{"state":"translated","value":"Usa los números de esta semana para ver qué pago te deja más."}},"vi":{"stringUnit":{"state":"translated","value":"Dùng số tuần này để xem kiểu trả nào để bạn còn nhiều hơn."}}}},"decisions.needSalesTitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"What sales do I need?"}},"es":{"stringUnit":{"state":"translated","value":"¿Cuánto debo facturar?"}},"vi":{"stringUnit":{"state":"translated","value":"Cần bán bao nhiêu?"}}}},"decisions.needSalesHint":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Enter target take-home. We estimate services under booth rent using your current tips, fees, and rent."}},"es":{"stringUnit":{"state":"translated","value":"Pon el neto objetivo. Estimamos ventas con renta de puesto."}},"vi":{"stringUnit":{"state":"translated","value":"Nhập số còn lại mục tiêu. Ước tính doanh thu theo thuê chỗ."}}}},"decisions.needSalesResult":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Services sales needed"}},"es":{"stringUnit":{"state":"translated","value":"Ventas de servicios necesarias"}},"vi":{"stringUnit":{"state":"translated","value":"Doanh thu dịch vụ cần có"}}}},"decisions.maxRentTitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Max rent that still beats commission"}},"es":{"stringUnit":{"state":"translated","value":"Renta máxima que aún gana a comisión"}},"vi":{"stringUnit":{"state":"translated","value":"Tiền thuê tối đa vẫn hơn chia phần"}}}},"decisions.maxRentHint":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Highest weekly rent where booth matches or beats your commission at this week's volume."}},"es":{"stringUnit":{"state":"translated","value":"Renta semanal más alta donde el puesto iguala o supera tu comisión."}},"vi":{"stringUnit":{"state":"translated","value":"Tiền thuê tuần cao nhất mà thuê chỗ vẫn bằng hoặc hơn chia phần."}}}},"decisions.maxRentResult":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Max weekly rent"}},"es":{"stringUnit":{"state":"translated","value":"Renta semanal máxima"}},"vi":{"stringUnit":{"state":"translated","value":"Tiền thuê tuần tối đa"}}}},"decisions.breakEvenCutTitle":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Break-even commission cut"}},"es":{"stringUnit":{"state":"translated","value":"Corte de comisión de equilibrio"}},"vi":{"stringUnit":{"state":"translated","value":"Phần trăm chia hòa vốn"}}}},"decisions.breakEvenCutHint":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"Keep-% that matches booth take-home at this volume. Above this, commission wins."}},"es":{"stringUnit":{"state":"translated","value":"% que te quedas para igualar el neto del puesto."}},"vi":{"stringUnit":{"state":"translated","value":"% bạn giữ để bằng số còn lại khi thuê chỗ."}}}},"decisions.breakEvenCutResult":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"You keep"}},"es":{"stringUnit":{"state":"translated","value":"Tú conservas"}},"vi":{"stringUnit":{"state":"translated","value":"Bạn giữ"}}}},"paywall.benefitDecisions":{"localizations":{"en":{"stringUnit":{"state":"translated","value":"See what sales you need and which rent or cut wins"}},"es":{"stringUnit":{"state":"translated","value":"Mira qué ventas necesitas y qué renta o corte te conviene"}},"vi":{"stringUnit":{"state":"translated","value":"Xem cần bán bao nhiêu và thuê/chia phần nào có lợi hơn"}}}}},"version":"1.0"}
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "pay.hybrid": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Híbrido"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết hợp"
+          }
+        }
+      }
+    },
+    "home.hybridContext": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@/%@ · you keep %d%%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@/%@ · conservas %d%%"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@/%@ · bạn giữ %d%%"
+          }
+        }
+      }
+    },
+    "home.payContextSplit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You keep %d%% · house keeps %d%%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú conservas %d%% · el salón conserva %d%%"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn giữ %d%% · tiệm giữ %d%%"
+          }
+        }
+      }
+    },
+    "compare.onHybrid": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hybrid"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Híbrido"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết hợp"
+          }
+        }
+      }
+    },
+    "br.taxNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tax set-aside is an optional estimate. It is not taken out of what you take home."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La reserva para impuestos es una estimación opcional. No se descuenta de lo que te llevas."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khoản để dành thuế là ước tính tùy chọn. Khoản này không bị trừ khỏi tiền còn lại."
+          }
+        }
+      }
+    },
+    "settings.taxNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional estimate only. This does not reduce what you take home."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo una estimación opcional. No reduce lo que te llevas."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chỉ là ước tính tùy chọn. Không làm giảm số tiền còn lại hiển thị."
+          }
+        }
+      }
+    },
+    "br.effectiveHourly": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per hour"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Por hora"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mỗi giờ"
+          }
+        }
+      }
+    },
+    "home.takeHome": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You take home"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te llevas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại"
+          }
+        }
+      }
+    },
+    "paywall.shortTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime Access"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Acceso de por vida"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Truy cập trọn đời"
+          }
+        }
+      }
+    },
+    "nav.back": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Atrás"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quay lại"
+          }
+        }
+      }
+    },
+    "nav.cancel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hủy"
+          }
+        }
+      }
+    },
+    "settings.language": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idioma"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngôn ngữ"
+          }
+        }
+      }
+    },
+    "settings.serviceSplit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your service split"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu parte de servicios"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần dịch vụ của bạn"
+          }
+        }
+      }
+    },
+    "settings.houseKeeps": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House/owner keeps %d%%"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El salón/dueño conserva %d%%"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiệm/chủ giữ %d%%"
+          }
+        }
+      }
+    },
+    "tips.split5050": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50-50"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50-50"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia 50-50"
+          }
+        }
+      }
+    },
+    "br.yourShare": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your service share"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu parte de servicios"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần dịch vụ của bạn"
+          }
+        }
+      }
+    },
+    "br.houseShare": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House/owner service share"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parte de servicios del salón/dueño"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần dịch vụ của tiệm/chủ"
+          }
+        }
+      }
+    },
+    "home.compareDeal": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comparar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sánh"
+          }
+        }
+      }
+    },
+    "home.addToday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add today"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar hoy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm hôm nay"
+          }
+        }
+      }
+    },
+    "home.addToWeek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add to this week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregar a esta semana"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thêm vào tuần này"
+          }
+        }
+      }
+    },
+    "home.addedToday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added today · %@"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agregado hoy · %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã thêm hôm nay · %@"
+          }
+        }
+      }
+    },
+    "settings.hoursToday": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hours today · optional"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Horas de hoy · opcional"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số giờ hôm nay · tùy chọn"
+          }
+        }
+      }
+    },
+    "br.yourTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tus propinas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của bạn"
+          }
+        }
+      }
+    },
+    "br.houseTips": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "House/owner tips"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Propinas del salón/dueño"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền boa của tiệm/chủ"
+          }
+        }
+      }
+    },
+    "settings.rentPeriod": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rent period"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Periodo de renta"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chu kỳ thuê"
+          }
+        }
+      }
+    },
+    "unit.perHour": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/hr"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/h"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "/giờ"
+          }
+        }
+      }
+    },
+    "paywall.lifetimeTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Know if booth rent or commission is costing you money"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Descubre si la renta o la comisión te está costando dinero"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biết thuê chỗ hay chia phần có đang làm bạn mất tiền không"
+          }
+        }
+      }
+    },
+    "paywall.takeHomeLead": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You take home %@. See what your current setup is really costing you."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Te llevas %@. Mira cuánto te cuesta realmente tu forma de pago actual."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn còn lại %@. Xem cách trả hiện tại thực sự đang tốn của bạn bao nhiêu."
+          }
+        }
+      }
+    },
+    "paywall.benefitCompare": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compare booth rent, commission, and hybrid with your real numbers"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compara renta de puesto, comisión e híbrido con tus números reales"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "So sánh thuê chỗ, chia phần và kết hợp bằng số thật của bạn"
+          }
+        }
+      }
+    },
+    "paywall.benefitDifference": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the exact dollars you gain or give up with each setup"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira los dólares exactos que ganas o pierdes con cada opción"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem chính xác bạn được thêm hay mất bao nhiêu tiền với từng cách"
+          }
+        }
+      }
+    },
+    "paywall.benefitTrack": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Track your real take-home and hourly earnings"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sigue tu neto real y lo que ganas por hora"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo dõi số còn lại thật và thu nhập theo giờ"
+          }
+        }
+      }
+    },
+    "paywall.benefitHistory": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save weeks and see your 4-week total and average"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda semanas y mira tu total y promedio de 4 semanas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu tuần và xem tổng cùng trung bình 4 tuần"
+          }
+        }
+      }
+    },
+    "paywall.once": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One purchase · no subscription"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una compra · sin suscripción"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mua một lần · không đăng ký tháng"
+          }
+        }
+      }
+    },
+    "decisions.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decisions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Decisiones"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quyết định"
+          }
+        }
+      }
+    },
+    "decisions.subtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use this week's numbers to see which pay setup puts more in your pocket."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usa los números de esta semana para ver qué pago te deja más."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dùng số tuần này để xem kiểu trả nào để bạn còn nhiều hơn."
+          }
+        }
+      }
+    },
+    "decisions.needSalesTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What sales do I need?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cuánto debo facturar?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cần bán bao nhiêu?"
+          }
+        }
+      }
+    },
+    "decisions.needSalesHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter target take-home. We estimate services under booth rent using your current tips, fees, and rent."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pon el neto objetivo. Estimamos ventas con renta de puesto."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập số còn lại mục tiêu. Ước tính doanh thu theo thuê chỗ."
+          }
+        }
+      }
+    },
+    "decisions.needSalesResult": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Services sales needed"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ventas de servicios necesarias"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Doanh thu dịch vụ cần có"
+          }
+        }
+      }
+    },
+    "decisions.maxRentTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max rent that still beats commission"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta máxima que aún gana a comisión"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê tối đa vẫn hơn chia phần"
+          }
+        }
+      }
+    },
+    "decisions.maxRentHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highest weekly rent where booth matches or beats your commission at this week's volume."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta semanal más alta donde el puesto iguala o supera tu comisión."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê tuần cao nhất mà thuê chỗ vẫn bằng hoặc hơn chia phần."
+          }
+        }
+      }
+    },
+    "decisions.maxRentResult": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max weekly rent"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renta semanal máxima"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiền thuê tuần tối đa"
+          }
+        }
+      }
+    },
+    "decisions.breakEvenCutTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Break-even commission cut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corte de comisión de equilibrio"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần trăm chia hòa vốn"
+          }
+        }
+      }
+    },
+    "decisions.breakEvenCutHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep-% that matches booth take-home at this volume. Above this, commission wins."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% que te quedas para igualar el neto del puesto."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "% bạn giữ để bằng số còn lại khi thuê chỗ."
+          }
+        }
+      }
+    },
+    "decisions.breakEvenCutResult": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You keep"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tú conservas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn giữ"
+          }
+        }
+      }
+    },
+    "paywall.benefitDecisions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the sales you need, the most rent you should pay, and your break-even commission"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira las ventas que necesitas, la renta máxima que deberías pagar y tu comisión de equilibrio"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem doanh thu cần đạt, tiền thuê tối đa nên trả và tỷ lệ chia hòa vốn"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

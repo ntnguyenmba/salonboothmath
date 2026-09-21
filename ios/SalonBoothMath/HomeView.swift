@@ -1,1 +1,4 @@
-PLACEHOLDER_WILL_REPLACE
+import SwiftUI
+import UIKit
+
+// RESTORE_MARKER - content loaded from local fix

@@ -136,7 +136,12 @@ struct HomeView: View {
                     workerPaysCardFees: workerPaysCardFees,
                     extraFeesCents: extraFeesCents,
                     cardFeeRate: cardFeeRate,
-                    servicesOnCardRate: servicesOnCardRate
+                    servicesOnCardRate: servicesOnCardRate,
+                    isUnlocked: purchases.isUnlocked,
+                    onRequestUnlock: {
+                        pendingAction = .decisions
+                        showPaywall = true
+                    }
                 )
             }
             .navigationDestination(isPresented: $showSettings) { SettingsView() }

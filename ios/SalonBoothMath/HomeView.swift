@@ -278,10 +278,30 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity, minHeight: 58)
             }
             Button { openCompare() } label: {
-                Text(L("compare.title", language: appLanguage))
-                    .font(Brand.font(18, weight: .heavy))
+                VStack(spacing: 4) {
+                    Text(L("compare.title", language: appLanguage))
+                        .font(Brand.font(18, weight: .heavy))
+                    if !purchases.isUnlocked {
+                        Text(L(didUseFreeCompare ? "free.used" : "free.tryCompare", language: appLanguage))
+                            .font(Brand.font(14))
+                            .foregroundStyle(Brand.hotPink)
+                    }
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, minHeight: 64)
+            }
+            if !purchases.isUnlocked {
+                Button { openPayCheckup() } label: {
+                    VStack(spacing: 4) {
+                        Text(L("decisions.title", table: "Hybrid", language: appLanguage))
+                            .font(Brand.font(18, weight: .heavy))
+                        Text(L(didUseFreePayCheckup ? "free.used" : "free.tryPayCheckup", language: appLanguage))
+                            .font(Brand.font(14))
+                            .foregroundStyle(Brand.hotPink)
+                    }
                     .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity, minHeight: 58)
+                    .frame(maxWidth: .infinity, minHeight: 64)
+                }
             }
         }
         .padding(.horizontal, Brand.screenPadding)

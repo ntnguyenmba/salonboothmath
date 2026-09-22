@@ -75,4 +75,5 @@
     <string name="paywall_soft_body">Xem cách nhận tiền nào giúp bạn giữ lại nhiều hơn. Ví dụ: chia 55% bạn giữ $437; thuê chỗ $250 bạn giữ $457. Đồng thời xóa quảng cáo vĩnh viễn. Chỉ $9.99 một lần.</string>
     <string name="paywall_soft_cta">Xem cách nào giúp bạn giữ lại nhiều hơn</string>
     <string name="paywall_benefit_no_ads">Xóa quảng cáo vĩnh viễn</string>
+    <string name="widget_description">Hiển thị số tiền bạn còn lại trong tuần hiện tại.</string>
 </resources>

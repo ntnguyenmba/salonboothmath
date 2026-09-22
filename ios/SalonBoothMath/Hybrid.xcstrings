@@ -1012,6 +1012,94 @@
           }
         }
       }
+    },
+    "decisions.backToThisWeek": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back to this week"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Volver a esta semana"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quay lại tuần này"
+          }
+        }
+      }
+    },
+    "paywall.softTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unlock history, compare pay models, and saved weeks"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desbloquea historial, compara formas de pago y semanas guardadas"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở khóa lịch sử, so sánh cách nhận tiền và các tuần đã lưu"
+          }
+        }
+      }
+    },
+    "paywall.softBody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See which pay setup leaves you with more money. Example: at 55% commission you keep $437; at $250 booth rent you keep $457. Plus remove ads permanently. $9.99 once."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira qué forma de pago te deja más dinero. Ejemplo: con 55% de comisión te quedas $437; con $250 de renta te quedas $457. Además elimina anuncios para siempre. $9.99 una sola vez."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem cách nhận tiền nào giúp bạn giữ lại nhiều hơn. Ví dụ: chia 55% bạn giữ $437; thuê chỗ $250 bạn giữ $457. Đồng thời xóa quảng cáo vĩnh viễn. Chỉ $9.99 một lần."
+          }
+        }
+      }
+    },
+    "paywall.softCta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See which pay setup leaves you with more"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mira qué forma de pago te deja más"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem cách nào giúp bạn giữ lại nhiều hơn"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

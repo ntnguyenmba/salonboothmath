@@ -58,7 +58,7 @@
     <string name="no_saved_weeks">Chưa có tuần đã lưu.</string>
     <string name="keep_cut">Bạn giữ %1$d%% · chủ giữ %2$d%%</string>
     <string name="hybrid_context">%1$s/%2$s · bạn giữ %3$d%%</string>
-    <string name="decisions">Quyết định</string>
+    <string name="decisions">So sánh cách nhận tiền</string>
     <string name="decisions_subtitle">Dùng số tuần này để xem kiểu trả nào để bạn còn nhiều tiền hơn.</string>
     <string name="decisions_need_sales_title">Cần bán bao nhiêu?</string>
     <string name="decisions_need_sales_hint">Nhập số còn lại bạn muốn tuần này. Chúng tôi ước tính doanh thu dịch vụ theo thuê chỗ (dùng boa, phí và tiền thuê hiện tại).</string>
@@ -70,4 +70,9 @@
     <string name="decisions_break_even_cut_title">Phần trăm chia hòa vốn</string>
     <string name="decisions_break_even_cut_hint">Với khối lượng tuần này, % bạn giữ để bằng số còn lại khi thuê chỗ. Cao hơn thì chia phần thắng.</string>
     <string name="decisions_break_even_cut_result">Bạn giữ</string>
+    <string name="back_to_this_week">Quay lại tuần này</string>
+    <string name="paywall_soft_title">Mở khóa lịch sử, so sánh cách nhận tiền và các tuần đã lưu</string>
+    <string name="paywall_soft_body">Xem cách nhận tiền nào giúp bạn giữ lại nhiều hơn. Ví dụ: chia 55% bạn giữ $437; thuê chỗ $250 bạn giữ $457. Đồng thời xóa quảng cáo vĩnh viễn. Chỉ $9.99 một lần.</string>
+    <string name="paywall_soft_cta">Xem cách nào giúp bạn giữ lại nhiều hơn</string>
+    <string name="paywall_benefit_no_ads">Xóa quảng cáo vĩnh viễn</string>
 </resources>

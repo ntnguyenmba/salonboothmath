@@ -14,7 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.math.BigDecimal
 
-@Composable internal fun DecisionsScreen(store: AppStore, services: Long, cashTips: Long, cardTips: Long, supplies: Long, back: () -> Unit) {
+@Composable internal fun DecisionsScreen(
+    store: AppStore,
+    services: Long,
+    cashTips: Long,
+    cardTips: Long,
+    supplies: Long,
+    isUnlocked: Boolean,
+    onRequestUnlock: () -> Unit,
+    back: () -> Unit
+) {
     val cut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4)
     val feeRate = BigDecimal(store.cardFeeBasisPoints).movePointLeft(4)
     val cardShare = BigDecimal(store.servicesOnCardBasisPoints).movePointLeft(4)
@@ -52,6 +61,20 @@ import java.math.BigDecimal
             Text(stringResource(R.string.decisions_break_even_cut_hint), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
             Text(stringResource(R.string.decisions_break_even_cut_result), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
             Text("${breakEvenBp / 100}%", color = Pink, fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+        }
+
+        Spacer(Modifier.height(8.dp))
+        PrimaryButton(stringResource(R.string.back_to_this_week)) { back() }
+        if (!isUnlocked) {
+            Spacer(Modifier.height(12.dp))
+            DecisionCard {
+                Text(stringResource(R.string.paywall_soft_title), color = Ink, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+                Text(stringResource(R.string.paywall_soft_body), color = MutedInk, fontSize = 16.sp, fontWeight = FontWeight.Bold, fontFamily = AppFontFamily)
+                Spacer(Modifier.height(4.dp))
+                androidx.compose.material3.TextButton(onClick = onRequestUnlock, modifier = Modifier.fillMaxWidth()) {
+                    Text(stringResource(R.string.paywall_soft_cta), color = Pink, fontSize = 17.sp, fontWeight = FontWeight.ExtraBold, fontFamily = AppFontFamily)
+                }
+            }
         }
     }
 }

@@ -16,6 +16,9 @@ class AppStore(context: Context) {
     var didUseFreeCompare: Boolean
         get() = prefs.getBoolean("did_use_free_compare", false)
         set(value) { prefs.edit().putBoolean("did_use_free_compare", value).apply() }
+    var didUseFreePayCheckup: Boolean
+        get() = prefs.getBoolean("did_use_free_pay_checkup", false)
+        set(value) { prefs.edit().putBoolean("did_use_free_pay_checkup", value).apply() }
     var onboardingDone: Boolean get() = prefs.getBoolean("onboardingDone", false); set(value) = prefs.edit().putBoolean("onboardingDone", value).apply()
     var trade: String get() = prefs.getString("trade", "nail") ?: "nail"; set(value) = prefs.edit().putString("trade", value).apply()
     var payModel: String get() = prefs.getString("payModel", "booth") ?: "booth"; set(value) = prefs.edit().putString("payModel", value).apply()

@@ -59,7 +59,7 @@
     <string name="no_saved_weeks">No saved weeks yet.</string>
     <string name="keep_cut">You keep %1$d%% · house keeps %2$d%%</string>
     <string name="hybrid_context">%1$s/%2$s · you keep %3$d%%</string>
-    <string name="decisions">Decisions</string>
+    <string name="decisions">Compare Your Pay</string>
     <string name="decisions_subtitle">Use this week\'s numbers to see which pay setup puts more money in your pocket.</string>
     <string name="decisions_need_sales_title">What sales do I need?</string>
     <string name="decisions_need_sales_hint">Enter the take-home you want this week. We estimate services sales under booth rent (using your current tips, fees, and rent).</string>
@@ -71,4 +71,9 @@
     <string name="decisions_break_even_cut_title">Break-even commission cut</string>
     <string name="decisions_break_even_cut_hint">At this week\'s volume, the keep-%% that matches booth take-home. Above this, commission wins.</string>
     <string name="decisions_break_even_cut_result">You keep</string>
+    <string name="back_to_this_week">Back to this week</string>
+    <string name="paywall_soft_title">Unlock history, compare pay models, and saved weeks</string>
+    <string name="paywall_soft_body">See which pay setup leaves you with more money. Example: at 55% commission you keep $437; at $250 booth rent you keep $457. Plus remove ads permanently. $9.99 once.</string>
+    <string name="paywall_soft_cta">See which pay setup leaves you with more</string>
+    <string name="paywall_benefit_no_ads">Remove ads permanently</string>
 </resources>

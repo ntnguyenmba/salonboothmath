@@ -76,4 +76,5 @@
     <string name="paywall_soft_body">Mira qué forma de pago te deja más dinero. Ejemplo: con 55% de comisión te quedas $437; con $250 de renta te quedas $457. Además elimina anuncios para siempre. $9.99 una sola vez.</string>
     <string name="paywall_soft_cta">Mira qué forma de pago te deja más</string>
     <string name="paywall_benefit_no_ads">Elimina los anuncios para siempre</string>
+    <string name="widget_description">Muestra tu ingreso neto semanal actual.</string>
 </resources>

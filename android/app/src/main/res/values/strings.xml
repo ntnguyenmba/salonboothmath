@@ -76,4 +76,5 @@
     <string name="paywall_soft_body">See which pay setup leaves you with more money. Example: at 55% commission you keep $437; at $250 booth rent you keep $457. Plus remove ads permanently. $9.99 once.</string>
     <string name="paywall_soft_cta">See which pay setup leaves you with more</string>
     <string name="paywall_benefit_no_ads">Remove ads permanently</string>
+    <string name="widget_description">Shows your current weekly take-home.</string>
 </resources>

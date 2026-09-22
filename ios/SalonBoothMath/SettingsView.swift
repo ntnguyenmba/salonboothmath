@@ -14,6 +14,7 @@ struct SettingsView: View {
     @AppStorage("taxBasisPoints") private var taxBasisPoints = 2500
     @AppStorage("extraFeesCents") private var extraFeesCents = 0
     @AppStorage("workerPaysCardFees") private var workerPaysCardFees = false
+    @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
 
     @StateObject private var purchases = PurchaseManager()
     @State private var rentText = ""
@@ -133,6 +134,7 @@ struct SettingsView: View {
             Link(destination: LegalURLs.support) { settingsRow(L("settings.support", language: appLanguage), icon: "envelope.fill") }
             Button { Task { await purchases.restore() } } label: { settingsRow(L("paywall.restore", language: appLanguage), icon: "arrow.clockwise") }
             NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(L("settings.about", language: appLanguage), icon: "info.circle.fill") }
+            Button { didCompleteOnboarding = false } label: { settingsRow(L("settings.startOver", language: appLanguage), icon: "arrow.counterclockwise") }
             Text(L("legal.disclaimer", language: appLanguage))
                 .font(Brand.font(16)).foregroundStyle(Brand.muted).fixedSize(horizontal: false, vertical: true)
             Text("© 2026 Everitt Ventures LLC").font(Brand.font(16)).foregroundStyle(Brand.muted)

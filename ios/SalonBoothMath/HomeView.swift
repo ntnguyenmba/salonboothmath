@@ -27,6 +27,7 @@ struct HomeView: View {
     @AppStorage("currentWeekDaysJSON") private var currentWeekDaysJSON = "[]"
     @AppStorage("didUseFreeCompare") private var didUseFreeCompare = false
     @AppStorage("didUseFreePayCheckup") private var didUseFreePayCheckup = false
+    @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
 
     @StateObject private var purchases = PurchaseManager()
     @StateObject private var weekStore = WeekStore()
@@ -200,19 +201,36 @@ struct HomeView: View {
                     Button { returnToCurrentWeek() } label: {
                         Image(systemName: "chevron.left").frame(width: 48, height: 48)
                     }
+                } else {
+                    Menu {
+                        Picker(language.languageTitle, selection: $appLanguage) {
+                            ForEach(AppLanguage.allCases) { lang in
+                                Text(lang.displayName).tag(lang.rawValue)
+                            }
+                        }
+                        Divider()
+                        Button(L("settings.startOver", language: appLanguage)) {
+                            didCompleteOnboarding = false
+                        }
+                    } label: {
+                        HStack(spacing: 5) {
+                            Image(systemName: "globe")
+                            Text(appLanguage.uppercased())
+                                .font(Brand.font(13, weight: .heavy))
+                        }
+                        .frame(minWidth: 54, minHeight: 48)
+                    }
+                    .accessibilityLabel(language.languageTitle)
                 }
                 Spacer()
                 Menu {
-                    Picker(language.languageTitle, selection: $appLanguage) {
-                        ForEach(AppLanguage.allCases) { lang in
-                            Text(lang.displayName).tag(lang.rawValue)
-                        }
-                    }
                     Button(L("home.share", language: appLanguage)) { shareCurrentWeek() }
                     Button(L("history.title", language: appLanguage)) { requireUnlock(.history) }
                     Button(L("decisions.title", table: "Hybrid", language: appLanguage)) { openPayCheckup() }
                     Button(L("compare.title", language: appLanguage)) { openCompare() }
                     Button(L("settings.title", language: appLanguage)) { showSettings = true }
+                    Divider()
+                    Button(L("settings.startOver", language: appLanguage)) { didCompleteOnboarding = false }
                 } label: {
                     Image(systemName: "ellipsis.circle.fill")
                         .font(.system(size: 23, weight: .bold))

@@ -38,7 +38,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
 @Composable fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val currentWeekStart = startOfWeek(); val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
     var services by remember { mutableStateOf(initialDraft.services) }; var cashTips by remember { mutableStateOf(initialDraft.cashTips) }; var cardTips by remember { mutableStateOf(initialDraft.cardTips) }; var supplies by remember { mutableStateOf(initialDraft.supplies) }; var hours by remember { mutableStateOf(initialDraft.hours) }; var days by remember { mutableStateOf(initialDraft.days) }
-    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
+    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var didUseFreePayCheckup by remember { mutableStateOf(store.didUseFreePayCheckup) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
     val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val context = LocalContext.current; val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services); val cashTipsCents = MoneyMath.cents(cashTips); val cardTipsCents = MoneyMath.cents(cardTips); val supplyCents = MoneyMath.cents(supplies)
     val cut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4); val feeRate = BigDecimal(store.cardFeeBasisPoints).movePointLeft(4); val cardShare = BigDecimal(store.servicesOnCardBasisPoints).movePointLeft(4)
@@ -49,6 +49,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
     fun runLockedAction(action: LockedAction) { when(action){ LockedAction.SAVE->saveWeek(); LockedAction.HISTORY->screen=Screen.History; LockedAction.COMPARE->screen=Screen.Compare; LockedAction.DECISIONS->screen=Screen.Decisions } }
     fun requireUnlock(action: LockedAction) { if(unlocked) runLockedAction(action) else { pendingAction=action; showPaywall=true } }
     fun openCompare() { if (unlocked || !didUseFreeCompare) { didUseFreeCompare=true; store.didUseFreeCompare=true; screen=Screen.Compare } else requireUnlock(LockedAction.COMPARE) }
+    fun openPayCheckup() { if (unlocked || !didUseFreePayCheckup) { didUseFreePayCheckup=true; store.didUseFreePayCheckup=true; screen=Screen.Decisions } else requireUnlock(LockedAction.DECISIONS) }
     fun loadWeek(week: SavedWeek){ editingWeekStart=week.startMillis; services=inputMoney(week.servicesCents); cashTips=inputMoney(week.cashTipsCents); cardTips=inputMoney(week.cardTipsCents); supplies=inputMoney(week.suppliesCents); hours=week.hours?.let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}?:""; days=week.days; store.payModel=week.payModel; screen=Screen.Home }
     fun returnToCurrentWeek(){ editingWeekStart=currentWeekStart; val d=store.loadCurrentWeekDraft(currentWeekStart); services=d.services;cashTips=d.cashTips;cardTips=d.cardTips;supplies=d.supplies;hours=d.hours;days=d.days }
     fun setLanguage(tag: String) {
@@ -64,7 +65,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
         Screen.Breakdown->BreakdownScreen(store,serviceCents,cashTipsCents,cardTipsCents,supplyCents,cardFeesCents,takeHomeCents,hours,{hours=it}){screen=Screen.Home}
         Screen.History->HistoryScreen(store,::loadWeek){screen=Screen.Home}
         Screen.Compare->CompareScreen(store,serviceCents,cashTipsCents,cardTipsCents,supplyCents){screen=Screen.Home}
-        Screen.Decisions->DecisionsScreen(store,serviceCents,cashTipsCents,cardTipsCents,supplyCents){screen=Screen.Home}
+        Screen.Decisions->DecisionsScreen(store,serviceCents,cashTipsCents,cardTipsCents,supplyCents,unlocked,{pendingAction=LockedAction.DECISIONS;showPaywall=true}){screen=Screen.Home}
         Screen.Settings->SettingsScreen(store,billing){screen=Screen.Home}
         Screen.Home->Column(Modifier.fillMaxSize().background(Page)){
             Column(Modifier.fillMaxWidth().background(BerryDeep)){Box(Modifier.fillMaxWidth().height(4.dp).background(Pink));Box(Modifier.fillMaxWidth().padding(horizontal=8.dp,vertical=8.dp)){
@@ -79,7 +80,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                         HorizontalDivider()
                         DropdownMenuItem(text={Text(stringResource(R.string.share))},onClick={menuOpen=false;ShareCard.share(context,takeHomeCents,editingWeekStart)})
                         DropdownMenuItem(text={Text(stringResource(R.string.history))},onClick={menuOpen=false;requireUnlock(LockedAction.HISTORY)})
-                        DropdownMenuItem(text={Text(stringResource(R.string.decisions))},onClick={menuOpen=false;requireUnlock(LockedAction.DECISIONS)})
+                        DropdownMenuItem(text={Text(stringResource(R.string.decisions))},onClick={menuOpen=false;openPayCheckup()})
                         DropdownMenuItem(text={Text(stringResource(R.string.compare))},onClick={menuOpen=false;openCompare()})
                         DropdownMenuItem(text={Text(stringResource(R.string.settings))},onClick={menuOpen=false;screen=Screen.Settings})
                     }}
@@ -116,6 +117,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
             Text("\u2022 ${stringResource(R.string.paywall_benefit_decisions)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             Text("\u2022 ${stringResource(R.string.paywall_benefit_track)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             Text("\u2022 ${stringResource(R.string.paywall_benefit_history)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            Text("\u2022 ${stringResource(R.string.paywall_benefit_no_ads)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             Text("\u2022 ${stringResource(R.string.paywall_once)}",color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             PrimaryButton(stringResource(R.string.unlock_price,displayPrice)){activity?.let{billing.launchPurchase(it)}}
             TextButton(onClick={billing.restore()},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.restore_purchase),color=Pink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}

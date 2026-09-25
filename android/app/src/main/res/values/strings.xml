@@ -81,4 +81,7 @@
     <string name="free_try_compare">Try once free</string>
     <string name="free_try_pay_checkup">Try once free</string>
     <string name="free_used">Free try used</string>
+    <string name="billing_connection_error">Google Play is reconnecting. Tap Unlock again in a moment.</string>
+    <string name="billing_product_unavailable">The lifetime purchase is not available from Google Play right now. Please try again.</string>
+    <string name="billing_purchase_failed">The purchase could not be completed. Please try again or use Restore Purchase if you already bought it.</string>
 </resources>

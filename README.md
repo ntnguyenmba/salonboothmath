@@ -12,9 +12,9 @@ iOS + Android · English + Vietnamese + Spanish · $9.99 once · No subscription
 - Free current-week calculator: Services + Cash tips + Card tips + Supplies + live take-home
 - Free Add today entry into the current week
 - Breakdown is free
-- One-time $9.99 lifetime unlock
-- Saved weeks and History
-- Booth vs Commission vs Hybrid comparison
+- One free use of each paid feature: Save Week, History, Compare, and Compare Your Pay
+- One-time $9.99 lifetime unlock after each feature's free use
+- Lifetime unlock removes ads and gives unlimited Save, History, Compare, and Compare Your Pay
 - Rent, commission, card fee, tax set-aside, and extra-fee settings
 - Native Share take-home card
 - Small Home Screen widget
@@ -40,6 +40,8 @@ Wine is the app surface. White is the reading color. Pink is the tap.
 ## Repository rule
 
 All work goes directly to `main`. Cursor and Codex should also work on `main` and must not create feature branches.
+
+This repository does not use GitHub Actions or paid CI. Build, test, localization, and store checks are run manually before release. Workflows must never rewrite application source or push automated code changes.
 
 ## Platform structure
 

@@ -22,20 +22,27 @@ The week is the book. Today is only a fast way to add money into the current wee
 - Free Breakdown
 - Native Share take-home card
 
-## $9.99 lifetime unlock
+## Free try + $9.99 lifetime unlock
 
 One non-consumable purchase. No subscription.
 
-- Save weeks
-- History notebook with compact last-4-weeks total and average
-- Open saved weeks and their recorded day lines when available
-- Booth vs Commission vs Hybrid comparison
-- Extra fees
-- Hours and per-hour result
-- Tax set-aside line
+Each paid feature gets one free use:
+- Save Week: one free save
+- History: one free visit
+- Booth vs Commission vs Hybrid Compare: one free use
+- Compare Your Pay: one free use
+
+After its free use, that feature opens the lifetime paywall.
+
+Lifetime includes:
+- Unlimited Save Week
+- Unlimited History
+- Unlimited Compare
+- Unlimited Compare Your Pay
+- Ad removal
 - Restore Purchase
 
-Paywall triggers on Save week, opening History, Compare, or paid saved-week detail. Add today and Breakdown remain free.
+Extra fees, hours/per-hour, tax set-aside, Add today, and Breakdown remain part of the free calculator experience.
 
 Paywall promise:
 
@@ -65,8 +72,10 @@ Large locale-formatted weekly amount in white.
 Actions:
 
 1. `Add today` secondary/free
-2. `Save week` primary/paid
+2. `Save week` with one free save, then Lifetime
 3. `See breakdown` secondary/free
+4. `Compare` with one free use, then Lifetime
+5. `Compare Your Pay` with one free use, then Lifetime
 
 Add today opens a sheet. It is not a daily Home, calendar, or daily take-home screen. The entered cents add to the current weekly totals and the sheet clears after adding.
 

@@ -25,6 +25,8 @@ struct HomeView: View {
     @AppStorage("currentWeekSupplies") private var currentWeekSupplies = ""
     @AppStorage("currentWeekHours") private var currentWeekHours = ""
     @AppStorage("currentWeekDaysJSON") private var currentWeekDaysJSON = "[]"
+    @AppStorage("didUseFreeSave") private var didUseFreeSave = false
+    @AppStorage("didUseFreeHistory") private var didUseFreeHistory = false
     @AppStorage("didUseFreeCompare") private var didUseFreeCompare = false
     @AppStorage("didUseFreePayCheckup") private var didUseFreePayCheckup = false
     @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
@@ -225,7 +227,7 @@ struct HomeView: View {
                 Spacer()
                 Menu {
                     Button(L("home.share", language: appLanguage)) { shareCurrentWeek() }
-                    Button(L("history.title", language: appLanguage)) { requireUnlock(.history) }
+                    Button(L("history.title", language: appLanguage)) { openHistory() }
                     Button(L("decisions.title", table: "Hybrid", language: appLanguage)) { openPayCheckup() }
                     Button(L("compare.title", language: appLanguage)) { openCompare() }
                     Button(L("settings.title", language: appLanguage)) { showSettings = true }
@@ -288,7 +290,21 @@ struct HomeView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
                 }
             }
-            PrimaryButton(title: L("home.save", language: appLanguage)) { requireUnlock(.save) }
+            Button { saveWithFreeTry() } label: {
+                VStack(spacing: 4) {
+                    Text(L("home.save", language: appLanguage))
+                        .font(Brand.font(20, weight: .heavy))
+                    if !purchases.isUnlocked {
+                        Text(L(didUseFreeSave ? "free.used" : "free.trySave", language: appLanguage))
+                            .font(Brand.font(16))
+                    }
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity, minHeight: 68)
+                .background(Brand.hotPink)
+                .clipShape(RoundedRectangle(cornerRadius: Brand.controlRadius))
+            }
+            .buttonStyle(.plain)
             Button { showBreakdown = true } label: {
                 Text(L("home.breakdown", language: appLanguage))
                     .font(Brand.font(18, weight: .heavy))
@@ -377,6 +393,25 @@ struct HomeView: View {
     private func requireUnlock(_ action: LockedAction) {
         if purchases.isUnlocked { pendingAction = action; runPendingAction() }
         else { pendingAction = action; showPaywall = true }
+    }
+
+    private func saveWithFreeTry() {
+        if purchases.isUnlocked || !didUseFreeSave {
+            didUseFreeSave = true
+            pendingAction = .save
+            runPendingAction()
+        } else {
+            requireUnlock(.save)
+        }
+    }
+
+    private func openHistory() {
+        if purchases.isUnlocked || !didUseFreeHistory {
+            didUseFreeHistory = true
+            showHistory = true
+        } else {
+            requireUnlock(.history)
+        }
     }
 
     private func openCompare() {

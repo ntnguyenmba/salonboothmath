@@ -6,6 +6,8 @@ import com.android.billingclient.api.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+enum class BillingIssue { CONNECTION, PRODUCT_UNAVAILABLE, PURCHASE_FAILED }
+
 class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     companion object {
         // Keep this aligned with the one-time product configured in Google Play Console.
@@ -28,18 +30,31 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     private val _displayPrice = MutableStateFlow("$9.99")
     val displayPrice: StateFlow<String> = _displayPrice
 
+    private val _billingIssue = MutableStateFlow<BillingIssue?>(null)
+    val billingIssue: StateFlow<BillingIssue?> = _billingIssue
+
     private var productDetails: ProductDetails? = null
     private var purchaseInFlight = false
 
     fun start() {
+        if (billingClient.isReady) {
+            queryProduct()
+            queryPurchases()
+            return
+        }
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(result: BillingResult) {
                 if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                    _billingIssue.value = null
                     queryProduct()
                     queryPurchases()
+                } else {
+                    _billingIssue.value = BillingIssue.CONNECTION
                 }
             }
-            override fun onBillingServiceDisconnected() = Unit
+            override fun onBillingServiceDisconnected() {
+                _billingIssue.value = BillingIssue.CONNECTION
+            }
         })
     }
 
@@ -58,9 +73,13 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
                 if (loaded != null) {
                     productDetails = loaded
                     _displayPrice.value = loaded.oneTimePurchaseOfferDetails?.formattedPrice ?: _displayPrice.value
+                    _billingIssue.value = null
+                } else {
+                    _billingIssue.value = BillingIssue.PRODUCT_UNAVAILABLE
                 }
                 onLoaded?.invoke(loaded)
             } else {
+                _billingIssue.value = BillingIssue.PRODUCT_UNAVAILABLE
                 onLoaded?.invoke(null)
             }
         }
@@ -68,6 +87,12 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
 
     fun launchPurchase(activity: Activity) {
         if (purchaseInFlight) return
+        _billingIssue.value = null
+        if (!billingClient.isReady) {
+            start()
+            _billingIssue.value = BillingIssue.CONNECTION
+            return
+        }
         purchaseInFlight = true
 
         val cached = productDetails
@@ -99,10 +124,19 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
         )
         if (result.responseCode != BillingClient.BillingResponseCode.OK) {
             purchaseInFlight = false
+            _billingIssue.value = BillingIssue.PURCHASE_FAILED
         }
     }
 
-    fun restore() = queryPurchases()
+    fun restore() {
+        _billingIssue.value = null
+        if (!billingClient.isReady) {
+            start()
+            _billingIssue.value = BillingIssue.CONNECTION
+            return
+        }
+        queryPurchases()
+    }
 
     private fun queryPurchases() {
         val params = QueryPurchasesParams.newBuilder()
@@ -110,7 +144,10 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
             .build()
         billingClient.queryPurchasesAsync(params) { result, purchases ->
             if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                _billingIssue.value = null
                 handlePurchases(purchases)
+            } else {
+                _billingIssue.value = BillingIssue.CONNECTION
             }
         }
     }
@@ -118,8 +155,13 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     override fun onPurchasesUpdated(result: BillingResult, purchases: MutableList<Purchase>?) {
         purchaseInFlight = false
         when (result.responseCode) {
-            BillingClient.BillingResponseCode.OK -> if (purchases != null) handlePurchases(purchases)
+            BillingClient.BillingResponseCode.OK -> {
+                _billingIssue.value = null
+                if (purchases != null) handlePurchases(purchases)
+            }
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> queryPurchases()
+            BillingClient.BillingResponseCode.USER_CANCELED -> Unit
+            else -> _billingIssue.value = BillingIssue.PURCHASE_FAILED
         }
     }
 

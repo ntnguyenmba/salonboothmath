@@ -23,9 +23,15 @@ final class PurchaseManager: ObservableObject {
     deinit { updatesTask?.cancel() }
 
     func loadProduct() async {
+        errorMessage = nil
         do {
-            product = try await Product.products(for: [Self.productID]).first
+            let products = try await Product.products(for: [Self.productID])
+            product = products.first
+            if product == nil {
+                errorMessage = "product_unavailable"
+            }
         } catch {
+            product = nil
             errorMessage = error.localizedDescription
         }
     }
@@ -34,9 +40,19 @@ final class PurchaseManager: ObservableObject {
         errorMessage = nil
         guard let product else {
             await loadProduct()
-            guard self.product != nil else { return false }
-            return await purchase()
+            guard let loadedProduct = self.product else {
+                if errorMessage == nil {
+                    errorMessage = "product_unavailable"
+                }
+                return false
+            }
+            return await purchase(loadedProduct)
         }
+
+        return await purchase(product)
+    }
+
+    private func purchase(_ product: Product) async -> Bool {
 
         isLoading = true
         defer { isLoading = false }

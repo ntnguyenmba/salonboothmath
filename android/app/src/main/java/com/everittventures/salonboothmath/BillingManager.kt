@@ -87,7 +87,11 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
         }
     }
 
-    fun launchPurchase(activity: Activity) {
+    fun launchPurchase(activity: Activity?) {
+        if (activity == null) {
+            _billingIssue.value = BillingIssue.PURCHASE_FAILED
+            return
+        }
         if (purchaseInFlight) return
         _billingIssue.value = null
         if (!billingClient.isReady) {

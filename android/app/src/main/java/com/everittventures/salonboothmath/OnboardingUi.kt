@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +33,17 @@ internal fun OnboardingScreen(store: AppStore, done: () -> Unit) {
     val payModels = listOf("booth" to stringResource(R.string.booth_rent), "commission" to stringResource(R.string.commission), "hybrid" to stringResource(R.string.hybrid))
 
     Column(Modifier.fillMaxSize().background(Page).padding(24.dp), verticalArrangement = Arrangement.Center) {
+        if (step > 0) {
+            TextButton(onClick = { step-- }) {
+                Text(
+                    "‹ " + stringResource(R.string.back),
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            Spacer(Modifier.height(8.dp))
+        }
         SingleChoiceSegment(listOf("en" to "English", "es" to "Español", "vi" to "Tiếng Việt"), language) { tag ->
             if (tag == language) return@SingleChoiceSegment
             language = tag

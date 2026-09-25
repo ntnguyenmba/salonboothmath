@@ -39,7 +39,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
     val currentWeekStart = startOfWeek(); val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
     var services by remember { mutableStateOf(initialDraft.services) }; var cashTips by remember { mutableStateOf(initialDraft.cashTips) }; var cardTips by remember { mutableStateOf(initialDraft.cardTips) }; var supplies by remember { mutableStateOf(initialDraft.supplies) }; var hours by remember { mutableStateOf(initialDraft.hours) }; var days by remember { mutableStateOf(initialDraft.days) }
     var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var didUseFreePayCheckup by remember { mutableStateOf(store.didUseFreePayCheckup) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
-    val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val context = LocalContext.current; val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
+    val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val billingIssue by billing.billingIssue.collectAsState(); val context = LocalContext.current; val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services); val cashTipsCents = MoneyMath.cents(cashTips); val cardTipsCents = MoneyMath.cents(cardTips); val supplyCents = MoneyMath.cents(supplies)
     val cut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4); val feeRate = BigDecimal(store.cardFeeBasisPoints).movePointLeft(4); val cardShare = BigDecimal(store.servicesOnCardBasisPoints).movePointLeft(4)
     val cardFeesCents = if (store.payModel == "booth" || store.workerPaysCardFees) MoneyMath.cardFees(serviceCents, cardTipsCents, feeRate, cardShare) else 0L
@@ -138,6 +138,22 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
             Text("\u2022 ${stringResource(R.string.paywall_benefit_history)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             Text("\u2022 ${stringResource(R.string.paywall_benefit_no_ads)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
             Text("\u2022 ${stringResource(R.string.paywall_once)}",color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+            if (billingIssue != null) {
+                Text(
+                    stringResource(
+                        when (billingIssue) {
+                            BillingIssue.CONNECTION -> R.string.billing_connection_error
+                            BillingIssue.PRODUCT_UNAVAILABLE -> R.string.billing_product_unavailable
+                            BillingIssue.PURCHASE_FAILED -> R.string.billing_purchase_failed
+                            null -> R.string.billing_purchase_failed
+                        }
+                    ),
+                    color=Pink,
+                    fontSize=16.sp,
+                    fontWeight=FontWeight.Bold,
+                    fontFamily=AppFontFamily
+                )
+            }
             PrimaryButton(stringResource(R.string.unlock_price,displayPrice)){activity?.let{billing.launchPurchase(it)}}
             TextButton(onClick={billing.restore()},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.restore_purchase),color=Pink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
             TextButton(onClick={showPaywall=false;pendingAction=null},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.not_now),color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}

@@ -168,3 +168,4 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
             onDismiss = { showPaywall=false; pendingAction=null }
         )
     }
+}

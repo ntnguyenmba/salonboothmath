@@ -466,6 +466,12 @@ struct PaywallView: View {
             .font(Brand.font(17))
             .foregroundStyle(Brand.mutedInk)
             .fixedSize(horizontal: false, vertical: true)
+            if purchases.errorMessage != nil {
+                Text(L("paywall.purchaseError", language: appLanguage))
+                    .font(Brand.font(16))
+                    .foregroundStyle(Brand.hotPink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             PrimaryButton(title: unlockTitle) {
                 Task {
                     let ok = await purchases.purchase()

@@ -81,4 +81,7 @@
     <string name="free_try_compare">Pruébalo gratis una vez</string>
     <string name="free_try_pay_checkup">Pruébalo gratis una vez</string>
     <string name="free_used">Prueba gratis usada</string>
+    <string name="billing_connection_error">Google Play se está reconectando. Toca Desbloquear de nuevo en un momento.</string>
+    <string name="billing_product_unavailable">La compra de por vida no está disponible en Google Play ahora mismo. Inténtalo de nuevo.</string>
+    <string name="billing_purchase_failed">No se pudo completar la compra. Inténtalo de nuevo o usa Restaurar compra si ya la compraste.</string>
 </resources>

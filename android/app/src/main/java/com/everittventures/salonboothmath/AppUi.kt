@@ -38,7 +38,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
 @Composable fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val currentWeekStart = startOfWeek(); val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
     var services by remember { mutableStateOf(initialDraft.services) }; var cashTips by remember { mutableStateOf(initialDraft.cashTips) }; var cardTips by remember { mutableStateOf(initialDraft.cardTips) }; var supplies by remember { mutableStateOf(initialDraft.supplies) }; var hours by remember { mutableStateOf(initialDraft.hours) }; var days by remember { mutableStateOf(initialDraft.days) }
-    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var didUseFreePayCheckup by remember { mutableStateOf(store.didUseFreePayCheckup) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
+    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeSave by remember { mutableStateOf(store.didUseFreeSave) }; var didUseFreeHistory by remember { mutableStateOf(store.didUseFreeHistory) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var didUseFreePayCheckup by remember { mutableStateOf(store.didUseFreePayCheckup) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
     val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val billingIssue by billing.billingIssue.collectAsState(); val context = LocalContext.current; val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services); val cashTipsCents = MoneyMath.cents(cashTips); val cardTipsCents = MoneyMath.cents(cardTips); val supplyCents = MoneyMath.cents(supplies)
     val cut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4); val feeRate = BigDecimal(store.cardFeeBasisPoints).movePointLeft(4); val cardShare = BigDecimal(store.servicesOnCardBasisPoints).movePointLeft(4)
@@ -48,6 +48,8 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
     fun saveWeek() { store.saveWeek(SavedWeek(editingWeekStart,serviceCents,cashTipsCents,cardTipsCents,supplyCents,store.extraFeesCents,hoursValue,store.payModel,takeHomeCents,days)); scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) } }
     fun runLockedAction(action: LockedAction) { when(action){ LockedAction.SAVE->saveWeek(); LockedAction.HISTORY->screen=Screen.History; LockedAction.COMPARE->screen=Screen.Compare; LockedAction.DECISIONS->screen=Screen.Decisions } }
     fun requireUnlock(action: LockedAction) { if(unlocked) runLockedAction(action) else { pendingAction=action; showPaywall=true } }
+    fun saveWithFreeTry() { if (unlocked || !didUseFreeSave) { didUseFreeSave=true; store.didUseFreeSave=true; saveWeek() } else requireUnlock(LockedAction.SAVE) }
+    fun openHistory() { if (unlocked || !didUseFreeHistory) { didUseFreeHistory=true; store.didUseFreeHistory=true; screen=Screen.History } else requireUnlock(LockedAction.HISTORY) }
     fun openCompare() { if (unlocked || !didUseFreeCompare) { didUseFreeCompare=true; store.didUseFreeCompare=true; screen=Screen.Compare } else requireUnlock(LockedAction.COMPARE) }
     fun openPayCheckup() { if (unlocked || !didUseFreePayCheckup) { didUseFreePayCheckup=true; store.didUseFreePayCheckup=true; screen=Screen.Decisions } else requireUnlock(LockedAction.DECISIONS) }
     fun loadWeek(week: SavedWeek){ editingWeekStart=week.startMillis; services=inputMoney(week.servicesCents); cashTips=inputMoney(week.cashTipsCents); cardTips=inputMoney(week.cardTipsCents); supplies=inputMoney(week.suppliesCents); hours=week.hours?.let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}?:""; days=week.days; store.payModel=week.payModel; screen=Screen.Home }
@@ -79,7 +81,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                         DropdownMenuItem(text={Text("Tiếng Việt")},onClick={menuOpen=false;setLanguage("vi")})
                         HorizontalDivider()
                         DropdownMenuItem(text={Text(stringResource(R.string.share))},onClick={menuOpen=false;ShareCard.share(context,takeHomeCents,editingWeekStart)})
-                        DropdownMenuItem(text={Text(stringResource(R.string.history))},onClick={menuOpen=false;requireUnlock(LockedAction.HISTORY)})
+                        DropdownMenuItem(text={Text(stringResource(R.string.history))},onClick={menuOpen=false;openHistory()})
                         DropdownMenuItem(text={Text(stringResource(R.string.decisions))},onClick={menuOpen=false;openPayCheckup()})
                         DropdownMenuItem(text={Text(stringResource(R.string.compare))},onClick={menuOpen=false;openCompare()})
                         DropdownMenuItem(text={Text(stringResource(R.string.settings))},onClick={menuOpen=false;screen=Screen.Settings})
@@ -104,7 +106,12 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                 if(addedTodayGross!=null)Text(stringResource(R.string.added_today,formatCents(addedTodayGross!!)),color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
                 Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){
                     if(isCurrentWeek) TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
-                    PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)}
+                    TextButton(onClick={saveWithFreeTry()},modifier=Modifier.fillMaxWidth().height(68.dp)){
+                        Column(horizontalAlignment=Alignment.CenterHorizontally){
+                            Text(stringResource(R.string.save_week),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
+                            if(!unlocked) Text(stringResource(if(didUseFreeSave) R.string.free_used else R.string.free_try_save),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+                        }
+                    }
                     TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
                     TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(68.dp)){
                         Column(horizontalAlignment=Alignment.CenterHorizontally){

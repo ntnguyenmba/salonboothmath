@@ -31,6 +31,7 @@ final class PurchaseManager: ObservableObject {
     }
 
     func purchase() async -> Bool {
+        errorMessage = nil
         guard let product else {
             await loadProduct()
             guard self.product != nil else { return false }
@@ -60,6 +61,7 @@ final class PurchaseManager: ObservableObject {
     }
 
     func restore() async {
+        errorMessage = nil
         isLoading = true
         defer { isLoading = false }
         do {

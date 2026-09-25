@@ -29,9 +29,26 @@ iOS also ships:
 - `ITSAppUsesNonExemptEncryption = false`
 - `PrivacyInfo.xcprivacy` (no tracking, UserDefaults for app settings only)
 
-## Still outside the repo
+## Store purchase configuration
 
-- Create IAP `com.everittventures.salonboothmath.lifetime` as a $9.99 non-consumable on both stores.
-- Sandbox purchase + Restore on a device.
-- Signed iOS archive and Android AAB.
-- Screenshots with a realistic take-home such as $818.25, not $0.
+The apps use the existing one-time product ID:
+
+- `com.everittventures.salonboothmath.lifetime`
+- iOS: non-consumable
+- Google Play: one-time in-app product
+- Intended price: $9.99, with the displayed price loaded from the store
+
+Do not create a new product ID for this update. Keep the existing store product active and available in the release countries.
+
+## Release versions
+
+- iOS: 1.1, build 2
+- Android: 1.1.0, versionCode 3
+
+## Before submitting the update
+
+- Test Buy and Restore Purchase with an Apple sandbox/test account on a physical iPhone.
+- Test Buy and restore/owned-product recognition through a Google Play testing track on an Android device.
+- Confirm the existing product is approved/active and attached to the app version where each store requires it.
+- Build the signed iOS archive and Android AAB.
+- Use screenshots with a realistic take-home such as $818.25, not $0.

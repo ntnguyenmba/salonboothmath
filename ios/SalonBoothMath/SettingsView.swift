@@ -16,7 +16,7 @@ struct SettingsView: View {
     @AppStorage("workerPaysCardFees") private var workerPaysCardFees = false
     @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
 
-    @StateObject private var purchases = PurchaseManager()
+    @ObservedObject var purchases: PurchaseManager
     @State private var rentText = ""
     @State private var commissionText = ""
     @State private var cardFeeText = ""
@@ -133,6 +133,12 @@ struct SettingsView: View {
             Link(destination: LegalURLs.terms) { settingsRow(L("settings.terms", language: appLanguage), icon: "doc.text.fill") }
             Link(destination: LegalURLs.support) { settingsRow(L("settings.support", language: appLanguage), icon: "envelope.fill") }
             Button { Task { await purchases.restore() } } label: { settingsRow(L("paywall.restore", language: appLanguage), icon: "arrow.clockwise") }
+            if purchases.errorMessage != nil {
+                Text(L("paywall.purchaseError", language: appLanguage))
+                    .font(Brand.font(16))
+                    .foregroundStyle(Brand.hotPink)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             NavigationLink { AboutSalonBoothMathView() } label: { settingsRow(L("settings.about", language: appLanguage), icon: "info.circle.fill") }
             Button { didCompleteOnboarding = false } label: { settingsRow(L("settings.startOver", language: appLanguage), icon: "arrow.counterclockwise") }
             Text(L("legal.disclaimer", language: appLanguage))

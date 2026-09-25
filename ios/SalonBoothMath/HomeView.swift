@@ -148,7 +148,7 @@ struct HomeView: View {
                     }
                 )
             }
-            .navigationDestination(isPresented: $showSettings) { SettingsView() }
+            .navigationDestination(isPresented: $showSettings) { SettingsView(purchases: purchases) }
         }
         .sheet(isPresented: $showAddToday) {
             AddTodaySheet { addToday($0) }

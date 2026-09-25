@@ -36,10 +36,11 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     private var productDetails: ProductDetails? = null
     private var purchaseInFlight = false
 
-    fun start() {
+    fun start(onReady: (() -> Unit)? = null) {
         if (billingClient.isReady) {
             queryProduct()
             queryPurchases()
+            onReady?.invoke()
             return
         }
         billingClient.startConnection(object : BillingClientStateListener {
@@ -48,6 +49,7 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
                     _billingIssue.value = null
                     queryProduct()
                     queryPurchases()
+                    onReady?.invoke()
                 } else {
                     _billingIssue.value = BillingIssue.CONNECTION
                 }
@@ -89,8 +91,8 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
         if (purchaseInFlight) return
         _billingIssue.value = null
         if (!billingClient.isReady) {
-            start()
             _billingIssue.value = BillingIssue.CONNECTION
+            start { launchPurchase(activity) }
             return
         }
         purchaseInFlight = true
@@ -131,8 +133,8 @@ class BillingManager(private val context: Context) : PurchasesUpdatedListener {
     fun restore() {
         _billingIssue.value = null
         if (!billingClient.isReady) {
-            start()
             _billingIssue.value = BillingIssue.CONNECTION
+            start { queryPurchases() }
             return
         }
         queryPurchases()

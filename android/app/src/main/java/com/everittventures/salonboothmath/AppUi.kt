@@ -163,7 +163,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
             displayPrice = displayPrice,
             billingIssue = billingIssue,
             takeHomeCents = takeHomeCents,
-            onPurchase = { activity?.let { billing.launchPurchase(it) } },
+            onPurchase = { billing.launchPurchase(activity) },
             onRestore = { billing.restore() },
             onDismiss = { showPaywall=false; pendingAction=null }
         )

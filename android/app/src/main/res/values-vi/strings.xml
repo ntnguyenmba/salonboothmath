@@ -80,4 +80,7 @@
     <string name="free_try_compare">Dùng thử miễn phí một lần</string>
     <string name="free_try_pay_checkup">Dùng thử miễn phí một lần</string>
     <string name="free_used">Đã dùng lượt miễn phí</string>
+    <string name="billing_connection_error">Google Play đang kết nối lại. Hãy bấm Mở khóa lại sau giây lát.</string>
+    <string name="billing_product_unavailable">Gói mua trọn đời hiện chưa khả dụng trên Google Play. Vui lòng thử lại.</string>
+    <string name="billing_purchase_failed">Không thể hoàn tất giao dịch. Vui lòng thử lại hoặc dùng Khôi phục giao dịch nếu bạn đã mua.</string>
 </resources>

@@ -83,6 +83,8 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                         DropdownMenuItem(text={Text(stringResource(R.string.decisions))},onClick={menuOpen=false;openPayCheckup()})
                         DropdownMenuItem(text={Text(stringResource(R.string.compare))},onClick={menuOpen=false;openCompare()})
                         DropdownMenuItem(text={Text(stringResource(R.string.settings))},onClick={menuOpen=false;screen=Screen.Settings})
+                        HorizontalDivider()
+                        DropdownMenuItem(text={Text(stringResource(R.string.start_over))},onClick={menuOpen=false;store.onboardingDone=false;activity?.recreate()})
                     }}
                 }
             }}
@@ -100,7 +102,24 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                 Text(formatCents(takeHomeCents),color=Color.White,fontSize=48.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
                 if(highRent)Text(stringResource(R.string.high_rent_warning),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
                 if(addedTodayGross!=null)Text(stringResource(R.string.added_today,formatCents(addedTodayGross!!)),color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-                Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){if(isCurrentWeek)TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)};TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)};TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}}
+                Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){
+                    if(isCurrentWeek) TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
+                    PrimaryButton(stringResource(R.string.save_week)){requireUnlock(LockedAction.SAVE)}
+                    TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
+                    TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(68.dp)){
+                        Column(horizontalAlignment=Alignment.CenterHorizontally){
+                            Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
+                            if(!unlocked) Text(stringResource(if(didUseFreeCompare) R.string.free_used else R.string.free_try_compare),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+                        }
+                    }
+                    TextButton(onClick={openPayCheckup()},modifier=Modifier.fillMaxWidth().height(68.dp)){
+                        Column(horizontalAlignment=Alignment.CenterHorizontally){
+                            Text(stringResource(R.string.decisions),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
+                            if(!unlocked) Text(stringResource(if(didUseFreePayCheckup) R.string.free_used else R.string.free_try_pay_checkup),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
+                        }
+                    }
+                    TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
+                }
             }
             if(!unlocked) {
                 FreeBannerAd(Modifier.fillMaxWidth().height(50.dp))

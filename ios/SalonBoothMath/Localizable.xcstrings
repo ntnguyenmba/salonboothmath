@@ -2134,6 +2134,28 @@
           }
         }
       }
+    },
+    "paywall.purchaseError": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The purchase could not be completed. Please try again or use Restore Purchase if you already bought it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo completar la compra. Inténtalo de nuevo o usa Restaurar compra si ya la compraste."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể hoàn tất giao dịch. Vui lòng thử lại hoặc dùng Khôi phục mua hàng nếu bạn đã mua."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

@@ -77,4 +77,8 @@
     <string name="paywall_soft_cta">See which pay setup leaves you with more</string>
     <string name="paywall_benefit_no_ads">Remove ads permanently</string>
     <string name="widget_description">Shows your current weekly take-home.</string>
+    <string name="start_over">Start over</string>
+    <string name="free_try_compare">Try once free</string>
+    <string name="free_try_pay_checkup">Try once free</string>
+    <string name="free_used">Free try used</string>
 </resources>

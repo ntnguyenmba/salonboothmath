@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 enum PremiumFeature {
     case save
@@ -7,7 +8,6 @@ enum PremiumFeature {
     case payCheckup
 }
 
-@MainActor
 final class FreeAccessState: ObservableObject {
     @Published private(set) var usedSave: Bool
     @Published private(set) var usedHistory: Bool

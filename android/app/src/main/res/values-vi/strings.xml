@@ -76,4 +76,8 @@
     <string name="paywall_soft_cta">Xem cách nào giúp bạn giữ lại nhiều hơn</string>
     <string name="paywall_benefit_no_ads">Xóa quảng cáo vĩnh viễn</string>
     <string name="widget_description">Hiển thị số tiền bạn còn lại trong tuần hiện tại.</string>
+    <string name="start_over">Bắt đầu lại</string>
+    <string name="free_try_compare">Dùng thử miễn phí một lần</string>
+    <string name="free_try_pay_checkup">Dùng thử miễn phí một lần</string>
+    <string name="free_used">Đã dùng lượt miễn phí</string>
 </resources>

@@ -2156,6 +2156,28 @@
           }
         }
       }
+    },
+    "free.trySave": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save one week free"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda una semana gratis"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu một tuần miễn phí"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

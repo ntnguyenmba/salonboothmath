@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,8 +25,6 @@ import androidx.core.os.LocaleListCompat
 import androidx.glance.appwidget.updateAll
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
-import java.util.Calendar
-import java.util.UUID
 
 enum class Screen { Home, Breakdown, History, Compare, Decisions, Settings }
 private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
@@ -36,10 +33,12 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun SalonBoothHome(store: AppStore, billing: BillingManager) {
+    val context = LocalContext.current
+    val freeAccess = rememberFreeAccessState(context)
     val currentWeekStart = startOfWeek(); val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
     var services by remember { mutableStateOf(initialDraft.services) }; var cashTips by remember { mutableStateOf(initialDraft.cashTips) }; var cardTips by remember { mutableStateOf(initialDraft.cardTips) }; var supplies by remember { mutableStateOf(initialDraft.supplies) }; var hours by remember { mutableStateOf(initialDraft.hours) }; var days by remember { mutableStateOf(initialDraft.days) }
-    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var didUseFreeSave by remember { mutableStateOf(store.didUseFreeSave) }; var didUseFreeHistory by remember { mutableStateOf(store.didUseFreeHistory) }; var didUseFreeCompare by remember { mutableStateOf(store.didUseFreeCompare) }; var didUseFreePayCheckup by remember { mutableStateOf(store.didUseFreePayCheckup) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
-    val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val billingIssue by billing.billingIssue.collectAsState(); val context = LocalContext.current; val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
+    var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
+    val unlocked by billing.isUnlocked.collectAsState(); val displayPrice by billing.displayPrice.collectAsState(); val billingIssue by billing.billingIssue.collectAsState(); val activity = context as? Activity; val scope = rememberCoroutineScope(); val isCurrentWeek = editingWeekStart == currentWeekStart
     val serviceCents = MoneyMath.cents(services); val cashTipsCents = MoneyMath.cents(cashTips); val cardTipsCents = MoneyMath.cents(cardTips); val supplyCents = MoneyMath.cents(supplies)
     val cut = BigDecimal(store.commissionCutBasisPoints).movePointLeft(4); val feeRate = BigDecimal(store.cardFeeBasisPoints).movePointLeft(4); val cardShare = BigDecimal(store.servicesOnCardBasisPoints).movePointLeft(4)
     val cardFeesCents = if (store.payModel == "booth" || store.workerPaysCardFees) MoneyMath.cardFees(serviceCents, cardTipsCents, feeRate, cardShare) else 0L
@@ -48,10 +47,10 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
     fun saveWeek() { store.saveWeek(SavedWeek(editingWeekStart,serviceCents,cashTipsCents,cardTipsCents,supplyCents,store.extraFeesCents,hoursValue,store.payModel,takeHomeCents,days)); scope.launch { if (isCurrentWeek) TakeHomeWidget().updateAll(context) } }
     fun runLockedAction(action: LockedAction) { when(action){ LockedAction.SAVE->saveWeek(); LockedAction.HISTORY->screen=Screen.History; LockedAction.COMPARE->screen=Screen.Compare; LockedAction.DECISIONS->screen=Screen.Decisions } }
     fun requireUnlock(action: LockedAction) { if(unlocked) runLockedAction(action) else { pendingAction=action; showPaywall=true } }
-    fun saveWithFreeTry() { if (unlocked || !didUseFreeSave) { didUseFreeSave=true; store.didUseFreeSave=true; saveWeek() } else requireUnlock(LockedAction.SAVE) }
-    fun openHistory() { if (unlocked || !didUseFreeHistory) { didUseFreeHistory=true; store.didUseFreeHistory=true; screen=Screen.History } else requireUnlock(LockedAction.HISTORY) }
-    fun openCompare() { if (unlocked || !didUseFreeCompare) { didUseFreeCompare=true; store.didUseFreeCompare=true; screen=Screen.Compare } else requireUnlock(LockedAction.COMPARE) }
-    fun openPayCheckup() { if (unlocked || !didUseFreePayCheckup) { didUseFreePayCheckup=true; store.didUseFreePayCheckup=true; screen=Screen.Decisions } else requireUnlock(LockedAction.DECISIONS) }
+    fun saveWithFreeTry() { if (freeAccess.claim(PremiumFeature.SAVE, unlocked)) saveWeek() else requireUnlock(LockedAction.SAVE) }
+    fun openHistory() { if (freeAccess.claim(PremiumFeature.HISTORY, unlocked)) screen=Screen.History else requireUnlock(LockedAction.HISTORY) }
+    fun openCompare() { if (freeAccess.claim(PremiumFeature.COMPARE, unlocked)) screen=Screen.Compare else requireUnlock(LockedAction.COMPARE) }
+    fun openPayCheckup() { if (freeAccess.claim(PremiumFeature.PAY_CHECKUP, unlocked)) screen=Screen.Decisions else requireUnlock(LockedAction.DECISIONS) }
     fun loadWeek(week: SavedWeek){ editingWeekStart=week.startMillis; services=inputMoney(week.servicesCents); cashTips=inputMoney(week.cashTipsCents); cardTips=inputMoney(week.cardTipsCents); supplies=inputMoney(week.suppliesCents); hours=week.hours?.let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}?:""; days=week.days; store.payModel=week.payModel; screen=Screen.Home }
     fun returnToCurrentWeek(){ editingWeekStart=currentWeekStart; val d=store.loadCurrentWeekDraft(currentWeekStart); services=d.services;cashTips=d.cashTips;cardTips=d.cardTips;supplies=d.supplies;hours=d.hours;days=d.days }
     fun setLanguage(tag: String) {
@@ -106,24 +105,36 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                 if(addedTodayGross!=null)Text(stringResource(R.string.added_today,formatCents(addedTodayGross!!)),color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
                 Column(Modifier.fillMaxWidth().padding(top=24.dp,bottom=32.dp),verticalArrangement=Arrangement.spacedBy(14.dp)){
                     if(isCurrentWeek) TextButton(onClick={showAddToday=true},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.add_today),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
-                    TextButton(onClick={saveWithFreeTry()},modifier=Modifier.fillMaxWidth().height(68.dp)){
-                        Column(horizontalAlignment=Alignment.CenterHorizontally){
-                            Text(stringResource(R.string.save_week),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
-                            if(!unlocked) Text(stringResource(if(didUseFreeSave) R.string.free_used else R.string.free_try_save),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-                        }
+                    if (unlocked) {
+                        PrimaryButton(stringResource(R.string.save_week)){saveWithFreeTry()}
+                    } else {
+                        FreeTryActionButton(
+                            title = stringResource(R.string.save_week),
+                            used = freeAccess.used(PremiumFeature.SAVE),
+                            freeLabel = stringResource(R.string.free_try_save),
+                            usedLabel = stringResource(R.string.free_used),
+                            onClick = ::saveWithFreeTry
+                        )
                     }
                     TextButton(onClick={screen=Screen.Breakdown},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.breakdown),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
-                    TextButton(onClick={openCompare()},modifier=Modifier.fillMaxWidth().height(68.dp)){
-                        Column(horizontalAlignment=Alignment.CenterHorizontally){
-                            Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
-                            if(!unlocked) Text(stringResource(if(didUseFreeCompare) R.string.free_used else R.string.free_try_compare),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-                        }
-                    }
-                    TextButton(onClick={openPayCheckup()},modifier=Modifier.fillMaxWidth().height(68.dp)){
-                        Column(horizontalAlignment=Alignment.CenterHorizontally){
-                            Text(stringResource(R.string.decisions),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
-                            if(!unlocked) Text(stringResource(if(didUseFreePayCheckup) R.string.free_used else R.string.free_try_pay_checkup),color=Pink,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-                        }
+                    if (unlocked) {
+                        TextButton(onClick={openCompare},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.compare),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
+                        TextButton(onClick={openPayCheckup},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.decisions),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
+                    } else {
+                        FreeTryActionButton(
+                            title = stringResource(R.string.compare),
+                            used = freeAccess.used(PremiumFeature.COMPARE),
+                            freeLabel = stringResource(R.string.free_try_compare),
+                            usedLabel = stringResource(R.string.free_used),
+                            onClick = ::openCompare
+                        )
+                        FreeTryActionButton(
+                            title = stringResource(R.string.decisions),
+                            used = freeAccess.used(PremiumFeature.PAY_CHECKUP),
+                            freeLabel = stringResource(R.string.free_try_pay_checkup),
+                            usedLabel = stringResource(R.string.free_used),
+                            onClick = ::openPayCheckup
+                        )
                     }
                     TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
                 }
@@ -133,41 +144,27 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
             }
         }
     }
-    if(showAddToday)AddTodaySheet(onDismiss={showAddToday=false}) { line -> services=inputMoney(serviceCents+line.servicesCents);cashTips=inputMoney(cashTipsCents+line.cashTipsCents);cardTips=inputMoney(cardTipsCents+line.cardTipsCents);supplies=inputMoney(supplyCents+line.suppliesCents);line.hours?.let{h->hours=((hoursValue?:0.0)+h).let{if(it%1.0==0.0)it.toInt().toString() else it.toString()}};days=days+line;addedTodayGross=line.servicesCents+line.cashTipsCents+line.cardTipsCents;showAddToday=false }
-    if(showPaywall)ModalBottomSheet(onDismissRequest={showPaywall=false;pendingAction=null},containerColor=BerryDeep,contentColor=Ink,dragHandle={Box(Modifier.padding(top=10.dp,bottom=8.dp).width(54.dp).height(6.dp).background(Pink,RoundedCornerShape(99.dp)))}){
-        Column(Modifier.fillMaxWidth().padding(horizontal=22.dp,vertical=12.dp),verticalArrangement=Arrangement.spacedBy(12.dp)){
-            Text(stringResource(R.string.unlock),color=Ink,fontSize=26.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily,maxLines=2)
-            if(takeHomeCents>0)Text(stringResource(R.string.paywall_take_home_lead,formatCents(takeHomeCents)),color=Pink,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_compare)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_difference)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_decisions)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_track)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_history)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_benefit_no_ads)}",color=Ink,fontSize=17.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            Text("\u2022 ${stringResource(R.string.paywall_once)}",color=MutedInk,fontSize=16.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)
-            if (billingIssue != null) {
-                Text(
-                    stringResource(
-                        when (billingIssue) {
-                            BillingIssue.CONNECTION -> R.string.billing_connection_error
-                            BillingIssue.PRODUCT_UNAVAILABLE -> R.string.billing_product_unavailable
-                            BillingIssue.PURCHASE_FAILED -> R.string.billing_purchase_failed
-                            null -> R.string.billing_purchase_failed
-                        }
-                    ),
-                    color=Pink,
-                    fontSize=16.sp,
-                    fontWeight=FontWeight.Bold,
-                    fontFamily=AppFontFamily
-                )
+    if(showAddToday) {
+        AddTodaySheet(onDismiss={showAddToday=false}) { line ->
+            services=inputMoney(serviceCents+line.servicesCents)
+            cashTips=inputMoney(cashTipsCents+line.cashTipsCents)
+            cardTips=inputMoney(cardTipsCents+line.cardTipsCents)
+            supplies=inputMoney(supplyCents+line.suppliesCents)
+            line.hours?.let { h ->
+                hours=((hoursValue?:0.0)+h).let { if(it%1.0==0.0) it.toInt().toString() else it.toString() }
             }
-            PrimaryButton(stringResource(R.string.unlock_price,displayPrice)){activity?.let{billing.launchPurchase(it)}}
-            TextButton(onClick={billing.restore()},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.restore_purchase),color=Pink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
-            TextButton(onClick={showPaywall=false;pendingAction=null},modifier=Modifier.fillMaxWidth().height(56.dp)){Text(stringResource(R.string.not_now),color=Ink,fontSize=18.sp,fontWeight=FontWeight.Bold,fontFamily=AppFontFamily)}
-            Spacer(Modifier.height(12.dp))
+            days=days+line
+            addedTodayGross=line.servicesCents+line.cashTipsCents+line.cardTipsCents
+            showAddToday=false
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable private fun AddTodaySheet(onDismiss:()->Unit,onAdd:(DayLine)->Unit){var services by remember{mutableStateOf("")};var cash by remember{mutableStateOf("")};var card by remember{mutableStateOf("")};var supplies by remember{mutableStateOf("")};var hours by remember{mutableStateOf("")};ModalBottomSheet(onDismissRequest=onDismiss,containerColor=BerryDeep,contentColor=Ink){Column(Modifier.fillMaxWidth().padding(22.dp),verticalArrangement=Arrangement.spacedBy(16.dp)){Text(stringResource(R.string.add_today),fontSize=27.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily);MoneyField(stringResource(R.string.services),services){services=it};MoneyField(stringResource(R.string.cash_tips),cash){cash=it};MoneyField(stringResource(R.string.card_tips),card){card=it};MoneyField(stringResource(R.string.supplies),supplies){supplies=it};MoneyField(stringResource(R.string.hours_today_optional),hours,false){hours=it};PrimaryButton(stringResource(R.string.add_to_week)){val h=hours.trim().replace(',','.').toDoubleOrNull()?.takeIf{it>0};val cal=Calendar.getInstance().apply{set(Calendar.HOUR_OF_DAY,0);set(Calendar.MINUTE,0);set(Calendar.SECOND,0);set(Calendar.MILLISECOND,0)};onAdd(DayLine(UUID.randomUUID().toString(),cal.timeInMillis,MoneyMath.cents(services),MoneyMath.cents(cash),MoneyMath.cents(card),MoneyMath.cents(supplies),h))};TextButton(onClick=onDismiss,modifier=Modifier.fillMaxWidth()){Text(stringResource(R.string.cancel),color=Ink,fontWeight=FontWeight.Bold)}}}}
+    if(showPaywall) {
+        UpgradeSheet(
+            displayPrice = displayPrice,
+            billingIssue = billingIssue,
+            takeHomeCents = takeHomeCents,
+            onPurchase = { activity?.let { billing.launchPurchase(it) } },
+            onRestore = { billing.restore() },
+            onDismiss = { showPaywall=false; pendingAction=null }
+        )
+    }

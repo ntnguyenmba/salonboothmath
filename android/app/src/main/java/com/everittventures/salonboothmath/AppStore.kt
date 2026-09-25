@@ -13,6 +13,12 @@ class AppStore(context: Context) {
     var appLanguage: String
         get() = prefs.getString("app_language", "en") ?: "en"
         set(value) { prefs.edit().putString("app_language", value).apply() }
+    var didUseFreeSave: Boolean
+        get() = prefs.getBoolean("did_use_free_save", false)
+        set(value) { prefs.edit().putBoolean("did_use_free_save", value).apply() }
+    var didUseFreeHistory: Boolean
+        get() = prefs.getBoolean("did_use_free_history", false)
+        set(value) { prefs.edit().putBoolean("did_use_free_history", value).apply() }
     var didUseFreeCompare: Boolean
         get() = prefs.getBoolean("did_use_free_compare", false)
         set(value) { prefs.edit().putBoolean("did_use_free_compare", value).apply() }

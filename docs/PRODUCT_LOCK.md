@@ -26,15 +26,23 @@ $9.99 is for the second week, not the first.
 - Supplies
 - Optional tax reserve estimate
 
+### One free try before Lifetime
+- Compare: one free use
+- Compare Your Pay: one free use
+
+After the free use, those features require Lifetime.
+
 ### Lifetime — $9.99 once
 - Save Week
 - History
-- Booth vs Commission vs Hybrid Compare
+- Unlimited Booth vs Commission vs Hybrid Compare
+- Unlimited Compare Your Pay
+- Remove ads
 - Restore Purchase
 
 No subscription. No account. No cloud requirement.
 
-The price appears only when the user asks to Save, open History, or open Compare. Home never sells Lifetime. Add today stays free.
+The Home screen may show a short "try once free" line under Compare and Compare Your Pay. The price itself appears only when the user reaches a locked action. Add today and Breakdown stay free.
 
 Paywall copy:
 
@@ -164,7 +172,7 @@ Do not add charts, sparklines, month dashboards, or comparison graphs on History
 
 ### Compare
 
-Compare is lifetime-only and may be the strongest day-one purchase trigger.
+Compare has one free use so a new user can see the value with real numbers. After that first use, Compare requires Lifetime and may be the strongest purchase trigger.
 
 Show the user's actual week under:
 - On booth
@@ -216,9 +224,11 @@ One-time non-consumable lifetime purchase: `$9.99`.
 The paid boundary is:
 - Save
 - History
-- Compare
+- Compare after one free use
+- Compare Your Pay after one free use
+- Ad removal
 
-The number itself, Add today, and Breakdown remain free forever.
+The number itself, Add today, Breakdown, and the first use of each comparison feature remain free.
 
 ## Product test
 

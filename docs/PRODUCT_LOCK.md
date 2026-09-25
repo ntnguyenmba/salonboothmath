@@ -27,10 +27,12 @@ $9.99 is for the second week, not the first.
 - Optional tax reserve estimate
 
 ### One free try before Lifetime
+- Save Week: one free save
+- History: one free visit
 - Compare: one free use
 - Compare Your Pay: one free use
 
-After the free use, those features require Lifetime.
+After the free use of each feature, that feature requires Lifetime.
 
 ### Lifetime — $9.99 once
 - Save Week
@@ -42,7 +44,7 @@ After the free use, those features require Lifetime.
 
 No subscription. No account. No cloud requirement.
 
-The Home screen may show a short "try once free" line under Compare and Compare Your Pay. The price itself appears only when the user reaches a locked action. Add today and Breakdown stay free.
+The Home screen may show a short free-use line under Save Week, Compare, and Compare Your Pay. History is also available once free from the menu. The price itself appears only when the user reaches a locked action. Add today and Breakdown stay free.
 
 Paywall copy:
 
@@ -153,11 +155,11 @@ The user should be able to understand why the take-home number is the number bef
 
 The button always says **Save week**.
 
-If the user is not unlocked, tapping it opens the lifetime purchase sheet.
+The first Save Week is free. After that free save, tapping it opens the lifetime purchase sheet unless the user is unlocked.
 
 ### History
 
-History is lifetime-only.
+History can be opened once free. After that free visit, it is lifetime-only.
 
 History is a weekly notebook, not analytics software.
 
@@ -222,13 +224,13 @@ Free download.
 One-time non-consumable lifetime purchase: `$9.99`.
 
 The paid boundary is:
-- Save
-- History
+- Save after one free save
+- History after one free visit
 - Compare after one free use
 - Compare Your Pay after one free use
 - Ad removal
 
-The number itself, Add today, Breakdown, and the first use of each comparison feature remain free.
+The number itself, Add today, Breakdown, and the first use of each paid feature remain free.
 
 ## Product test
 

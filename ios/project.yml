@@ -10,6 +10,9 @@ packages:
   GoogleMobileAds:
     url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
     from: 13.7.0
+  UserMessagingPlatform:
+    url: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+    from: 3.1.0
 targets:
   SalonBoothMath:
     type: application
@@ -27,6 +30,7 @@ targets:
     dependencies:
       - target: SalonBoothMathWidgetExtension
       - package: GoogleMobileAds
+      - package: UserMessagingPlatform
     scheme:
       testTargets:
         - SalonBoothMathTests

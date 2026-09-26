@@ -2178,6 +2178,28 @@
           }
         }
       }
+    },
+    "settings.privacyChoices": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Privacy choices"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opciones de privacidad"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lựa chọn quyền riêng tư"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

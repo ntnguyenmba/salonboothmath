@@ -1,10 +1,9 @@
 import SwiftUI
-import GoogleMobileAds
 
 @main
 struct SalonBoothMathApp: App {
     init() {
-        MobileAds.shared.start()
+        AdConsentManager.shared.requestConsent()
     }
 
     @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false

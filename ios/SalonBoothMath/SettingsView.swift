@@ -17,6 +17,7 @@ struct SettingsView: View {
     @AppStorage("didCompleteOnboarding") private var didCompleteOnboarding = false
 
     @ObservedObject var purchases: PurchaseManager
+    @ObservedObject private var consent = AdConsentManager.shared
     @State private var rentText = ""
     @State private var commissionText = ""
     @State private var cardFeeText = ""
@@ -130,6 +131,13 @@ struct SettingsView: View {
         VStack(alignment: .leading, spacing: 14) {
             sectionTitle(L("settings.legal", language: appLanguage))
             Link(destination: LegalURLs.privacy) { settingsRow(L("settings.privacy", language: appLanguage), icon: "hand.raised.fill") }
+            if consent.privacyOptionsRequired {
+                Button {
+                    Task { await consent.presentPrivacyOptions() }
+                } label: {
+                    settingsRow(L("settings.privacyChoices", language: appLanguage), icon: "slider.horizontal.3")
+                }
+            }
             Link(destination: LegalURLs.terms) { settingsRow(L("settings.terms", language: appLanguage), icon: "doc.text.fill") }
             Link(destination: LegalURLs.support) { settingsRow(L("settings.support", language: appLanguage), icon: "envelope.fill") }
             Button { Task { await purchases.restore() } } label: { settingsRow(L("paywall.restore", language: appLanguage), icon: "arrow.clockwise") }

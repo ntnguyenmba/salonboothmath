@@ -85,4 +85,5 @@
     <string name="billing_product_unavailable">The lifetime purchase is not available from Google Play right now. Please try again.</string>
     <string name="billing_purchase_failed">The purchase could not be completed. Please try again or use Restore Purchase if you already bought it.</string>
     <string name="free_try_save">Save one week free</string>
+    <string name="privacy_choices">Privacy choices</string>
 </resources>

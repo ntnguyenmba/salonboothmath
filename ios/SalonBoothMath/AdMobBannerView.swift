@@ -6,7 +6,21 @@ enum AdMobConfig {
     static let bannerAdUnitID = "ca-app-pub-1237434632796366/2950294014"
 }
 
-struct FreeBannerAdView: UIViewRepresentable {
+struct FreeBannerAdView: View {
+    @ObservedObject private var consent = AdConsentManager.shared
+
+    var body: some View {
+        Group {
+            if consent.canRequestAds {
+                BannerAdRepresentable()
+            } else {
+                Color.clear
+            }
+        }
+    }
+}
+
+private struct BannerAdRepresentable: UIViewRepresentable {
     func makeUIView(context: Context) -> BannerView {
         let banner = BannerView(adSize: AdSizeBanner)
         banner.adUnitID = AdMobConfig.bannerAdUnitID

@@ -1,10 +1,12 @@
 package com.everittventures.salonboothmath
 
+import android.os.Bundle
 import android.view.ViewGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -23,7 +25,14 @@ fun FreeBannerAd(modifier: Modifier = Modifier) {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                loadAd(AdRequest.Builder().build())
+
+                val extras = Bundle().apply {
+                    putString("npa", "1")
+                }
+                val request = AdRequest.Builder()
+                    .addNetworkExtrasBundle(AdMobAdapter::class.java, extras)
+                    .build()
+                loadAd(request)
             }
         }
     )

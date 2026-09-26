@@ -85,4 +85,5 @@
     <string name="billing_product_unavailable">La compra de por vida no está disponible en Google Play ahora mismo. Inténtalo de nuevo.</string>
     <string name="billing_purchase_failed">No se pudo completar la compra. Inténtalo de nuevo o usa Restaurar compra si ya la compraste.</string>
     <string name="free_try_save">Guarda una semana gratis</string>
+    <string name="privacy_choices">Opciones de privacidad</string>
 </resources>

@@ -35,6 +35,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
 @Composable fun SalonBoothHome(store: AppStore, billing: BillingManager) {
     val context = LocalContext.current
     val freeAccess = rememberFreeAccessState(context)
+    val canRequestAds = AdConsentManager.canRequestAds
     val currentWeekStart = startOfWeek(); val initialDraft = remember { store.loadCurrentWeekDraft(currentWeekStart) }
     var services by remember { mutableStateOf(initialDraft.services) }; var cashTips by remember { mutableStateOf(initialDraft.cashTips) }; var cardTips by remember { mutableStateOf(initialDraft.cardTips) }; var supplies by remember { mutableStateOf(initialDraft.supplies) }; var hours by remember { mutableStateOf(initialDraft.hours) }; var days by remember { mutableStateOf(initialDraft.days) }
     var editingWeekStart by remember { mutableLongStateOf(currentWeekStart) }; var screen by remember { mutableStateOf(Screen.Home) }; var showPaywall by remember { mutableStateOf(false) }; var showAddToday by remember { mutableStateOf(false) }; var menuOpen by remember { mutableStateOf(false) }; var pendingAction by remember { mutableStateOf<LockedAction?>(null) }; var addedTodayGross by remember { mutableStateOf<Long?>(null) }
@@ -139,7 +140,7 @@ private enum class LockedAction { SAVE, HISTORY, COMPARE, DECISIONS }
                     TextButton(onClick={screen=Screen.Settings},modifier=Modifier.fillMaxWidth().height(58.dp)){Text(stringResource(R.string.settings),color=Color.White,fontSize=18.sp,fontWeight=FontWeight.ExtraBold,fontFamily=AppFontFamily)}
                 }
             }
-            if(!unlocked) {
+            if(!unlocked && canRequestAds) {
                 FreeBannerAd(Modifier.fillMaxWidth().height(50.dp))
             }
         }

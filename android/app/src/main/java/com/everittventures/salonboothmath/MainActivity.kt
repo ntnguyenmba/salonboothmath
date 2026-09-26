@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.core.os.LocaleListCompat
-import com.google.android.gms.ads.MobileAds
 
 class MainActivity : AppCompatActivity() {
     private lateinit var billing: BillingManager
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(savedLanguage))
 
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this)
+        AdConsentManager.requestConsent(this)
         billing = BillingManager(this).also { it.start() }
         setContent {
             MaterialTheme(
